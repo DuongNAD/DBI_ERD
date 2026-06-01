@@ -40,9 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const flowConceptual = document.getElementById('flow-conceptual');
   const flowLogical = document.getElementById('flow-logical');
   const flowPhysical = document.getElementById('flow-physical');
+  const flowArr0 = document.getElementById('flow-arr-0');
   const flowArr1 = document.getElementById('flow-arr-1');
   const flowArr2 = document.getElementById('flow-arr-2');
   const phaseTitle = document.getElementById('phase-viz-title');
+  const phaseDescText = document.getElementById('phase-desc-text');
 
   if (btnIndep && btnDep) {
     btnIndep.addEventListener('click', () => {
@@ -54,8 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
       flowConceptual.classList.add('highlight');
       flowLogical.classList.remove('highlight');
       flowPhysical.classList.remove('highlight');
-      flowArr1.classList.remove('highlight');
-      flowArr2.classList.remove('highlight');
+      
+      if (flowArr0) flowArr0.classList.add('highlight');
+      if (flowArr1) flowArr1.classList.remove('highlight');
+      if (flowArr2) flowArr2.classList.remove('highlight');
+
+      if (phaseDescText) {
+        phaseDescText.style.opacity = '0';
+        setTimeout(() => {
+          phaseDescText.textContent = 'Pha độc lập DBMS: Khảo sát và phân tích yêu cầu từ phía người dùng, sau đó phác thảo mô hình khái niệm (ERD) hoàn toàn độc lập với phần cứng và phần mềm DBMS cụ thể.';
+          phaseDescText.style.opacity = '1';
+        }, 150);
+      }
     });
     
     btnDep.addEventListener('click', () => {
@@ -67,9 +79,25 @@ document.addEventListener('DOMContentLoaded', () => {
       flowConceptual.classList.remove('highlight');
       flowLogical.classList.add('highlight');
       flowPhysical.classList.add('highlight');
-      flowArr1.classList.add('highlight');
-      flowArr2.classList.add('highlight');
+      
+      if (flowArr0) flowArr0.classList.remove('highlight');
+      if (flowArr1) flowArr1.classList.add('highlight');
+      if (flowArr2) flowArr2.classList.add('highlight');
+
+      if (phaseDescText) {
+        phaseDescText.style.opacity = '0';
+        setTimeout(() => {
+          phaseDescText.textContent = 'Pha phụ thuộc DBMS: Ánh xạ mô hình ERD khái niệm thành mô hình logic (các bảng quan hệ, khóa chính, khóa ngoại) và cấu trúc vật lý tối ưu hóa riêng cho một DBMS cụ thể (như Oracle, SQL Server, MySQL).';
+          phaseDescText.style.opacity = '1';
+        }, 150);
+      }
     });
+
+    // Node click triggers phase switch
+    if (flowReq) flowReq.addEventListener('click', () => btnIndep.click());
+    if (flowConceptual) flowConceptual.addEventListener('click', () => btnIndep.click());
+    if (flowLogical) flowLogical.addEventListener('click', () => btnDep.click());
+    if (flowPhysical) flowPhysical.addEventListener('click', () => btnDep.click());
   }
 
 });

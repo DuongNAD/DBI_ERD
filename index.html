@@ -104,27 +104,40 @@
               
               <!-- Floating Visual Schema Elements -->
               <div class="floating-elements-layer">
+                <!-- Requirements Card -->
                 <div class="floating-card card-entities" style="--delay: 0.2s; width: 140px;">
                   <span class="mono-label">Yêu cầu</span>
                 </div>
                 
+                <!-- Horizontal Connecting Laser -->
                 <div class="arrow-container" style="--delay: 0.4s; left: calc(10% + 140px + 10px); right: calc(10% + 160px + 10px);">
-                  <svg class="connecting-arrow" viewBox="0 0 100 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M 5,10 H 90" stroke-dasharray="100" stroke-dashoffset="0"></path>
-                    <polyline points="85 5 95 10 85 15"></polyline>
+                  <svg class="connecting-arrow" viewBox="0 0 100 20" fill="none">
+                    <path class="arrow-line-bg" d="M 5,10 H 90" stroke="rgba(255,255,255,0.15)" stroke-width="1.8"></path>
+                    <path class="arrow-line-flow" d="M 5,10 H 90" stroke="#22d3ee" stroke-width="2" stroke-dasharray="6 6" style="animation: flowLineAnim 1.2s linear infinite;"></path>
+                    <polyline points="85 5 95 10 85 15" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
                   </svg>
                 </div>
                 
+                <!-- ERD Card -->
                 <div class="floating-card card-attributes" style="--delay: 0.6s; width: 160px;">
                   <span class="mono-label">Lược đồ ERD</span>
                 </div>
 
-                <div class="center-line-indicator" style="--delay: 0.8s;"></div>
+                <!-- Vertical Flowing Indicator -->
+                <div class="center-line-indicator" style="--delay: 0.8s; background: none; border: none; width: 24px; height: 100px; padding: 0;">
+                  <svg style="width: 24px; height: 100px;" viewBox="0 0 24 100" fill="none">
+                    <path class="arrow-line-bg" d="M12,0 L12,85" stroke="rgba(255,255,255,0.15)" stroke-width="2"></path>
+                    <path class="arrow-line-flow" d="M12,0 L12,85" stroke="#60a5fa" stroke-width="2.5" stroke-dasharray="6 6" style="animation: flowLineAnim 1.2s linear infinite;"></path>
+                    <path class="arrow-head" d="M7,80 L12,85 L17,80" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
                 
+                <!-- Conceptual Design Card -->
                 <div class="floating-card card-physical-schema" style="--delay: 1s;">
                   <span class="schema-title">Thiết kế Khái niệm</span>
                 </div>
                 
+                <!-- DBMS Independent Capsule Tag -->
                 <div class="tag-pk-fk" style="--delay: 1.2s;">
                   <span>Độc lập DBMS</span>
                 </div>
@@ -149,21 +162,116 @@
               <button class="action-btn active" id="btn-phase-independent" style="width: 280px; text-align: left;">1. Pha độc lập DBMS (Mức cao)</button>
               <button class="action-btn" id="btn-phase-dependent" style="width: 280px; text-align: left;">2. Pha phụ thuộc DBMS (Mức thấp)</button>
             </div>
+
+            <!-- Dynamic Description Card -->
+            <div class="phase-desc-panel" id="phase-desc-panel">
+              <div class="phase-desc-title">Chi tiết giai đoạn:</div>
+              <div class="phase-desc-text" id="phase-desc-text">Pha độc lập DBMS: Khảo sát và phân tích yêu cầu từ phía người dùng, sau đó phác thảo mô hình khái niệm (ERD) hoàn toàn độc lập với phần cứng và phần mềm DBMS cụ thể.</div>
+            </div>
           </div>
           
           <div class="companion-right">
-            <div class="relational-table-interactive animate-table" style="padding: 1.2rem; min-height: 340px;">
-              <div class="table-title" id="phase-viz-title">Sơ đồ Luồng Thiết kế: Độc lập với DBMS</div>
+            <div class="relational-table-interactive animate-table" style="padding: 1.2rem; min-height: 460px; display: flex; flex-direction: column; justify-content: center;">
+              <div class="table-title" id="phase-viz-title" style="margin-bottom: 1.5rem;">Sơ đồ Luồng Thiết kế: Độc lập với DBMS</div>
               
               <!-- Flowchart Representation -->
-              <div class="flowchart-container" style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; justify-content: center; height: auto;">
-                <div class="flow-node highlight" id="flow-req">1. Thu thập & Phân tích Yêu cầu</div>
-                <div class="flow-arrow">⬇️</div>
-                <div class="flow-node highlight" id="flow-conceptual">2. Thiết kế Khái niệm (Conceptual Schema)</div>
-                <div class="flow-arrow" id="flow-arr-1">⬇️</div>
-                <div class="flow-node" id="flow-logical">3. Thiết kế Logic (Logical Schema / Bảng Quan hệ)</div>
-                <div class="flow-arrow" id="flow-arr-2">⬇️</div>
-                <div class="flow-node" id="flow-physical">4. Thiết kế Vật lý (Physical / Internal Schema)</div>
+              <div class="flowchart-container" style="display: flex; flex-direction: column; gap: 0.2rem; align-items: center; justify-content: center; height: auto;">
+                <!-- Node 1 -->
+                <div class="flow-node highlight" id="flow-req">
+                  <div class="flow-node-content">
+                    <div class="flow-node-icon-wrapper">
+                      <svg class="flow-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <circle cx="11" cy="14" r="3"></circle>
+                        <line x1="18" y1="18" x2="13.5" y2="13.5"></line>
+                      </svg>
+                    </div>
+                    <div class="flow-node-details">
+                      <span class="flow-node-num">Bước 1</span>
+                      <span class="flow-node-title">Thu thập & Phân tích Yêu cầu</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Arrow 0 -->
+                <div class="flow-arrow highlight" id="flow-arr-0">
+                  <svg class="flow-arrow-svg" viewBox="0 0 24 40">
+                    <path class="arrow-line-bg" d="M12,0 L12,30"></path>
+                    <path class="arrow-line-flow" d="M12,0 L12,30"></path>
+                    <path class="arrow-head" d="M7,23 L12,28 L17,23"></path>
+                  </svg>
+                </div>
+
+                <!-- Node 2 -->
+                <div class="flow-node highlight" id="flow-conceptual">
+                  <div class="flow-node-content">
+                    <div class="flow-node-icon-wrapper">
+                      <svg class="flow-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                      </svg>
+                    </div>
+                    <div class="flow-node-details">
+                      <span class="flow-node-num">Bước 2</span>
+                      <span class="flow-node-title">Thiết kế Khái niệm (Conceptual Schema)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Arrow 1 -->
+                <div class="flow-arrow" id="flow-arr-1">
+                  <svg class="flow-arrow-svg" viewBox="0 0 24 40">
+                    <path class="arrow-line-bg" d="M12,0 L12,30"></path>
+                    <path class="arrow-line-flow" d="M12,0 L12,30"></path>
+                    <path class="arrow-head" d="M7,23 L12,28 L17,23"></path>
+                  </svg>
+                </div>
+
+                <!-- Node 3 -->
+                <div class="flow-node" id="flow-logical">
+                  <div class="flow-node-content">
+                    <div class="flow-node-icon-wrapper">
+                      <svg class="flow-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                        <line x1="3" y1="15" x2="21" y2="15"></line>
+                        <line x1="10" y1="9" x2="10" y2="21"></line>
+                      </svg>
+                    </div>
+                    <div class="flow-node-details">
+                      <span class="flow-node-num">Bước 3</span>
+                      <span class="flow-node-title">Thiết kế Logic (Logical Schema)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Arrow 2 -->
+                <div class="flow-arrow" id="flow-arr-2">
+                  <svg class="flow-arrow-svg" viewBox="0 0 24 40">
+                    <path class="arrow-line-bg" d="M12,0 L12,30"></path>
+                    <path class="arrow-line-flow" d="M12,0 L12,30"></path>
+                    <path class="arrow-head" d="M7,23 L12,28 L17,23"></path>
+                  </svg>
+                </div>
+
+                <!-- Node 4 -->
+                <div class="flow-node" id="flow-physical">
+                  <div class="flow-node-content">
+                    <div class="flow-node-icon-wrapper">
+                      <svg class="flow-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path>
+                      </svg>
+                    </div>
+                    <div class="flow-node-details">
+                      <span class="flow-node-num">Bước 4</span>
+                      <span class="flow-node-title">Thiết kế Vật lý (Physical Schema)</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -178,11 +286,11 @@
         </div>
         
         <!-- 3-Column Grid of Cards with Relationships -->
-        <div class="pillars-content-grid" style="grid-template-columns: 1fr; height: calc(100% - 4.5rem); position: relative; display: flex; align-items: center; justify-content: center;">
-          <div class="pillars-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 4.5rem 3.5rem; width: 100%; max-width: 950px; height: 400px; position: relative; z-index: 2;">
+        <div class="pillars-content-grid" style="grid-template-columns: 1fr; height: calc(100% - 4.5rem); position: relative; display: flex; align-items: flex-start; justify-content: center;">
+          <div class="pillars-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 5.5rem 9.5rem; width: 100%; max-width: 1450px; height: 480px; position: relative; z-index: 2; margin-top: 7.5rem;">
             
             <!-- Card 1: Phòng Ban (Col 1, Row 1) -->
-            <div class="pillar-card animate-card" style="--card-index: 1; grid-column: 1; grid-row: 1; margin: 0; background: var(--color-white); border-color: var(--color-navy); box-shadow: 0 4px 12px rgba(0,34,68,0.05); padding: 1.5rem;">
+            <div class="pillar-card animate-card" id="card-dept" style="--card-index: 1; grid-column: 1; grid-row: 1; margin: 0;">
               <div class="pillar-header" style="margin-bottom: 0.5rem;">
                 <span class="pillar-num" style="background: none; border: none; width: auto; height: auto; font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">🏢 PHÒNG_BAN</span>
               </div>
@@ -192,7 +300,7 @@
             </div>
             
             <!-- Card 2: Nhân Viên (Col 2, Row 1) -->
-            <div class="pillar-card animate-card" style="--card-index: 2; grid-column: 2; grid-row: 1; margin: 0; background: var(--color-white); border-color: var(--color-border); padding: 1.5rem;">
+            <div class="pillar-card animate-card" id="card-emp" style="--card-index: 2; grid-column: 2; grid-row: 1; margin: 0;">
               <div class="pillar-header" style="margin-bottom: 0.5rem;">
                 <span class="pillar-num" style="background: none; border: none; width: auto; height: auto; font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">👥 NHÂN_VIÊN</span>
               </div>
@@ -202,7 +310,7 @@
             </div>
 
             <!-- Card 3: Dự Án (Col 3, Row 1) -->
-            <div class="pillar-card animate-card" style="--card-index: 3; grid-column: 3; grid-row: 1; margin: 0; background: var(--color-white); border-color: var(--color-border); padding: 1.5rem;">
+            <div class="pillar-card animate-card" id="card-proj" style="--card-index: 3; grid-column: 3; grid-row: 1; margin: 0;">
               <div class="pillar-header" style="margin-bottom: 0.5rem;">
                 <span class="pillar-num" style="background: none; border: none; width: auto; height: auto; font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">🏗️ DỰ_ÁN</span>
               </div>
@@ -212,7 +320,7 @@
             </div>
             
             <!-- Card 4: Người Phụ Thuộc (Col 2, Row 2) -->
-            <div class="pillar-card animate-card" style="--card-index: 4; grid-column: 2; grid-row: 2; margin: 0; background: var(--color-white); border-color: var(--color-border); padding: 1.5rem;">
+            <div class="pillar-card animate-card" id="card-dep" style="--card-index: 4; grid-column: 2; grid-row: 2; margin: 0;">
               <div class="pillar-header" style="margin-bottom: 0.5rem;">
                 <span class="pillar-num" style="background: none; border: none; width: auto; height: auto; font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">👨‍👩‍👧 NGƯỜI_PHỤ_THUỘC</span>
               </div>
@@ -222,32 +330,44 @@
             </div>
  
             <!-- SVG connection lines with fixed viewBox coordinate system -->
-            <svg viewBox="0 0 950 400" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: visible;">
-              <!-- Line 1: PHÒNG_BAN (140, 110) to NHÂN_VIÊN (475, 110) -->
-              <line x1="140" y1="110" x2="475" y2="110" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.85;"></line>
+            <svg viewBox="0 0 1450 480" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: visible;">
+              <!-- Line 1: PHÒNG_BAN (191, 98) to NHÂN_VIÊN (725, 98) -->
+              <g class="connection-group" id="conn-dept-emp">
+                <line class="conn-line-bg" x1="191" y1="98" x2="725" y2="98"></line>
+                <line class="conn-line-flow" x1="191" y1="98" x2="725" y2="98"></line>
+              </g>
               
-              <!-- Line 2: NHÂN_VIÊN (475, 110) to DỰ_ÁN (810, 110) -->
-              <line x1="475" y1="110" x2="810" y2="110" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.85;"></line>
+              <!-- Line 2: NHÂN_VIÊN (725, 98) to DỰ_ÁN (1259, 98) -->
+              <g class="connection-group" id="conn-emp-proj">
+                <line class="conn-line-bg" x1="725" y1="98" x2="1259" y2="98"></line>
+                <line class="conn-line-flow" x1="725" y1="98" x2="1259" y2="98"></line>
+              </g>
               
-              <!-- Line 3: NHÂN_VIÊN (475, 110) to NGƯỜI_PHỤ_THUỘC (475, 310) -->
-              <line x1="475" y1="110" x2="475" y2="310" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.85;"></line>
+              <!-- Line 3: NHÂN_VIÊN (725, 98) to NGƯỜI_PHỤ_THUỘC (725, 382) -->
+              <g class="connection-group" id="conn-emp-dep">
+                <line class="conn-line-bg" x1="725" y1="98" x2="725" y2="382"></line>
+                <line class="conn-line-flow" x1="725" y1="98" x2="725" y2="382"></line>
+              </g>
               
-              <!-- Line 4 (Curved): PHÒNG_BAN (140, 110) to DỰ_ÁN (810, 110) -->
-              <path d="M 140 110 Q 475 -30 810 110" fill="none" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.85;"></path>
+              <!-- Line 4 (Curved): PHÒNG_BAN (191, 0) to DỰ_ÁN (1259, 0) -->
+              <g class="connection-group" id="conn-dept-proj">
+                <path class="conn-line-bg" d="M 191 0 Q 725 -180 1259 0" fill="none"></path>
+                <path class="conn-line-flow" d="M 191 0 Q 725 -180 1259 0" fill="none"></path>
+              </g>
             </svg>
  
             <!-- Relationship badges positioned exactly on path midpoints -->
             <!-- 1. vertical: NHÂN_VIÊN -> PHÒNG_BAN -->
-            <div style="position: absolute; left: 23%; top: 27.5%; transform: translate(-50%, -50%); background: var(--color-blue-bg); color: var(--color-navy-light); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.05); z-index: 10;">Làm việc tại (1:N)</div>
+            <div class="relationship-badge" id="badge-work" style="position: absolute; left: 31.8%; top: 12%; transform: translate(-50%, -50%); z-index: 10;">Làm việc tại (1:N)</div>
             
             <!-- 2. horizontal: NHÂN_VIÊN -> DỰ_ÁN -->
-            <div style="position: absolute; left: 77%; top: 27.5%; transform: translate(-50%, -50%); background: var(--color-blue-bg); color: var(--color-navy-light); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.05); z-index: 10;">Tham gia (N:N)</div>
+            <div class="relationship-badge" id="badge-work-on" style="position: absolute; left: 68.2%; top: 12%; transform: translate(-50%, -50%); z-index: 10;">Tham gia (N:N)</div>
             
             <!-- 3. vertical: NHÂN_VIÊN -> NGƯỜI_PHỤ_THUỘC -->
-            <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--color-blue-bg); color: var(--color-navy-light); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.05); z-index: 10;">Bảo lãnh (1:N)</div>
+            <div class="relationship-badge" id="badge-depend" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 10;">Bảo lãnh (1:N)</div>
             
             <!-- 4. curved: PHÒNG_BAN -> DỰ_ÁN -->
-            <div style="position: absolute; left: 50%; top: 1%; transform: translate(-50%, -50%); background: var(--color-blue-bg); color: var(--color-navy-light); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.05); z-index: 10;">Kiểm soát (1:N)</div>
+            <div class="relationship-badge" id="badge-control" style="position: absolute; left: 50%; top: -17%; transform: translate(-50%, -50%); z-index: 10;">Kiểm soát (1:N)</div>
 
           </div>
         </div>
@@ -290,23 +410,40 @@
             <div class="relational-table-interactive animate-table" style="padding: 2rem; display: flex; align-items: center; justify-content: center; height: 350px;">
               <svg width="480" height="300" viewBox="0 0 480 300" style="color: var(--color-navy); overflow: visible;">
                 <!-- Entity Rectangle -->
-                <rect x="150" y="120" width="180" height="60" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="240" y="156" font-family="var(--font-title)" font-weight="700" font-size="18" fill="currentColor" text-anchor="middle">NHÂN_VIÊN</text>
+                <g class="diagram-entity-node" id="slide4-entity">
+                  <rect x="150" y="120" width="180" height="60" fill="none" stroke="currentColor" stroke-width="2.5" rx="8"></rect>
+                  <text x="240" y="156" font-family="var(--font-title)" font-weight="700" font-size="18" fill="currentColor" text-anchor="middle">NHÂN_VIÊN</text>
+                </g>
                 
                 <!-- Attribute 1: MãNV (Key) -->
-                <ellipse cx="90" cy="50" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                <text x="90" y="54" font-family="var(--font-mono)" font-size="14" fill="currentColor" text-anchor="middle" text-decoration="underline">MãNV</text>
-                <line x1="90" y1="74" x2="160" y2="120" stroke="currentColor" stroke-width="1.8"></line>
+                <g class="diagram-attr-node" id="slide4-attr-manv">
+                  <ellipse cx="90" cy="50" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="90" y="54" font-family="var(--font-mono)" font-size="14" fill="currentColor" text-anchor="middle" text-decoration="underline">MãNV</text>
+                </g>
+                <g class="connection-group" id="slide4-conn-manv">
+                  <line class="conn-line-bg" x1="90" y1="74" x2="160" y2="120"></line>
+                  <line class="conn-line-flow" x1="90" y1="74" x2="160" y2="120"></line>
+                </g>
                 
                 <!-- Attribute 2: HọTên -->
-                <ellipse cx="390" cy="50" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                <text x="390" y="54" font-family="var(--font-body)" font-size="14" fill="currentColor" text-anchor="middle">HọTên</text>
-                <line x1="390" y1="74" x2="320" y2="120" stroke="currentColor" stroke-width="1.8"></line>
+                <g class="diagram-attr-node" id="slide4-attr-hoten">
+                  <ellipse cx="390" cy="50" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="390" y="54" font-family="var(--font-body)" font-size="14" fill="currentColor" text-anchor="middle">HọTên</text>
+                </g>
+                <g class="connection-group" id="slide4-conn-hoten">
+                  <line class="conn-line-bg" x1="390" y1="74" x2="320" y2="120"></line>
+                  <line class="conn-line-flow" x1="390" y1="74" x2="320" y2="120"></line>
+                </g>
                 
                 <!-- Attribute 3: Lương -->
-                <ellipse cx="240" cy="250" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                <text x="240" y="254" font-family="var(--font-body)" font-size="14" fill="currentColor" text-anchor="middle">Lương</text>
-                <line x1="240" y1="226" x2="240" y2="180" stroke="currentColor" stroke-width="1.8"></line>
+                <g class="diagram-attr-node" id="slide4-attr-luong">
+                  <ellipse cx="240" cy="250" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="240" y="254" font-family="var(--font-body)" font-size="14" fill="currentColor" text-anchor="middle">Lương</text>
+                </g>
+                <g class="connection-group" id="slide4-conn-luong">
+                  <line class="conn-line-bg" x1="240" y1="226" x2="240" y2="180"></line>
+                  <line class="conn-line-flow" x1="240" y1="226" x2="240" y2="180"></line>
+                </g>
               </svg>
             </div>
           </div>
@@ -328,8 +465,8 @@
               <div class="objectives-list-wrapper">
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1.15rem; line-height: 1.6; color: var(--color-gray);">
-                  <p>🔹 <strong>Thuộc tính đơn (Simple/Atomic):</strong> Giá trị nguyên tố, không thể chia nhỏ hơn nữa. Ví dụ: <code>SốGiường</code>, <code>TìnhTrạng</code>.</p>
-                  <p style="margin-top: 1rem;">🔹 <strong>Thuộc tính phức hợp (Composite):</strong> Có thể chia nhỏ thành các thuộc tính thành phần độc lập. Hữu ích khi người dùng lúc muốn truy vấn cả cụm, lúc muốn lấy từng phần nhỏ.</p>
+                  <p id="slide5-bullet-simple" style="transition: all 0.3s ease;">🔹 <strong>Thuộc tính đơn (Simple/Atomic):</strong> Giá trị nguyên tố, không thể chia nhỏ hơn nữa. Ví dụ: <code>SốGiường</code>, <code>TìnhTrạng</code>.</p>
+                  <p id="slide5-bullet-composite" style="transition: all 0.3s ease; margin-top: 1rem;">🔹 <strong>Thuộc tính phức hợp (Composite):</strong> Có thể chia nhỏ thành các thuộc tính thành phần độc lập. Hữu ích khi người dùng lúc muốn truy vấn cả cụm, lúc muốn lấy từng phần nhỏ.</p>
                 </div>
               </div>
             </div>
@@ -337,24 +474,58 @@
           
           <div class="companion-right">
             <!-- Tree chart for composite attributes -->
-            <div class="relational-table-interactive animate-table" style="padding: 1.5rem; min-height: 380px;">
-              <div class="table-title">Ví dụ: Phân rã Thuộc tính Địa Chỉ Phòng (KTX Dom D)</div>
-              <div class="address-tree" style="position: relative; display: flex; flex-direction: column; align-items: center; margin-top: 1.5rem;">
-                <div class="glowing-card" style="padding: 0.6rem 2rem; background: var(--color-blue-bg); border-color: var(--color-blue); font-weight: 700; z-index: 2; margin-bottom: 4rem;">ĐịaChỉPhòng (Composite)</div>
-                <div style="display: flex; width: 100%; justify-content: space-around; position: relative; z-index: 2;">
-                  <div class="pillar-card" style="padding: 0.5rem 1rem; font-size: 0.9rem; text-align: center; width: 22%;">TênDom<br><span style="font-size: 0.75rem; color:var(--color-gray-light);">(Dom D)</span></div>
-                  <div class="pillar-card" style="padding: 0.5rem 1rem; font-size: 0.9rem; text-align: center; width: 22%;">SốTầng<br><span style="font-size: 0.75rem; color:var(--color-gray-light);">(Tầng 3)</span></div>
-                  <div class="pillar-card" style="padding: 0.5rem 1rem; font-size: 0.9rem; text-align: center; width: 22%;">SốPhòng<br><span style="font-size: 0.75rem; color:var(--color-gray-light);">(Phòng 312)</span></div>
-                  <div class="pillar-card" style="padding: 0.5rem 1rem; font-size: 0.9rem; text-align: center; width: 22%;">SốGiường<br><span style="font-size: 0.75rem; color:var(--color-gray-light);">(Giường số 4)</span></div>
-                </div>
-                <!-- SVG lines connecting them -->
-                <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
-                  <line x1="50%" y1="40" x2="12.5%" y2="120" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.7;"></line>
-                  <line x1="50%" y1="40" x2="37.5%" y2="120" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.7;"></line>
-                  <line x1="50%" y1="40" x2="62.5%" y2="120" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.7;"></line>
-                  <line x1="50%" y1="40" x2="87.5%" y2="120" stroke="var(--color-blue)" stroke-width="2.5" style="opacity: 0.7;"></line>
-                </svg>
-              </div>
+            <div class="relational-table-interactive animate-table" style="padding: 2rem; display: flex; align-items: center; justify-content: center; height: 350px;">
+              <svg width="540" height="300" viewBox="0 0 540 300" style="color: var(--color-blue); overflow: visible;">
+                <!-- Root Node: ĐịaChỉPhòng -->
+                <g class="diagram-attr-node composite-root" id="slide5-root">
+                  <ellipse cx="270" cy="50" rx="90" ry="26" fill="none" stroke="currentColor" stroke-width="2.5"></ellipse>
+                  <text x="270" y="55" font-family="var(--font-title)" font-weight="700" font-size="15" fill="currentColor" text-anchor="middle">ĐịaChỉPhòng</text>
+                </g>
+
+                <!-- Leaf 1: TênDom -->
+                <g class="diagram-attr-node" id="slide5-leaf-dom">
+                  <ellipse cx="75" cy="240" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="75" y="238" font-family="var(--font-body)" font-weight="600" font-size="13" fill="currentColor" text-anchor="middle">TênDom</text>
+                  <text x="75" y="253" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="middle">(Dom D)</text>
+                </g>
+                <g class="connection-group" id="slide5-conn-dom">
+                  <line class="conn-line-bg" x1="270" y1="76" x2="75" y2="216"></line>
+                  <line class="conn-line-flow" x1="270" y1="76" x2="75" y2="216"></line>
+                </g>
+
+                <!-- Leaf 2: SốTầng -->
+                <g class="diagram-attr-node" id="slide5-leaf-tang">
+                  <ellipse cx="205" cy="240" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="205" y="238" font-family="var(--font-body)" font-weight="600" font-size="13" fill="currentColor" text-anchor="middle">SốTầng</text>
+                  <text x="205" y="253" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="middle">(Tầng 3)</text>
+                </g>
+                <g class="connection-group" id="slide5-conn-tang">
+                  <line class="conn-line-bg" x1="270" y1="76" x2="205" y2="216"></line>
+                  <line class="conn-line-flow" x1="270" y1="76" x2="205" y2="216"></line>
+                </g>
+
+                <!-- Leaf 3: SốPhòng -->
+                <g class="diagram-attr-node" id="slide5-leaf-phong">
+                  <ellipse cx="335" cy="240" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="335" y="238" font-family="var(--font-body)" font-weight="600" font-size="13" fill="currentColor" text-anchor="middle">SốPhòng</text>
+                  <text x="335" y="253" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="middle">(Phòng 312)</text>
+                </g>
+                <g class="connection-group" id="slide5-conn-phong">
+                  <line class="conn-line-bg" x1="270" y1="76" x2="335" y2="216"></line>
+                  <line class="conn-line-flow" x1="270" y1="76" x2="335" y2="216"></line>
+                </g>
+
+                <!-- Leaf 4: SốGiường -->
+                <g class="diagram-attr-node" id="slide5-leaf-giuong">
+                  <ellipse cx="465" cy="240" rx="55" ry="24" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="465" y="238" font-family="var(--font-body)" font-weight="600" font-size="13" fill="currentColor" text-anchor="middle">SốGiường</text>
+                  <text x="465" y="253" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="middle">(Giường 4)</text>
+                </g>
+                <g class="connection-group" id="slide5-conn-giuong">
+                  <line class="conn-line-bg" x1="270" y1="76" x2="465" y2="216"></line>
+                  <line class="conn-line-flow" x1="270" y1="76" x2="465" y2="216"></line>
+                </g>
+              </svg>
             </div>
           </div>
         </div>
@@ -375,9 +546,9 @@
               <div class="objectives-list-wrapper">
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1.15rem; line-height: 1.6; color: var(--color-gray);">
-                  <p>🔹 <strong>Đơn trị (Single-valued):</strong> Chỉ có đúng 1 giá trị cho mỗi thực thể. Ví dụ: <code>NgàyNhậnPhòng</code>.</p>
-                  <p style="margin-top: 0.8rem;">🔹 <strong>Đa trị (Multivalued):</strong> Có thể chứa một tập hợp giá trị cho cùng 1 thực thể. Ký hiệu: <strong>Hình bầu dục viền kép</strong>. Ví dụ: <code>{TiệnNghi}</code> (Điều hòa, Tủ lạnh...), <code>{SinhViênLưuTrú}</code>.</p>
-                  <p style="margin-top: 0.8rem;">🔹 <strong>Dẫn xuất (Derived):</strong> Giá trị được tính từ thuộc tính khác. Ký hiệu: <strong>Hình bầu dục nét đứt</strong>. Ví dụ: <code>SốNgàyLưuTrú</code> (tính từ NgàyNhậnPhòng).</p>
+                  <p id="slide6-bullet-single" style="transition: all 0.3s ease;">🔹 <strong>Đơn trị (Single-valued):</strong> Chỉ có đúng 1 giá trị cho mỗi thực thể. Ví dụ: <code>NgàyNhậnPhòng</code>.</p>
+                  <p id="slide6-bullet-multivalued" style="transition: all 0.3s ease; margin-top: 0.8rem;">🔹 <strong>Đa trị (Multivalued):</strong> Có thể chứa một tập hợp giá trị cho cùng 1 thực thể. Ký hiệu: <strong>Hình bầu dục viền kép</strong>. Ví dụ: <code>{TiệnNghi}</code> (Điều hòa, Tủ lạnh...), <code>{SinhViênLưuTrú}</code>.</p>
+                  <p id="slide6-bullet-derived" style="transition: all 0.3s ease; margin-top: 0.8rem;">🔹 <strong>Dẫn xuất (Derived):</strong> Giá trị được tính từ thuộc tính khác. Ký hiệu: <strong>Hình bầu dục nét đứt</strong>. Ví dụ: <code>SốNgàyLưuTrú</code> (tính từ NgàyNhậnPhòng).</p>
                 </div>
               </div>
             </div>
@@ -391,25 +562,37 @@
               <div style="display: flex; justify-content: center; margin-bottom: 0.5rem; border-bottom: 1px dashed var(--color-border); padding-bottom: 0.8rem;">
                 <svg width="450" height="150" viewBox="0 0 450 150" style="color: var(--color-navy); overflow: visible;">
                   <!-- Entity Rectangle -->
-                  <rect x="160" y="80" width="130" height="45" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                  <text x="225" y="107" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle">PHÒNG_KTX</text>
+                  <g class="diagram-entity-node" id="slide6-entity">
+                    <rect x="160" y="80" width="130" height="45" fill="none" stroke="currentColor" stroke-width="2.5" rx="6"></rect>
+                    <text x="225" y="107" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle">PHÒNG_KTX</text>
+                  </g>
                   
                   <!-- Multivalued: {TiệnNghi} (Double Ellipse) -->
-                  <ellipse cx="70" cy="30" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                  <ellipse cx="70" cy="30" rx="49" ry="15" fill="none" stroke="currentColor" stroke-width="0.8"></ellipse>
-                  <text x="70" y="34" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">TiệnNghi</text>
-                  <line x1="75" y1="48" x2="170" y2="80" stroke="currentColor" stroke-width="1.8"></line>
-                  <text x="70" y="65" font-family="var(--font-mono)" font-size="10" fill="var(--color-blue)" font-weight="600" text-anchor="middle">Đa trị {}</text>
+                  <g class="diagram-attr-node" id="slide6-attr-tiennghi">
+                    <ellipse cx="70" cy="30" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                    <ellipse cx="70" cy="30" rx="49" ry="15" fill="none" stroke="currentColor" stroke-width="0.8"></ellipse>
+                    <text x="70" y="34" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">TiệnNghi</text>
+                    <text x="70" y="65" font-family="var(--font-mono)" font-size="10" fill="var(--color-blue)" font-weight="600" text-anchor="middle">Đa trị {}</text>
+                  </g>
+                  <g class="connection-group" id="slide6-conn-tiennghi">
+                    <line class="conn-line-bg" x1="75" y1="48" x2="170" y2="80"></line>
+                    <line class="conn-line-flow" x1="75" y1="48" x2="170" y2="80"></line>
+                  </g>
                   
                   <!-- Derived: ((SốNgàyLưuTrú)) (Dashed Ellipse) -->
-                  <ellipse cx="380" cy="30" rx="65" ry="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 4"></ellipse>
-                  <text x="380" y="34" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">SốNgàyLưuTrú</text>
-                  <line x1="375" y1="48" x2="280" y2="80" stroke="currentColor" stroke-width="1.8"></line>
-                  <text x="380" y="65" font-family="var(--font-mono)" font-size="10" fill="var(--color-blue)" font-weight="600" text-anchor="middle">Dẫn xuất ()</text>
+                  <g class="diagram-attr-node" id="slide6-attr-songay">
+                    <ellipse cx="380" cy="30" rx="65" ry="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 4"></ellipse>
+                    <text x="380" y="34" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">SốNgàyLưuTrú</text>
+                    <text x="380" y="65" font-family="var(--font-mono)" font-size="10" fill="var(--color-blue)" font-weight="600" text-anchor="middle">Dẫn xuất ()</text>
+                  </g>
+                  <g class="connection-group" id="slide6-conn-songay">
+                    <line class="conn-line-bg" x1="375" y1="48" x2="280" y2="80"></line>
+                    <line class="conn-line-flow" x1="375" y1="48" x2="280" y2="80"></line>
+                  </g>
                 </svg>
               </div>
 
-              <div style="background: var(--color-gray-bg); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; border: 1px solid var(--color-border);">
+              <div id="slide6-calculator-box" style="background: var(--color-gray-bg); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; border: 1px solid var(--color-border); transition: all 0.3s ease;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                   <span style="font-weight: 600; font-size: 0.85rem;">Thuộc tính lưu trữ (Ngày nhận phòng):</span>
                   <input type="date" id="input-checkin-date" value="2026-01-01" style="padding: 0.3rem 0.6rem; border-radius: 4px; border: 1px solid var(--color-border); font-family: var(--font-mono); font-size: 0.85rem;">
@@ -460,20 +643,32 @@
               <div class="table-title" style="margin-bottom: 0.5rem; font-size: 0.95rem;">Sơ đồ phân cấp Thuộc tính Phức hợp & Đa trị lồng nhau</div>
               <div style="display: flex; justify-content: center; align-items: center;">
                 <svg width="450" height="150" viewBox="0 0 450 150" style="color: var(--color-navy); overflow: visible;">
-                  <!-- Root: LiênHệ -->
-                  <rect x="155" y="10" width="140" height="35" fill="none" stroke="currentColor" stroke-width="2" rx="4"></rect>
-                  <text x="225" y="32" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle">LiênHệ (Complex)</text>
+                  <!-- Root: LiênHệ (Complex) -->
+                  <g class="diagram-entity-node" id="slide7-root">
+                    <rect x="155" y="10" width="140" height="35" fill="none" stroke="currentColor" stroke-width="2.2" rx="6"></rect>
+                    <text x="225" y="32" font-family="var(--font-title)" font-weight="700" font-size="12" fill="currentColor" text-anchor="middle">LiênHệ (Complex)</text>
+                  </g>
                   
                   <!-- Leaf 1: {ĐiệnThoại} -->
-                  <ellipse cx="90" cy="90" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                  <ellipse cx="90" cy="90" rx="49" ry="15" fill="none" stroke="currentColor" stroke-width="0.8"></ellipse>
-                  <text x="90" y="94" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">{ĐiệnThoại}</text>
-                  <line x1="175" y1="45" x2="110" y2="75" stroke="currentColor" stroke-width="1.8" style="opacity: 0.7;"></line>
+                  <g class="diagram-attr-node" id="slide7-node-phone">
+                    <ellipse cx="90" cy="90" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                    <ellipse cx="90" cy="90" rx="49" ry="15" fill="none" stroke="currentColor" stroke-width="0.8"></ellipse>
+                    <text x="90" y="94" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">{ĐiệnThoại}</text>
+                  </g>
+                  <g class="connection-group" id="slide7-conn-phone">
+                    <line class="conn-line-bg" x1="175" y1="45" x2="110" y2="75"></line>
+                    <line class="conn-line-flow" x1="175" y1="45" x2="110" y2="75"></line>
+                  </g>
                   
-                  <!-- Leaf 2: ĐịaChỉ -->
-                  <rect x="250" y="72" width="130" height="35" fill="none" stroke="currentColor" stroke-width="1.8" rx="4"></rect>
-                  <text x="315" y="94" font-family="var(--font-title)" font-weight="700" font-size="11" fill="currentColor" text-anchor="middle">ĐịaChỉ (Composite)</text>
-                  <line x1="260" y1="45" x2="295" y2="72" stroke="currentColor" stroke-width="1.8" style="opacity: 0.7;"></line>
+                  <!-- Leaf 2: ĐịaChỉ (Composite) -->
+                  <g class="diagram-entity-node" id="slide7-node-diachi">
+                    <rect x="250" y="72" width="130" height="35" fill="none" stroke="currentColor" stroke-width="1.8" rx="6"></rect>
+                    <text x="315" y="93" font-family="var(--font-title)" font-weight="700" font-size="11" fill="currentColor" text-anchor="middle">ĐịaChỉ (Composite)</text>
+                  </g>
+                  <g class="connection-group" id="slide7-conn-diachi">
+                    <line class="conn-line-bg" x1="260" y1="45" x2="295" y2="72"></line>
+                    <line class="conn-line-flow" x1="260" y1="45" x2="295" y2="72"></line>
+                  </g>
                   
                   <!-- Small indicators -->
                   <text x="90" y="130" font-family="var(--font-mono)" font-size="10" fill="var(--color-blue)" font-weight="600" text-anchor="middle">Đa trị</text>
@@ -483,21 +678,21 @@
             </div>
 
             <!-- JSON Block -->
-            <div class="nosql-code-display animate-code">
+            <div class="nosql-code-display animate-code" id="slide7-json-block" style="transition: all 0.3s ease;">
               <div class="code-header">
                 <span class="code-filename">complex_attribute_nesting.json</span>
                 <span class="code-lang">JSON Structure</span>
               </div>
-              <pre class="code-block" style="padding: 0.8rem; font-size: 0.85rem; line-height: 1.35;"><code>{
+              <pre class="code-block" style="padding: 0.8rem; font-size: 0.85rem; line-height: 1.35;"><code id="slide7-json-code">{
   "nhan_vien": "Nguyễn Văn A",
-  "thong_tin_lien_he": {
-    "dien_thoai": ["090-123456", "098-765432"],
-    "dia_chi": {
+  <span class="json-lienhe" id="slide7-json-lienhe">"thong_tin_lien_he": {</span>
+    <span class="json-phone" id="slide7-json-phone">"dien_thoai": ["090-123456", "098-765432"],</span>
+    <span class="json-diachi" id="slide7-json-diachi">"dia_chi": {
       "duong": "123 Nguyễn Trãi",
       "thanh_pho": "Hà Nội",
       "quoc_gia": "Việt Nam"
-    }
-  }
+    }</span>
+  <span class="json-lienhe" id="slide7-json-lienhe-close">}</span>
 }</code></pre>
             </div>
           </div>
@@ -535,45 +730,67 @@
               <div style="display: flex; justify-content: center; margin-bottom: 0.5rem; border-bottom: 1px dashed var(--color-border); padding-bottom: 0.5rem;">
                 <svg width="450" height="120" viewBox="0 0 450 120" style="color: var(--color-navy); overflow: visible;">
                   <!-- Card Entity representation -->
-                  <rect x="150" y="75" width="150" height="40" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                  <text x="225" y="100" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">CÔNG_DÂN</text>
+                  <g class="diagram-entity-node" id="slide8-entity">
+                    <rect x="150" y="75" width="150" height="40" fill="none" stroke="currentColor" stroke-width="2.5" rx="6"></rect>
+                    <text x="225" y="100" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">CÔNG_DÂN</text>
+                  </g>
                   
                   <!-- Attribute Oval 1: SốCCCD (Key) -->
-                  <ellipse cx="100" cy="25" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                  <text x="100" y="29" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle" text-decoration="underline">SốCCCD 🔑</text>
-                  <line x1="110" y1="42" x2="175" y2="75" stroke="currentColor" stroke-width="1.8"></line>
+                  <g class="diagram-attr-node" id="slide8-attr-cccd">
+                    <ellipse cx="75" cy="25" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                    <text x="75" y="29" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle" text-decoration="underline">SốCCCD 🔑</text>
+                  </g>
+                  <g class="connection-group" id="slide8-conn-cccd">
+                    <line class="conn-line-bg" x1="75" y1="45" x2="180" y2="75"></line>
+                    <line class="conn-line-flow" x1="75" y1="45" x2="180" y2="75"></line>
+                  </g>
                   
                   <!-- Attribute Oval 2: HọTên -->
-                  <ellipse cx="350" cy="25" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.5"></ellipse>
-                  <text x="350" y="29" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">HọTên</text>
-                  <line x1="340" y1="42" x2="275" y2="75" stroke="currentColor" stroke-width="1.5"></line>
+                  <g class="diagram-attr-node" id="slide8-attr-hoten">
+                    <ellipse cx="225" cy="25" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                    <text x="225" y="29" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">HọTên</text>
+                  </g>
+                  <g class="connection-group" id="slide8-conn-hoten">
+                    <line class="conn-line-bg" x1="225" y1="45" x2="225" y2="75"></line>
+                    <line class="conn-line-flow" x1="225" y1="45" x2="225" y2="75"></line>
+                  </g>
+
+                  <!-- Attribute Oval 3: Lương -->
+                  <g class="diagram-attr-node" id="slide8-attr-luong">
+                    <ellipse cx="375" cy="25" rx="55" ry="20" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                    <text x="375" y="29" font-family="var(--font-body)" font-size="11" fill="currentColor" text-anchor="middle">Lương</text>
+                  </g>
+                  <g class="connection-group" id="slide8-conn-luong">
+                    <line class="conn-line-bg" x1="375" y1="45" x2="270" y2="75"></line>
+                    <line class="conn-line-flow" x1="375" y1="45" x2="270" y2="75"></line>
+                  </g>
                 </svg>
               </div>
 
               <div class="table-title" style="font-size: 0.95rem; margin-bottom: 0.4rem; padding-bottom: 0.2rem; border-bottom: none;">Mô phỏng Tập thực thể (Extension) trong CSDL</div>
-              <table class="db-table" style="font-size: 0.85rem;">
+              <table class="db-table" id="slide8-table" style="font-size: 0.85rem;">
                 <thead>
                   <tr>
-                    <th style="padding: 0.5rem 0.8rem;">SốCCCD (Khóa)</th>
-                    <th style="padding: 0.5rem 0.8rem;">HọTên</th>
-                    <th style="padding: 0.5rem 0.8rem;">Lương</th>
+                    <th style="padding: 0.5rem 0.8rem;" class="col-cccd">SốCCCD (Khóa)</th>
+                    <th style="padding: 0.5rem 0.8rem;" class="col-hoten">HọTên</th>
+                    <th style="padding: 0.5rem 0.8rem;" class="col-luong">Lương</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="table-row">
-                    <td style="padding: 0.5rem 0.8rem;"><u>001095012</u></td>
-                    <td style="padding: 0.5rem 0.8rem;">Nguyễn Văn A</td>
-                    <td style="padding: 0.5rem 0.8rem;">15,000,000đ</td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-cccd"><u>001095012</u></td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-hoten">Nguyễn Văn A</td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-luong">15,000,000đ</td>
                   </tr>
                   <tr class="table-row">
-                    <td style="padding: 0.5rem 0.8rem;"><u>002096123</u></td>
-                    <td style="padding: 0.5rem 0.8rem;">Trần Thị B</td>
-                    <td style="padding: 0.5rem 0.8rem;">18,000,000đ</td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-cccd"><u>002096123</u></td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-hoten">Trần Thị B</td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-luong">18,000,000đ</td>
                   </tr>
                   <tr class="table-row">
-                    <td style="padding: 0.5rem 0.8rem;"><u>003097456</u></td>
-                    <td style="padding: 0.5rem 0.8rem;">Lê Hoàng C</td>
-                    <td style="padding: 0.5rem 0.8rem;">20,000,000đ</td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-cccd"><u>003097456</u></td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-hoten">Lê Hoàng C</td>
+                    <td style="padding: 0.5rem 0.8rem;" class="col-luong">20,000,000đ</td>
                   </tr>
                 </tbody>
               </table>
@@ -592,36 +809,81 @@
             </div>
             <h1 class="slide-title">Lược Đồ Thuộc Tính Ban Đầu</h1>
             <p class="slide-subtitle">Sự tồn tại của các thuộc tính liên kết ngầm trước khi tách mối quan hệ.</p>
-            <div class="objective-desc" style="font-size: 1.1rem; line-height: 1.5; color: var(--color-gray); margin-top: 1rem;">
-              <p>Ban đầu, các mối quan hệ được ghi nhận tạm thời dưới dạng các **thuộc tính định danh**: </p>
-              <p style="margin-top: 0.5rem;">• <code>QuảnLý</code> của PHÒNG_BAN trỏ đến một Nhân viên.</p>
-              <p>• <code>GiámSát</code> của NHÂN_VIÊN trỏ đến Nhân viên cấp trên.</p>
-              <p>• <code>ThuộcPhòng</code> của DỰ_ÁN trỏ đến Phòng ban quản lý.</p>
+            <div class="objective-desc animate-objectives" style="font-size: 1.15rem; line-height: 1.6; color: var(--color-gray); margin-top: 1rem;">
+              <p>Ban đầu, các mối quan hệ được ghi nhận tạm thời dưới dạng các <strong>thuộc tính tham chiếu (reference attributes)</strong>: </p>
+              <p id="slide9-bullet-quanly" style="transition: all 0.3s ease; margin-top: 0.8rem;">• <code>TrưởngPhòng</code> của PHÒNG_BAN trỏ đến một Nhân viên.</p>
+              <p id="slide9-bullet-giamsat" style="transition: all 0.3s ease; margin-top: 0.5rem;">• <code>GiámSát</code> của NHÂN_VIÊN trỏ đến Nhân viên cấp trên.</p>
+              <p id="slide9-bullet-thuocphong" style="transition: all 0.3s ease; margin-top: 0.5rem;">• <code>PhòngQuảnLý</code> của DỰ_ÁN trỏ đến Phòng ban quản lý.</p>
+              <p id="slide9-bullet-cuanv" style="transition: all 0.3s ease; margin-top: 0.5rem;">• <code>NhânViên</code> của PHỤ_THUỘC trỏ đến Nhân viên.</p>
+            </div>
+            
+            <!-- Chú thích ký hiệu (Legend) -->
+            <div class="legend-box" style="margin-top: 1.5rem; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.45); border: 1.5px solid var(--color-border); border-radius: 8px; font-size: 0.92rem; line-height: 1.45; color: var(--color-navy-light); backdrop-filter: blur(5px); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+              <div style="font-weight: 700; margin-bottom: 0.4rem; color: var(--color-navy); font-size: 0.98rem; display: flex; align-items: center; gap: 0.4rem;">
+                💡 Chú thích ký hiệu sơ đồ:
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr; gap: 0.3rem;">
+                <div>• <span style="text-decoration: underline; font-weight: 600; color: var(--color-navy);">Gạch dưới</span>: Thuộc tính khóa (Key Attribute) định danh thực thể.</div>
+                <div>• <span style="color: var(--color-blue); font-weight: 600;">🔗 Tên (ref)</span>: Thuộc tính tham chiếu (Reference) trỏ đến thực thể khác.</div>
+                <div>• <span style="font-weight: 600; color: var(--color-navy);">{Tên}</span>: Thuộc tính đa trị (Multivalued) có thể nhận nhiều giá trị.</div>
+              </div>
             </div>
           </div>
           
           <div class="companion-right">
-            <div class="relational-table-interactive animate-table" style="padding: 1.5rem; display: flex; align-items: center; justify-content: center; height: 350px;">
-              <svg width="450" height="320" viewBox="0 0 450 320" style="color: var(--color-navy); overflow: visible;">
-                <rect x="30" y="30" width="140" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="100" y="60" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">NHÂN_VIÊN</text>
-                
-                <rect x="280" y="30" width="140" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="350" y="60" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">PHÒNG_BAN</text>
-                
-                <rect x="30" y="220" width="140" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="100" y="250" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">DỰ_ÁN</text>
-                
-                <rect x="280" y="220" width="140" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="350" y="250" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">PHỤ_THUỘC</text>
-                
-                <!-- Dotted attributes connection lines -->
-                <line x1="100" y1="80" x2="100" y2="220" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"></line>
-                <text x="110" y="150" font-family="var(--font-mono)" font-size="12" fill="currentColor">GiámSát</text>
-                
-                <line x1="170" y1="55" x2="280" y2="55" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"></line>
-                <text x="225" y="47" font-family="var(--font-mono)" font-size="12" fill="currentColor" text-anchor="middle">QuảnLý</text>
-              </svg>
+            <div class="relational-table-interactive animate-table" style="padding: 1rem; display: flex; align-items: center; justify-content: center; min-height: 440px; width: 100%;">
+              <div class="slide9-cards-grid">
+                <!-- NHÂN_VIÊN Card -->
+                <div class="slide9-card" id="slide9-entity-emp">
+                  <div class="slide9-card-header">NHÂN_VIÊN</div>
+                  <div class="slide9-card-body">
+                    <div>HọTên</div>
+                    <div class="key-attr">MãNV</div>
+                    <div>NgàySinh</div>
+                    <div>ĐịaChỉ</div>
+                    <div>Lương</div>
+                    <div>GiớiTính</div>
+                    <div id="slide9-ref-emp-dept" class="diagram-ref-text">🔗 Phòng (ref)</div>
+                    <div id="slide9-ref-emp-super" class="diagram-ref-text">🔗 GiámSát (ref)</div>
+                    <div class="multivalued-attr">{LàmDựÁn (DựÁn, SốGiờ)}</div>
+                  </div>
+                </div>
+
+                <!-- PHÒNG_BAN Card -->
+                <div class="slide9-card" id="slide9-entity-dept">
+                  <div class="slide9-card-header">PHÒNG_BAN</div>
+                  <div class="slide9-card-body">
+                    <div>TênPhòng</div>
+                    <div class="key-attr">SốPhòng</div>
+                    <div class="multivalued-attr">{ĐịaĐiểm}</div>
+                    <div id="slide9-ref-dept-mgr" class="diagram-ref-text">🔗 TrưởngPhòng (ref)</div>
+                    <div>NgàyNhậnChức</div>
+                  </div>
+                </div>
+
+                <!-- DỰ_ÁN Card -->
+                <div class="slide9-card" id="slide9-entity-proj">
+                  <div class="slide9-card-header">DỰ_ÁN</div>
+                  <div class="slide9-card-body">
+                    <div>TênDựÁn</div>
+                    <div class="key-attr">SốDựÁn</div>
+                    <div>ĐịaĐiểm</div>
+                    <div id="slide9-ref-proj-dept" class="diagram-ref-text">🔗 PhòngQuảnLý (ref)</div>
+                  </div>
+                </div>
+
+                <!-- PHỤ_THUỘC Card -->
+                <div class="slide9-card" id="slide9-entity-dep">
+                  <div class="slide9-card-header">PHỤ_THUỘC</div>
+                  <div class="slide9-card-body">
+                    <div id="slide9-ref-dep-emp" class="diagram-ref-text">🔗 NhânViên (ref)</div>
+                    <div class="key-attr">TênPhụThuộc</div>
+                    <div>GiớiTính</div>
+                    <div>NgàySinh</div>
+                    <div>QuanHệ</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -642,9 +904,9 @@
               <div class="objectives-list-wrapper">
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1.15rem; line-height: 1.6; color: var(--color-gray);">
-                  <p>🔹 <strong>Kiểu mối quan hệ (Relationship Type):</strong> Định nghĩa cấu trúc liên kết giữa các thực thể. Biểu diễn bằng <strong>Hình Kim cương</strong>.</p>
-                  <p style="margin-top: 0.8rem;">🔹 <strong>Tập mối quan hệ (Relationship Set):</strong> Tập hợp các liên kết cụ thể (relationship instances) giữa các thực thể.</p>
-                  <p style="margin-top: 0.8rem;">🔹 <strong>Bậc mối quan hệ (Degree):</strong> Số lượng thực thể tham gia liên kết (Nhị phân, Tam phân...).</p>
+                  <p id="slide10-bullet-type" style="transition: all 0.3s ease;">🔹 <strong>Kiểu mối quan hệ (Relationship Type):</strong> Định nghĩa cấu trúc liên kết giữa các thực thể. Biểu diễn bằng <strong>Hình Kim cương</strong>.</p>
+                  <p id="slide10-bullet-set" style="transition: all 0.3s ease; margin-top: 0.8rem;">🔹 <strong>Tập mối quan hệ (Relationship Set):</strong> Tập hợp các liên kết cụ thể (relationship instances) giữa các thực thể.</p>
+                  <p id="slide10-bullet-degree" style="transition: all 0.3s ease; margin-top: 0.8rem;">🔹 <strong>Bậc mối quan hệ (Degree):</strong> Số lượng thực thể tham gia liên kết (Nhị phân, Tam phân...).</p>
                 </div>
               </div>
             </div>
@@ -654,58 +916,82 @@
             <div class="relational-table-interactive animate-table" style="padding: 1rem; min-height: 380px; display: flex; align-items: center; justify-content: center;">
             <svg width="450" height="320" viewBox="0 0 450 320" style="color: var(--color-navy); overflow: visible;">
               <!-- Left Oval: NHÂN_VIÊN set -->
-              <ellipse cx="80" cy="160" rx="60" ry="110" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.65;"></ellipse>
-              <text x="80" y="25" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle">TẬP NHÂN_VIÊN</text>
+              <ellipse id="slide10-set-emp" cx="80" cy="160" rx="60" ry="110" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.45; transition: stroke 0.4s ease, opacity 0.4s ease;"></ellipse>
+              <text x="80" y="25" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle" style="pointer-events: none;">TẬP NHÂN_VIÊN</text>
               
               <!-- Right Oval: PHÒNG_BAN set -->
-              <ellipse cx="370" cy="160" rx="60" ry="110" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.65;"></ellipse>
-              <text x="370" y="25" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle">TẬP PHÒNG_BAN</text>
+              <ellipse id="slide10-set-dept" cx="370" cy="160" rx="60" ry="110" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.45; transition: stroke 0.4s ease, opacity 0.4s ease;"></ellipse>
+              <text x="370" y="25" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle" style="pointer-events: none;">TẬP PHÒNG_BAN</text>
               
+              <!-- Connection Groups -->
+              <g class="connection-group" id="slide10-conn-r1">
+                <path class="conn-line-bg" d="M 98,80 H 210 M 240,80 L 352,110"></path>
+                <path class="conn-line-flow" d="M 98,80 H 210 M 240,80 L 352,110"></path>
+              </g>
+              <g class="connection-group" id="slide10-conn-r2">
+                <path class="conn-line-bg" d="M 98,160 H 210 M 240,160 L 352,110"></path>
+                <path class="conn-line-flow" d="M 98,160 H 210 M 240,160 L 352,110"></path>
+              </g>
+              <g class="connection-group" id="slide10-conn-r3">
+                <path class="conn-line-bg" d="M 98,240 H 210 M 240,240 L 352,210"></path>
+                <path class="conn-line-flow" d="M 98,240 H 210 M 240,240 L 352,210"></path>
+              </g>
+
               <!-- Left Entities -->
               <!-- e1 -->
-              <circle cx="80" cy="80" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
-              <text x="80" y="84" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">e1</text>
-              <text x="15" y="84" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="end">Anh A</text>
+              <g class="diagram-entity-node" id="slide10-e1">
+                <circle cx="80" cy="80" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
+                <text x="80" y="84" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">e1</text>
+                <text x="15" y="84" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="end">Anh A</text>
+              </g>
               
               <!-- e2 -->
-              <circle cx="80" cy="160" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
-              <text x="80" y="164" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">e2</text>
-              <text x="15" y="164" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="end">Chị B</text>
+              <g class="diagram-entity-node" id="slide10-e2">
+                <circle cx="80" cy="160" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
+                <text x="80" y="164" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">e2</text>
+                <text x="15" y="164" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="end">Chị B</text>
+              </g>
               
               <!-- e3 -->
-              <circle cx="80" cy="240" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
-              <text x="80" y="244" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">e3</text>
-              <text x="15" y="244" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="end">Anh C</text>
+              <g class="diagram-entity-node" id="slide10-e3">
+                <circle cx="80" cy="240" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
+                <text x="80" y="244" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">e3</text>
+                <text x="15" y="244" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="end">Anh C</text>
+              </g>
               
               <!-- Right Entities -->
               <!-- d1 -->
-              <circle cx="370" cy="110" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
-              <text x="370" y="114" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">d1</text>
-              <text x="435" y="114" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="start">NghiênCứu</text>
+              <g class="diagram-entity-node" id="slide10-d1">
+                <circle cx="370" cy="110" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
+                <text x="370" y="114" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">d1</text>
+                <text x="435" y="114" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="start">NghiênCứu</text>
+              </g>
               
               <!-- d2 -->
-              <circle cx="370" cy="210" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
-              <text x="370" y="214" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">d2</text>
-              <text x="435" y="214" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="start">HànhChính</text>
+              <g class="diagram-entity-node" id="slide10-d2">
+                <circle cx="370" cy="210" r="18" fill="var(--color-blue-bg)" stroke="var(--color-blue)" stroke-width="2"></circle>
+                <text x="370" y="214" font-family="var(--font-mono)" font-size="12" fill="var(--color-navy)" font-weight="600" text-anchor="middle">d2</text>
+                <text x="435" y="214" font-family="var(--font-body)" font-size="11" fill="var(--color-gray)" text-anchor="start">HànhChính</text>
+              </g>
               
               <!-- Relationships in the middle -->
               <!-- r1 -->
-              <polygon points="225,65 240,80 225,95 210,80" fill="var(--color-white)" stroke="currentColor" stroke-width="1.8"></polygon>
-              <text x="225" y="84" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle">r1</text>
-              <line x1="98" y1="80" x2="210" y2="80" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"></line>
-              <line x1="240" y1="80" x2="352" y2="110" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"></line>
+              <g class="diagram-rel-node" id="slide10-r1">
+                <polygon points="225,65 240,80 225,95 210,80" fill="var(--color-white)" stroke="currentColor" stroke-width="1.8"></polygon>
+                <text x="225" y="84" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle">r1</text>
+              </g>
               
               <!-- r2 -->
-              <polygon points="225,145 240,160 225,175 210,160" fill="var(--color-white)" stroke="currentColor" stroke-width="1.8"></polygon>
-              <text x="225" y="164" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle">r2</text>
-              <line x1="98" y1="160" x2="210" y2="160" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"></line>
-              <line x1="240" y1="160" x2="352" y2="110" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"></line>
+              <g class="diagram-rel-node" id="slide10-r2">
+                <polygon points="225,145 240,160 225,175 210,160" fill="var(--color-white)" stroke="currentColor" stroke-width="1.8"></polygon>
+                <text x="225" y="164" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle">r2</text>
+              </g>
               
               <!-- r3 -->
-              <polygon points="225,225 240,240 225,255 210,240" fill="var(--color-white)" stroke="currentColor" stroke-width="1.8"></polygon>
-              <text x="225" y="244" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle">r3</text>
-              <line x1="98" y1="240" x2="210" y2="240" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"></line>
-              <line x1="240" y1="240" x2="352" y2="210" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"></line>
+              <g class="diagram-rel-node" id="slide10-r3">
+                <polygon points="225,225 240,240 225,255 210,240" fill="var(--color-white)" stroke="currentColor" stroke-width="1.8"></polygon>
+                <text x="225" y="244" font-family="var(--font-mono)" font-size="11" fill="currentColor" text-anchor="middle">r3</text>
+              </g>
               
               <!-- Outer Title -->
               <text x="225" y="315" font-family="var(--font-title)" font-weight="600" font-size="13" fill="var(--color-blue)" text-anchor="middle">TẬP MỐI QUAN HỆ R (LÀM_VIỆC_CHO)</text>
@@ -730,9 +1016,9 @@
               <div class="objectives-list-wrapper">
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1.15rem; line-height: 1.6; color: var(--color-gray);">
-                  <p>🔹 <strong>Tên vai trò (Role Name):</strong> Làm rõ nghĩa của các thực thể khi chúng thuộc cùng một tập hợp nhưng đóng vai trò khác nhau trong mối liên kết.</p>
-                  <p style="margin-top: 0.8rem;">🔹 <strong>Mối quan hệ Kết Bạn (Friendship):</strong> </p>
-                  <p>Ví dụ mạng xã hội: Kiểu thực thể <code>TÀI_KHOẢN</code> (User Account) tự liên kết với chính nó qua mối quan hệ <code>KẾT_BẠN</code>. Một bên đóng vai trò **Người gửi (nguoi_gui - N)** và bên kia đóng vai trò **Người nhận (nguoi_nhan - N)**.</p>
+                  <p id="slide11-bullet-role" style="transition: all 0.3s ease;">🔹 <strong>Tên vai trò (Role Name):</strong> Làm rõ nghĩa của các thực thể khi chúng thuộc cùng một tập hợp nhưng đóng vai trò khác nhau trong mối liên kết.</p>
+                  <p id="slide11-bullet-friend" style="transition: all 0.3s ease; margin-top: 0.8rem;">🔹 <strong>Mối quan hệ Kết Bạn (Friendship):</strong> </p>
+                  <p style="margin-top: 0.3rem;">Ví dụ mạng xã hội: Kiểu thực thể <code>TÀI_KHOẢN</code> (User Account) tự liên kết với chính nó qua mối quan hệ <code>KẾT_BẠN</code>. Một bên đóng vai trò **Người gửi (nguoi_gui - N)** và bên kia đóng vai trò **Người nhận (nguoi_nhan - N)**.</p>
                 </div>
               </div>
             </div>
@@ -740,19 +1026,29 @@
           
           <div class="companion-right">
             <div class="relational-table-interactive animate-table" style="padding: 2rem; display: flex; align-items: center; justify-content: center; height: 350px;">
-              <svg width="480" height="300" viewBox="0 0 480 300" style="color: var(--color-navy);">
-                <rect x="150" y="180" width="180" height="60" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="240" y="217" font-family="var(--font-title)" font-weight="700" font-size="18" fill="currentColor" text-anchor="middle">TÀI_KHOẢN</text>
+              <svg width="480" height="300" viewBox="0 0 480 300" style="color: var(--color-navy); overflow: visible;">
+                <g id="slide11-entity-user" class="diagram-entity-node">
+                  <rect x="150" y="180" width="180" height="60" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
+                  <text x="240" y="217" font-family="var(--font-title)" font-weight="700" font-size="18" fill="currentColor" text-anchor="middle">TÀI_KHOẢN</text>
+                </g>
                 
-                <polygon points="240,20 300,55 240,90 180,55" fill="none" stroke="currentColor" stroke-width="2"></polygon>
-                <text x="240" y="60" font-family="var(--font-title)" font-weight="600" font-size="15" fill="currentColor" text-anchor="middle">KẾT_BẠN</text>
+                <g id="slide11-rel-friend" class="diagram-rel-node">
+                  <polygon points="240,20 300,55 240,90 180,55" fill="none" stroke="currentColor" stroke-width="2"></polygon>
+                  <text x="240" y="60" font-family="var(--font-title)" font-weight="600" font-size="15" fill="currentColor" text-anchor="middle">KẾT_BẠN</text>
+                </g>
                 
                 <!-- Symmetrical Loop connection -->
-                <path d="M 150,210 C 50,200 50,55 180,55" fill="none" stroke="var(--color-blue)" stroke-width="2.5"></path>
-                <text x="35" y="125" font-family="var(--font-body)" font-size="13" fill="currentColor" text-anchor="end">N (nguoi_gui)</text>
+                <g id="slide11-conn-sender" class="connection-group">
+                  <path class="conn-line-bg" d="M 150,210 C 80,180 80,85 180,55" fill="none"></path>
+                  <path class="conn-line-flow" d="M 150,210 C 80,180 80,85 180,55" fill="none" stroke-width="3"></path>
+                </g>
+                <text id="slide11-role-sender" x="90" y="135" font-family="var(--font-body)" font-size="13" fill="currentColor" text-anchor="end" style="transition: all 0.3s ease; font-weight: 600;">N (nguoi_gui)</text>
                 
-                <path d="M 330,210 C 430,200 430,55 300,55" fill="none" stroke="var(--color-blue)" stroke-width="2.5"></path>
-                <text x="445" y="125" font-family="var(--font-body)" font-size="13" fill="currentColor" text-anchor="start">N (nguoi_nhan)</text>
+                <g id="slide11-conn-recipient" class="connection-group">
+                  <path class="conn-line-bg" d="M 330,210 C 400,180 400,85 300,55" fill="none"></path>
+                  <path class="conn-line-flow" d="M 330,210 C 400,180 400,85 300,55" fill="none" stroke-width="3"></path>
+                </g>
+                <text id="slide11-role-recipient" x="390" y="135" font-family="var(--font-body)" font-size="13" fill="currentColor" text-anchor="start" style="transition: all 0.3s ease; font-weight: 600;">N (nguoi_nhan)</text>
               </svg>
             </div>
           </div>
@@ -791,26 +1087,36 @@
             <div class="relational-table-interactive animate-table" style="padding: 2rem; min-height: 350px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
               <div class="table-title" id="card-viz-title">Biểu diễn: Tỷ lệ bản số Edunext</div>
               
-              <!-- Edunext diagram -->
-              <div style="display: flex; align-items: center; justify-content: space-around; width: 100%; margin-top: 1.5rem;">
-                <div class="glowing-card" style="padding: 1.25rem 2rem; border-color: var(--color-navy); text-align: center; border-radius: 8px;">
-                  <strong style="font-size: 1.25rem;">SinhViên</strong>
-                  <div style="font-size: 0.95rem; color: var(--color-gray-light); margin-top: 0.5rem;" id="card-label-left">Tham gia: Sinh viên</div>
-                </div>
-                
-                <div style="display: flex; flex-direction: column; align-items: center; color: var(--color-blue); font-weight: 700; font-family: var(--font-title); gap: 0.4rem;">
-                  <div id="card-arrow-label" style="font-size: 1.3rem;">N:N</div>
-                  <svg width="150" height="30" viewBox="0 0 150 30" fill="none" stroke="currentColor" stroke-width="3">
-                    <path d="M 10,15 H 140"></path>
-                    <polyline points="20 8 5 15 20 22"></polyline>
-                    <polyline points="130 8 145 15 130 22"></polyline>
-                  </svg>
-                </div>
-                
-                <div class="glowing-card" style="padding: 1.25rem 2rem; border-color: var(--color-navy); text-align: center; border-radius: 8px;">
-                  <strong style="font-size: 1.25rem;">BàiTậpNhóm</strong>
-                  <div style="font-size: 0.95rem; color: var(--color-gray-light); margin-top: 0.5rem;" id="card-label-right">Tham gia: Bài tập nhóm</div>
-                </div>
+              <!-- Edunext diagram unified SVG -->
+              <div style="width: 100%; margin-top: 1rem; display: flex; justify-content: center;">
+                <svg width="490" height="200" viewBox="0 0 490 200" style="color: var(--color-navy); overflow: visible;">
+                  <!-- Left Card: SinhViên -->
+                  <g class="diagram-entity-node" id="slide12-entity-student">
+                    <rect x="10" y="70" width="130" height="60" fill="var(--color-white)" stroke="currentColor" stroke-width="2" rx="6" style="filter: drop-shadow(0 4px 10px rgba(0,0,0,0.03));"></rect>
+                    <text x="75" y="100" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">SinhViên</text>
+                    <text id="card-label-left" x="75" y="118" font-family="var(--font-body)" font-size="9" fill="var(--color-gray)" text-anchor="middle">Tham gia: Sinh viên</text>
+                  </g>
+
+                  <!-- Connection lines -->
+                  <line x1="140" y1="100" x2="200" y2="100" stroke="currentColor" stroke-width="2"></line>
+                  <line x1="290" y1="100" x2="350" y2="100" stroke="currentColor" stroke-width="2"></line>
+                  
+                  <!-- Relationship: THỰC_HIỆN -->
+                  <g class="diagram-rel-node" id="slide12-rel-perform">
+                    <polygon points="245,70 290,100 245,130 200,100" fill="var(--color-white)" stroke="currentColor" stroke-width="2"></polygon>
+                    <text x="245" y="104" font-family="var(--font-title)" font-weight="600" font-size="10" fill="currentColor" text-anchor="middle">THỰC_HIỆN</text>
+                  </g>
+
+                  <!-- Right Card: BàiTậpNhóm -->
+                  <g class="diagram-entity-node" id="slide12-entity-task">
+                    <rect x="350" y="70" width="130" height="60" fill="var(--color-white)" stroke="currentColor" stroke-width="2" rx="6" style="filter: drop-shadow(0 4px 10px rgba(0,0,0,0.03));"></rect>
+                    <text x="415" y="100" font-family="var(--font-title)" font-weight="700" font-size="13" fill="currentColor" text-anchor="middle">BàiTậpNhóm</text>
+                    <text id="card-label-right" x="415" y="118" font-family="var(--font-body)" font-size="9" fill="var(--color-gray)" text-anchor="middle">Tham gia: Bài tập nhóm</text>
+                  </g>
+
+                  <!-- Cardinality Label in the middle -->
+                  <text id="card-arrow-label" x="245" y="45" font-family="var(--font-title)" font-weight="700" font-size="14" fill="var(--color-blue)" text-anchor="middle" style="transition: all 0.3s ease;">N:N</text>
+                </svg>
               </div>
             </div>
           </div>
@@ -822,7 +1128,7 @@
         <div class="companion-slide-container">
           <div class="companion-left">
             <div class="module-overview">
-              <span class="overview-text">DỮ LIỆU CỦA ĐƯỜNG KẾT NỐI</span>
+              <span class="overview-text">DỮ LIỆU CỦA ĐƯỜNG KẾN NỐI</span>
               <div class="overview-line"></div>
             </div>
             <h1 class="slide-title">Thuộc Tính Của Mối Quan Hệ</h1>
@@ -832,8 +1138,8 @@
               <div class="objectives-list-wrapper">
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1.15rem; line-height: 1.6; color: var(--color-gray);">
-                  <p>🔹 <strong>Quan hệ 1:1 hoặc 1:N:</strong> Thuộc tính có thể di chuyển (migrated) sang thực thể tham gia (phía N đối với quan hệ 1:N). Ví dụ: <code>NgàyBắtĐầu</code> của MANAGES có thể chuyển vào PHÒNG_BAN.</p>
-                  <p style="margin-top: 0.8rem;">🔹 <strong>Quan hệ N:N:</strong> Bắt buộc thuộc tính phải nằm trên mối quan hệ. Ví dụ: thuộc tính <code>SốGiờ</code> (Hours) của WORKS_ON được xác định bởi sự kết hợp của Nhân viên & Dự án.</p>
+                  <p id="slide13-bullet-1" style="transition: all 0.3s ease;">🔹 <strong>Quan hệ 1:1 hoặc 1:N:</strong> Thuộc tính có thể di chuyển (migrated) sang thực thể tham gia (phía N đối với quan hệ 1:N). Ví dụ: <code>NgàyBắtĐầu</code> của MANAGES có thể chuyển vào PHÒNG_BAN.</p>
+                  <p id="slide13-bullet-2" style="transition: all 0.3s ease; margin-top: 0.8rem;">🔹 <strong>Quan hệ N:N:</strong> Bắt buộc thuộc tính phải nằm trên mối quan hệ. Ví dụ: thuộc tính <code>SốGiờ</code> (Hours) của WORKS_ON được xác định bởi sự kết hợp của Nhân viên & Dự án.</p>
                 </div>
               </div>
             </div>
@@ -842,24 +1148,52 @@
           <div class="companion-right">
             <div class="relational-table-interactive animate-table" style="padding: 1.5rem; display: flex; align-items: center; justify-content: center; height: 350px;">
               <svg width="480" height="300" viewBox="0 0 480 300" style="color: var(--color-navy); overflow: visible;">
-                <rect x="20" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="85" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">NHÂN_VIÊN</text>
+                <defs>
+                  <marker id="slide13-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1.5 L 6 5 L 0 8.5 z" fill="var(--color-blue)"></marker-end>
+                  </marker>
+                </defs>
+
+                <g id="slide13-entity-emp" class="diagram-entity-node">
+                  <rect x="20" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
+                  <text x="85" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">NHÂN_VIÊN</text>
+                </g>
                 
-                <rect x="330" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="395" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">DỰ_ÁN</text>
+                <g id="slide13-entity-proj" class="diagram-entity-node">
+                  <rect x="330" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
+                  <text x="395" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">DỰ_ÁN</text>
+                </g>
                 
-                <polygon points="240,80 280,110 240,140 200,110" fill="none" stroke="currentColor" stroke-width="2"></polygon>
-                <text x="240" y="115" font-family="var(--font-title)" font-weight="600" font-size="12" fill="currentColor" text-anchor="middle">WORKS_ON</text>
+                <g id="slide13-rel-workson" class="diagram-rel-node">
+                  <polygon points="240,80 280,110 240,140 200,110" fill="none" stroke="currentColor" stroke-width="2"></polygon>
+                  <text x="240" y="115" font-family="var(--font-title)" font-weight="600" font-size="12" fill="currentColor" text-anchor="middle">WORKS_ON</text>
+                </g>
                 
-                <line x1="150" y1="135" x2="200" y2="120" stroke="currentColor" stroke-width="1.8"></line>
+                <g id="slide13-conn-emp" class="connection-group">
+                  <line class="conn-line-bg" x1="150" y1="135" x2="200" y2="120"></line>
+                  <line class="conn-line-flow" x1="150" y1="135" x2="200" y2="120"></line>
+                </g>
                 <text x="165" y="120" font-family="var(--font-title)" font-weight="700" font-size="13" fill="var(--color-blue)">N</text>
-                <line x1="330" y1="135" x2="280" y2="120" stroke="currentColor" stroke-width="1.8"></line>
+
+                <g id="slide13-conn-proj" class="connection-group">
+                  <line class="conn-line-bg" x1="330" y1="135" x2="280" y2="120"></line>
+                  <line class="conn-line-flow" x1="330" y1="135" x2="280" y2="120"></line>
+                </g>
                 <text x="310" y="120" font-family="var(--font-title)" font-weight="700" font-size="13" fill="var(--color-blue)">N</text>
                 
                 <!-- Hours Attribute -->
-                <ellipse cx="240" cy="235" rx="50" ry="22" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                <text x="240" y="239" font-family="var(--font-body)" font-size="13" fill="currentColor" text-anchor="middle">SốGiờ</text>
-                <line x1="240" y1="213" x2="240" y2="140" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"></line>
+                <g id="slide13-attr-hours" class="diagram-attr-node">
+                  <ellipse cx="240" cy="235" rx="50" ry="22" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="240" y="239" font-family="var(--font-body)" font-size="13" fill="currentColor" text-anchor="middle">SốGiờ</text>
+                </g>
+                
+                <g id="slide13-conn-hours" class="connection-group">
+                  <line class="conn-line-bg" x1="240" y1="213" x2="240" y2="140" stroke-dasharray="4 4"></line>
+                  <line class="conn-line-flow" x1="240" y1="213" x2="240" y2="140" stroke-dasharray="4 4"></line>
+                </g>
+
+                <!-- Attribute Migration Visual Curve (dashed with marker, initially hidden) -->
+                <path id="slide13-migration-arrow" d="M 240,257 C 240,290 85,290 85,165" fill="none" stroke="var(--color-blue)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#slide13-arrow)" style="opacity: 0; transition: opacity 0.4s ease; pointer-events: none;"></path>
               </svg>
             </div>
           </div>
@@ -882,9 +1216,9 @@
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1.1rem; line-height: 1.5; color: var(--color-gray);">
                   <p>🏦 <strong>Ví dụ Thực tế Hệ thống Ngân hàng Việt Nam:</strong></p>
-                  <p>• <strong>TàiKhoản (Account - Thực thể chủ):</strong> Có mã tài khoản duy nhất.</p>
-                  <p style="margin-top: 0.5rem;">• <strong>GiaoDịch (Transaction - Thực thể yếu):</strong> Không tự định danh được nếu thiếu số hiệu tài khoản. Sử dụng khóa bộ phận (Partial Key / Discriminator) là <code>SốGiaoDich</code> (gạch dưới nét đứt).</p>
-                  <p>• Mối quan hệ kết nối là **Mối quan hệ Xác định** (hình kim cương kép).</p>
+                  <p id="slide14-bullet-1" style="transition: all 0.3s ease; margin-top: 0.5rem;">• <strong>TàiKhoản (Account - Thực thể chủ):</strong> Có mã tài khoản duy nhất (Khóa chính độc lập).</p>
+                  <p id="slide14-bullet-2" style="transition: all 0.3s ease; margin-top: 0.5rem;">• <strong>GiaoDịch (Transaction - Thực thể yếu):</strong> Không tự định danh được nếu thiếu số hiệu tài khoản. Sử dụng khóa bộ phận (Partial Key) là <code>SốGiaoDịch</code> (gạch dưới nét đứt).</p>
+                  <p id="slide14-bullet-3" style="transition: all 0.3s ease; margin-top: 0.5rem;">• Mối quan hệ kết nối là <strong>Mối quan hệ Xác định</strong> (hình kim cương kép và kết nối đường kép).</p>
                 </div>
               </div>
             </div>
@@ -894,29 +1228,47 @@
             <div class="relational-table-interactive animate-table" style="padding: 1.5rem; display: flex; align-items: center; justify-content: center; height: 350px;">
               <svg width="480" height="300" viewBox="0 0 480 300" style="color: var(--color-navy); overflow: visible;">
                 <!-- Owner Entity (Single Rectangle) -->
-                <rect x="20" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <text x="85" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">TÀI_KHOẢN</text>
+                <g id="slide14-entity-acc" class="diagram-entity-node">
+                  <rect x="20" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
+                  <text x="85" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">TÀI_KHOẢN</text>
+                </g>
                 
                 <!-- Identifying Relationship (Double Diamond) -->
-                <polygon points="240,80 280,110 240,140 200,110" fill="none" stroke="currentColor" stroke-width="2"></polygon>
-                <polygon points="240,85 274,110 240,135 206,110" fill="none" stroke="currentColor" stroke-width="1"></polygon>
-                <text x="240" y="114" font-family="var(--font-title)" font-weight="600" font-size="11" fill="currentColor" text-anchor="middle">THỰC_HIỆN</text>
+                <g id="slide14-rel-perform" class="diagram-rel-node">
+                  <polygon points="240,80 280,110 240,140 200,110" fill="none" stroke="currentColor" stroke-width="2"></polygon>
+                  <polygon points="240,85 274,110 240,135 206,110" fill="none" stroke="currentColor" stroke-width="1"></polygon>
+                  <text x="240" y="114" font-family="var(--font-title)" font-weight="600" font-size="11" fill="currentColor" text-anchor="middle">THỰC_HIỆN</text>
+                </g>
                 
                 <!-- Weak Entity (Double Rectangle) -->
-                <rect x="330" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
-                <rect x="334" y="114" width="122" height="42" fill="none" stroke="currentColor" stroke-width="1" rx="2"></rect>
-                <text x="395" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">GIAO_DỊCH</text>
+                <g id="slide14-entity-tx" class="diagram-entity-node">
+                  <rect x="330" y="110" width="130" height="50" fill="none" stroke="currentColor" stroke-width="2.5" rx="4"></rect>
+                  <rect x="334" y="114" width="122" height="42" fill="none" stroke="currentColor" stroke-width="1" rx="2"></rect>
+                  <text x="395" y="140" font-family="var(--font-title)" font-weight="700" font-size="14" fill="currentColor" text-anchor="middle">GIAO_DỊCH</text>
+                </g>
                 
                 <!-- Lines -->
-                <line x1="150" y1="135" x2="200" y2="120" stroke="currentColor" stroke-width="1.8"></line>
+                <g id="slide14-conn-acc" class="connection-group">
+                  <line class="conn-line-bg" x1="150" y1="135" x2="200" y2="120"></line>
+                  <line class="conn-line-flow" x1="150" y1="135" x2="200" y2="120"></line>
+                </g>
+                
                 <!-- Double line for total participation -->
-                <line x1="330" y1="135" x2="280" y2="120" stroke="currentColor" stroke-width="2.5"></line>
-                <line x1="330" y1="140" x2="280" y2="125" stroke="currentColor" stroke-width="0.8"></line>
+                <g id="slide14-conn-tx" class="connection-group">
+                  <path class="conn-line-bg" d="M 330,135 L 280,120 M 330,140 L 280,125"></path>
+                  <path class="conn-line-flow" d="M 330,135 L 280,120 M 330,140 L 280,125" stroke-width="3"></path>
+                </g>
                 
                 <!-- Partial Key attribute -->
-                <ellipse cx="395" cy="235" rx="55" ry="22" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
-                <text x="395" y="239" font-family="var(--font-mono)" font-size="13" fill="currentColor" text-anchor="middle">SốGiaoDịch</text>
-                <line x1="395" y1="213" x2="395" y2="160" stroke="currentColor" stroke-dasharray="3 3" stroke-width="2"></line>
+                <g id="slide14-attr-txid" class="diagram-attr-node">
+                  <ellipse cx="395" cy="235" rx="55" ry="22" fill="none" stroke="currentColor" stroke-width="1.8"></ellipse>
+                  <text x="395" y="239" font-family="var(--font-mono)" font-size="13" fill="currentColor" text-anchor="middle" style="text-decoration: underline; stroke-dasharray: 2 2;">SốGiaoDịch</text>
+                </g>
+                
+                <g id="slide14-conn-txid" class="connection-group">
+                  <line class="conn-line-bg" x1="395" y1="213" x2="395" y2="160" stroke-dasharray="3 3"></line>
+                  <line class="conn-line-flow" x1="395" y1="213" x2="395" y2="160" stroke-dasharray="3 3"></line>
+                </g>
               </svg>
             </div>
           </div>
@@ -931,51 +1283,86 @@
         </div>
         
         <div class="pillars-content-grid" style="grid-template-columns: 0.95fr 1.05fr; gap: 2rem;">
-          <div class="abstraction-panel" style="padding: 1.5rem;">
-            <div class="abstraction-header">
-              <h2 class="abstraction-title" style="font-size: 1.6rem;">Quy ước đặt tên lược đồ</h2>
+          <div id="slide15-left-container" style="position: relative; height: 380px; overflow: hidden; width: 100%;">
+            <!-- Panel 1: Naming Conventions (Default) -->
+            <div class="abstraction-panel slide15-panel show" id="slide15-naming-panel" style="padding: 1.5rem; height: 100%; width: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div class="abstraction-header">
+                  <h2 class="abstraction-title" style="font-size: 1.5rem;">Quy ước đặt tên lược đồ</h2>
+                </div>
+                <div class="objective-desc" style="font-size: 1.02rem; line-height: 1.6; color: var(--color-gray); margin-top: 1rem;">
+                  <p>📌 <strong>Kiểu thực thể / Mối quan hệ:</strong> Viết hoa toàn bộ chữ cái (Ví dụ: <code>EMPLOYEE</code>, <code>WORKS_ON</code>).</p>
+                  <p style="margin-top: 0.8rem;">📌 <strong>Tên thuộc tính:</strong> Viết hoa chữ cái đầu tiên của từ (Ví dụ: <code>Name</code>, <code>Ssn</code>).</p>
+                  <p style="margin-top: 0.8rem;">📌 <strong>Tên vai trò (Role names):</strong> Viết thường toàn bộ chữ cái (Ví dụ: <code>supervisor</code>, <code>supervisee</code>).</p>
+                  <p style="margin-top: 0.8rem;">📌 Nên sử dụng danh từ số ít cho thực thể.</p>
+                </div>
+              </div>
+              
+              <!-- Helpful Tip Badge -->
+              <div style="background: var(--color-blue-bg); border-left: 4px solid var(--color-blue); padding: 0.6rem 0.8rem; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); border-radius: 0 6px 6px 0; margin-top: auto;">
+                💡 <strong>Gợi ý:</strong> Click vào bất kỳ ký hiệu nào ở bên phải để xem ví dụ trực quan và giải thích chi tiết.
+              </div>
             </div>
-            <div class="objective-desc" style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray);">
-              <p>📌 <strong>Kiểu thực thể / Mối quan hệ:</strong> Viết hoa toàn bộ chữ cái (Ví dụ: <code>EMPLOYEE</code>, <code>WORKS_ON</code>).</p>
-              <p style="margin-top: 0.8rem;">📌 <strong>Tên thuộc tính:</strong> Viết hoa chữ cái đầu tiên của từ (Ví dụ: <code>Name</code>, <code>Ssn</code>).</p>
-              <p style="margin-top: 0.8rem;">📌 <strong>Tên vai trò (Role names):</strong> Viết thường toàn bộ chữ cái (Ví dụ: <code>supervisor</code>, <code>supervisee</code>).</p>
-              <p style="margin-top: 0.8rem;">📌 Nên sử dụng danh từ số ít cho thực thể.</p>
+            
+            <!-- Panel 2: Interactive Details (Initially Hidden) -->
+            <div class="abstraction-panel slide15-panel" id="slide15-details-panel" style="padding: 1.5rem; height: 100%; width: 100%; position: absolute; top: 0; left: 0; display: none; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 0.6rem; margin-bottom: 0.8rem;">
+                  <span id="slide15-detail-type" style="font-family: var(--font-title); font-size: 0.8rem; font-weight: 700; color: var(--color-blue); text-transform: uppercase; letter-spacing: 0.05em;">Ví dụ ký hiệu</span>
+                  <button id="slide15-back-btn" class="slide15-back-btn" style="background: var(--color-gray-bg); border: none; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; color: var(--color-navy); display: flex; align-items: center; gap: 0.3rem; transition: var(--transition-bounce);">
+                    ⬅️ Quy ước đặt tên
+                  </button>
+                </div>
+                
+                <h2 id="slide15-detail-title" class="abstraction-title" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--color-navy-light);">Tên Ký Hiệu</h2>
+                <p id="slide15-detail-desc" style="font-size: 0.95rem; line-height: 1.5; color: var(--color-gray); margin-bottom: 1rem;">Mô tả chi tiết ký hiệu ở đây.</p>
+              </div>
+              
+              <!-- SVG Visual Mockup Preview Box -->
+              <div class="slide15-preview-box" id="slide15-preview-container" style="flex-grow: 1; display: flex; align-items: center; justify-content: center; background: #f8fafc; border: 1px dashed var(--color-border); border-radius: 6px; padding: 0.5rem; margin: 0.5rem 0; min-height: 110px;">
+                <!-- Dynamically loaded mini SVG will be inserted here -->
+              </div>
+              
+              <!-- Example description -->
+              <div id="slide15-detail-example" style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981; padding: 0.6rem 0.8rem; font-size: 0.9rem; font-weight: 600; color: #065f46; border-radius: 0 6px 6px 0; margin-top: auto;">
+                Ví dụ thực tế...
+              </div>
             </div>
           </div>
           
           <div class="relational-table-interactive animate-table" style="padding: 1.5rem; overflow-y: auto; max-height: 380px;">
             <div class="table-title">Tóm tắt Ký hiệu ER Diagram</div>
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; font-size: 0.9rem;">
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 50px; height: 25px; border: 1.5px solid var(--color-navy);"></div>
+            <div class="er-symbols-grid">
+              <div class="symbol-card" id="slide15-symbol-entity">
+                <div class="symbol-shape shape-entity"></div>
                 <span>Thực thể thường</span>
               </div>
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 50px; height: 25px; border: 1.5px solid var(--color-navy); box-shadow: inset 0 0 0 2px white, inset 0 0 0 3px var(--color-navy);"></div>
+              <div class="symbol-card" id="slide15-symbol-weak-entity">
+                <div class="symbol-shape shape-weak-entity"></div>
                 <span>Thực thể yếu</span>
               </div>
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 30px; height: 30px; border: 1.5px solid var(--color-navy); transform: rotate(45deg); margin-left: 10px; margin-right: 10px;"></div>
+              <div class="symbol-card" id="slide15-symbol-rel">
+                <div class="symbol-shape shape-rel"></div>
                 <span>Mối quan hệ thường</span>
               </div>
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 30px; height: 30px; border: 1.5px solid var(--color-navy); transform: rotate(45deg); box-shadow: 0 0 0 2px white, 0 0 0 3.5px var(--color-navy); margin-left: 10px; margin-right: 10px;"></div>
+              <div class="symbol-card" id="slide15-symbol-identifying-rel">
+                <div class="symbol-shape shape-identifying-rel"></div>
                 <span>Mối quan hệ xác định</span>
               </div>
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 40px; height: 20px; border: 1.5px solid var(--color-navy); border-radius: 50%;"></div>
+              <div class="symbol-card" id="slide15-symbol-attr">
+                <div class="symbol-shape shape-attr"></div>
                 <span>Thuộc tính thường</span>
               </div>
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 40px; height: 20px; border: 1.5px solid var(--color-navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: underline; font-size: 8px;">key</div>
+              <div class="symbol-card" id="slide15-symbol-key-attr">
+                <div class="symbol-shape shape-key-attr">key</div>
                 <span>Thuộc tính khóa</span>
               </div>
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 40px; height: 20px; border: 1.5px solid var(--color-navy); border-radius: 50%; box-shadow: inset 0 0 0 1px white, inset 0 0 0 2px var(--color-navy);"></div>
+              <div class="symbol-card" id="slide15-symbol-multivalued-attr">
+                <div class="symbol-shape shape-multivalued-attr"></div>
                 <span>Thuộc tính đa trị</span>
               </div>
-              <div style="border: 1px solid var(--color-border); padding: 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 40px; height: 20px; border: 1.5px dashed var(--color-navy); border-radius: 50%;"></div>
+              <div class="symbol-card" id="slide15-symbol-derived-attr">
+                <div class="symbol-shape shape-derived-attr"></div>
                 <span>Thuộc tính dẫn xuất</span>
               </div>
             </div>
@@ -985,7 +1372,7 @@
 
       <!-- SLIDE 16: TINH CHỈNH THIẾT KẾ SƠ ĐỒ ER CHO CSDL COMPANY -->
       <section class="slide" id="slide-16" data-index="16">
-        <div class="companion-slide-container" style="grid-template-columns: 0.85fr 1.15fr;">
+        <div class="companion-slide-container" style="grid-template-columns: 0.7fr 1.3fr; gap: 2.5rem;">
           <div class="companion-left">
             <div class="module-overview">
               <span class="overview-text">THIẾT KẾ THỰC TẾ</span>
@@ -999,23 +1386,23 @@
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1rem; line-height: 1.5; color: var(--color-gray);">
                   <p>Các thuộc tính tham chiếu ban đầu (ở Slide 9) được chuẩn hóa thành các mối quan hệ đồ họa:</p>
-                  <p style="margin-top: 0.5rem;">👉 <code>WORKS_FOR</code> (Nhân viên thuộc phòng ban)</p>
-                  <p>👉 <code>MANAGES</code> (Quản lý phòng ban)</p>
-                  <p>👉 <code>CONTROLS</code> (Phòng ban quản lý dự án)</p>
-                  <p>👉 <code>WORKS_ON</code> (Nhân viên làm dự án - N:N)</p>
-                  <p>👉 <code>SUPERVISION</code> (Quan hệ giám sát đệ quy)</p>
-                  <p>👉 <code>DEPENDENTS_OF</code> (Liên kết người phụ thuộc)</p>
+                  <p class="slide16-bullet" id="slide16-bullet-works-for" style="margin-top: 0.5rem;">👉 <code>WORKS_FOR</code> (Nhân viên thuộc phòng ban)</p>
+                  <p class="slide16-bullet" id="slide16-bullet-manages" style="margin-top: 0.2rem;">👉 <code>MANAGES</code> (Quản lý phòng ban)</p>
+                  <p class="slide16-bullet" id="slide16-bullet-controls" style="margin-top: 0.2rem;">👉 <code>CONTROLS</code> (Phòng ban quản lý dự án)</p>
+                  <p class="slide16-bullet" id="slide16-bullet-works-on" style="margin-top: 0.2rem;">👉 <code>WORKS_ON</code> (Nhân viên làm dự án - N:N)</p>
+                  <p class="slide16-bullet" id="slide16-bullet-supervision" style="margin-top: 0.2rem;">👉 <code>SUPERVISION</code> (Quan hệ giám sát đệ quy)</p>
+                  <p class="slide16-bullet" id="slide16-bullet-dependents-of" style="margin-top: 0.2rem;">👉 <code>DEPENDENTS_OF</code> (Liên kết người phụ thuộc)</p>
                 </div>
               </div>
             </div>
             <!-- Dynamic step helper text -->
             <div id="reveal-helper-text" style="margin-top: 1.5rem; background: var(--color-blue-bg); border-left: 4px solid var(--color-blue); padding: 0.75rem 1rem; font-size: 0.9rem; font-weight: 600; color: var(--color-navy); border-radius: 0 6px 6px 0;">
-              🎯 Bấm <strong>Mũi tên phải</strong> hoặc <strong>Click Next</strong> để bắt đầu vẽ sơ đồ từng bước.
+              🧱 <strong>Bước 1:</strong> Xác định các Thực thể chính và Thực thể yếu. Bấm <strong>Next/Mũi tên phải</strong> để tiếp tục.
             </div>
           </div>
           
           <div class="companion-right" style="position: relative;">
-            <div class="relational-table-interactive animate-table" style="padding: 1rem; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;" data-lazy="diagram-company">
+            <div class="relational-table-interactive animate-table" style="padding: 0.5rem; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;" data-lazy="diagram-company">
               <!-- Complex SVG company diagram rendered on active state -->
               <div id="company-lazy-placeholder" style="color: var(--color-gray-light); font-style: italic;">Đang tải sơ đồ...</div>
             </div>
@@ -1034,54 +1421,163 @@
             <h1 class="slide-title">So Sánh Mô Hình ER & UML</h1>
             <p class="slide-subtitle">Sự khác biệt về thuật ngữ và ký hiệu thiết kế.</p>
             
-            <div class="interactive-relational-controls" style="margin-top: 2rem;">
-              <button class="action-btn active" id="btn-highlight-uml">Kích hoạt so sánh Thuật ngữ</button>
+            <div class="interactive-relational-controls" style="margin-top: 1.5rem;">
+              <button class="action-btn active" id="btn-highlight-uml">Kích hoạt so sánh Thuật ngữ (3D Flip)</button>
+            </div>
+
+            <div class="objectives-container animate-objectives" style="margin-top: 1.5rem;">
+              <div class="objectives-list-wrapper">
+                <div class="objectives-line-indicator"></div>
+                <div class="objective-desc" style="font-size: 0.9rem; line-height: 1.5; color: var(--color-gray);">
+                  <p>💡 <strong>Hướng dẫn tương tác:</strong></p>
+                  <p style="margin-top: 0.4rem;">• Nhấn nút phía trên để <strong>xoay lật 3D đồng loạt</strong> và so sánh nhanh thuật ngữ ERD vs UML.</p>
+                  <p style="margin-top: 0.3rem;">• Di chuột qua từng hàng trong bảng bên phải để <strong>kích hoạt chạy dữ liệu động</strong> và làm nổi bật các thành phần tương ứng trên sơ đồ.</p>
+                </div>
+              </div>
             </div>
           </div>
           
           <div class="companion-right">
-            <div class="relational-table-interactive animate-table" style="padding: 1rem 1.5rem; min-height: 380px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="relational-table-interactive animate-table" style="padding: 1.25rem 1.5rem; min-height: 415px; display: flex; flex-direction: column; justify-content: space-between;">
               <div class="table-title" style="margin-bottom: 0.5rem;">Bản vẽ trực quan: Ký hiệu ERD vs UML</div>
               
               <!-- Side-by-side ERD vs UML SVG comparison -->
               <div style="display: flex; justify-content: center; margin-bottom: 0.5rem; border-bottom: 1px dashed var(--color-border); padding-bottom: 0.5rem;">
-                <svg width="480" height="110" viewBox="0 0 480 110" style="color: var(--color-navy); overflow: visible;">
-                  <!-- Left: ER Notation -->
-                  <text x="110" y="16" font-family="var(--font-title)" font-weight="700" font-size="12" fill="var(--color-blue)" text-anchor="middle">MÔ HÌNH ERD</text>
+                <svg width="480" height="180" viewBox="0 0 480 180" style="color: var(--color-navy); overflow: visible;">
+                  <defs>
+                    <filter id="slide17-shadow" x="-10%" y="-10%" width="120%" height="120%">
+                      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="rgba(0, 34, 68, 0.08)"/>
+                    </filter>
+                    <linearGradient id="slide17-entityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ffffff" />
+                      <stop offset="100%" stop-color="#f8fafc" />
+                    </linearGradient>
+                    <linearGradient id="slide17-weakEntityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ffffff" />
+                      <stop offset="100%" stop-color="#f0fdfa" />
+                    </linearGradient>
+                    <linearGradient id="slide17-relGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ffffff" />
+                      <stop offset="100%" stop-color="#f0f9ff" />
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Left: ER Notation Title -->
+                  <text x="145" y="18" font-family="var(--font-title)" font-weight="800" font-size="11.5px" fill="var(--color-blue)" text-anchor="middle">MÔ HÌNH ERD (CHEN)</text>
                   
-                  <rect x="10" y="40" width="80" height="30" fill="none" stroke="currentColor" stroke-width="1.8" rx="3"></rect>
-                  <text x="50" y="58" font-family="var(--font-title)" font-weight="700" font-size="10" fill="currentColor" text-anchor="middle">NHÂN_VIÊN</text>
-                  
-                  <polygon points="145,40 160,55 145,70 130,55" fill="none" stroke="currentColor" stroke-width="1.8"></polygon>
-                  <text x="145" y="58" font-family="var(--font-title)" font-size="8" fill="currentColor" text-anchor="middle">LÀM_CHO</text>
-                  
-                  <rect x="195" y="40" width="80" height="30" fill="none" stroke="currentColor" stroke-width="1.8" rx="3"></rect>
-                  <text x="235" y="58" font-family="var(--font-title)" font-weight="700" font-size="10" fill="currentColor" text-anchor="middle">PHÒNG_BAN</text>
-                  
-                  <line x1="90" y1="55" x2="130" y2="55" stroke="currentColor" stroke-width="1.5"></line>
-                  <text x="102" y="48" font-family="var(--font-body)" font-size="11" fill="currentColor" font-weight="700">N</text>
-                  
-                  <line x1="160" y1="55" x2="195" y2="55" stroke="currentColor" stroke-width="1.5"></line>
-                  <text x="180" y="48" font-family="var(--font-body)" font-size="11" fill="currentColor" font-weight="700">1</text>
+                  <!-- Right: UML Notation Title -->
+                  <text x="380" y="18" font-family="var(--font-title)" font-weight="800" font-size="11.5px" fill="var(--color-blue)" text-anchor="middle">BIỂU ĐỒ LỚP UML</text>
                   
                   <!-- Vertical Divider -->
-                  <line x1="290" y1="10" x2="290" y2="100" stroke="var(--color-border)" stroke-width="2"></line>
+                  <line x1="275" y1="10" x2="275" y2="170" stroke="var(--color-border)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+
+                  <!-- ================= ROW 1: STRONG RELATION ================= -->
+                  <!-- ERD (Left) -->
+                  <g id="slide17-node-erd-emp" class="diagram-entity-node">
+                    <rect x="20" y="38" width="85" height="30" fill="url(#slide17-entityGrad)" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <text x="62.5" y="57" font-family="var(--font-title)" font-weight="800" font-size="9px" fill="var(--color-navy)" text-anchor="middle">NHÂN_VIÊN</text>
+                  </g>
                   
-                  <!-- Right: UML Notation -->
-                  <text x="385" y="16" font-family="var(--font-title)" font-weight="700" font-size="12" fill="var(--color-blue)" text-anchor="middle">BIỂU ĐỒ LỚP UML</text>
+                  <g id="slide17-node-erd-rel" class="diagram-rel-group">
+                    <polygon points="145,37 162,53 145,69 128,53" fill="url(#slide17-relGrad)" stroke="var(--color-navy)" stroke-width="1.5" filter="url(#slide17-shadow)"></polygon>
+                    <text x="145" y="56" font-family="var(--font-title)" font-weight="800" font-size="7.5px" fill="var(--color-navy)" text-anchor="middle">LÀM_CHO</text>
+                  </g>
                   
-                  <rect x="305" y="38" width="70" height="40" fill="none" stroke="currentColor" stroke-width="1.8" rx="3"></rect>
-                  <line x1="305" y1="52" x2="375" y2="52" stroke="currentColor" stroke-width="1"></line>
-                  <text x="340" y="48" font-family="var(--font-title)" font-weight="700" font-size="10" fill="currentColor" text-anchor="middle">Employee</text>
+                  <g id="slide17-node-erd-dept" class="diagram-entity-node">
+                    <rect x="185" y="38" width="80" height="30" fill="url(#slide17-entityGrad)" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <text x="225" y="57" font-family="var(--font-title)" font-weight="800" font-size="9px" fill="var(--color-navy)" text-anchor="middle">PHÒNG_BAN</text>
+                  </g>
                   
-                  <rect x="400" y="38" width="70" height="40" fill="none" stroke="currentColor" stroke-width="1.8" rx="3"></rect>
-                  <line x1="400" y1="52" x2="470" y2="52" stroke="currentColor" stroke-width="1"></line>
-                  <text x="435" y="48" font-family="var(--font-title)" font-weight="700" font-size="10" fill="currentColor" text-anchor="middle">Department</text>
+                  <g id="slide17-conn-erd-1" class="connection-group">
+                    <line class="conn-line-bg" x1="105" y1="53" x2="128" y2="53" stroke="var(--color-navy)" stroke-width="1.5"></line>
+                    <line class="conn-line-flow" x1="105" y1="53" x2="128" y2="53"></line>
+                  </g>
+                  <text id="slide17-text-erd-card-N" class="diagram-card-text" x="112" y="46" font-family="var(--font-title)" font-weight="800" font-size="12px" fill="var(--color-blue)">N</text>
                   
-                  <line x1="375" y1="58" x2="400" y2="58" stroke="currentColor" stroke-width="1.5"></line>
-                  <!-- Multiplicities -->
-                  <text x="378" y="52" font-family="var(--font-body)" font-size="9" fill="currentColor" font-weight="700">0..*</text>
-                  <text x="396" y="52" font-family="var(--font-body)" font-size="9" fill="currentColor" text-anchor="end" font-weight="700">1</text>
+                  <g id="slide17-conn-erd-2" class="connection-group">
+                    <line class="conn-line-bg" x1="162" y1="53" x2="185" y2="53" stroke="var(--color-navy)" stroke-width="1.5"></line>
+                    <line class="conn-line-flow" x1="162" y1="53" x2="185" y2="53"></line>
+                  </g>
+                  <text id="slide17-text-erd-card-1" class="diagram-card-text" x="172" y="46" font-family="var(--font-title)" font-weight="800" font-size="12px" fill="var(--color-blue)">1</text>
+
+                  <!-- UML (Right) -->
+                  <g id="slide17-node-uml-emp" class="diagram-entity-node">
+                    <rect x="290" y="33" width="70" height="40" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <path d="M 290,36 A 3,3 0 0 1 293,33 H 357 A 3,3 0 0 1 360,36 V 47 H 290 Z" fill="var(--color-blue-bg)"></path>
+                    <line x1="290" y1="47" x2="360" y2="47" stroke="var(--color-navy)" stroke-width="1.2"></line>
+                    <text x="325" y="43" font-family="var(--font-title)" font-weight="800" font-size="9px" fill="var(--color-navy)" text-anchor="middle">Employee</text>
+                  </g>
+                  
+                  <g id="slide17-node-uml-dept" class="diagram-entity-node">
+                    <rect x="395" y="33" width="75" height="40" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <path d="M 395,36 A 3,3 0 0 1 398,33 H 467 A 3,3 0 0 1 470,36 V 47 H 395 Z" fill="var(--color-blue-bg)"></path>
+                    <line x1="395" y1="47" x2="470" y2="47" stroke="var(--color-navy)" stroke-width="1.2"></line>
+                    <text x="432.5" y="43" font-family="var(--font-title)" font-weight="800" font-size="9px" fill="var(--color-navy)" text-anchor="middle">Department</text>
+                  </g>
+                  
+                  <g id="slide17-conn-uml" class="connection-group">
+                    <line class="conn-line-bg" x1="360" y1="53" x2="395" y2="53" stroke="var(--color-navy)" stroke-width="1.5"></line>
+                    <line class="conn-line-flow" x1="360" y1="53" x2="395" y2="53"></line>
+                  </g>
+                  <text id="slide17-text-uml-mult-star" class="diagram-card-text" x="364" y="47" font-family="var(--font-title)" font-weight="800" font-size="10px" fill="var(--color-blue)">0..*</text>
+                  <text id="slide17-text-uml-mult-1" class="diagram-card-text" x="391" y="47" font-family="var(--font-title)" font-weight="800" font-size="10px" fill="var(--color-blue)" text-anchor="end">1</text>
+
+                  <!-- ================= ROW 2: WEAK RELATION ================= -->
+                  <!-- ERD (Left) -->
+                  <g id="slide17-node-erd-weak-owner" class="diagram-entity-node">
+                    <rect x="20" y="115" width="85" height="30" fill="url(#slide17-entityGrad)" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <text x="62.5" y="134" font-family="var(--font-title)" font-weight="800" font-size="9px" fill="var(--color-navy)" text-anchor="middle">NHÂN_VIÊN</text>
+                  </g>
+                  
+                  <g id="slide17-node-erd-weak-rel" class="diagram-rel-group">
+                    <polygon points="145,114 162,130 145,146 128,130" fill="none" stroke="var(--color-navy)" stroke-width="1.8" filter="url(#slide17-shadow)"></polygon>
+                    <polygon points="145,117 158,130 145,143 132,130" fill="url(#slide17-relGrad)" stroke="var(--color-navy)" stroke-width="0.8"></polygon>
+                    <text x="145" y="133" font-family="var(--font-title)" font-weight="800" font-size="7.5px" fill="var(--color-navy)" text-anchor="middle">THỰC_HIỆN</text>
+                  </g>
+                  
+                  <g id="slide17-node-erd-weak" class="diagram-entity-node">
+                    <rect x="185" y="115" width="80" height="30" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <rect x="188" y="118" width="74" height="24" fill="url(#slide17-weakEntityGrad)" stroke="var(--color-navy)" stroke-width="0.8" rx="2"></rect>
+                    <text x="225" y="134" font-family="var(--font-title)" font-weight="800" font-size="9px" fill="var(--color-navy)" text-anchor="middle">GIAO_DỊCH</text>
+                  </g>
+                  
+                  <g id="slide17-conn-erd-weak-left" class="connection-group">
+                    <line class="conn-line-bg" x1="105" y1="130" x2="128" y2="130" stroke="var(--color-navy)" stroke-width="1.5"></line>
+                    <line class="conn-line-flow" x1="105" y1="130" x2="128" y2="130"></line>
+                  </g>
+                  <text id="slide17-text-erd-card-weak-1" class="diagram-card-text" x="112" y="123" font-family="var(--font-title)" font-weight="800" font-size="12px" fill="var(--color-blue)">1</text>
+                  
+                  <g id="slide17-conn-erd-weak-right" class="connection-group">
+                    <line class="conn-line-bg" x1="162" y1="128" x2="185" y2="128" stroke="var(--color-navy)" stroke-width="1.2"></line>
+                    <line class="conn-line-bg" x1="162" y1="132" x2="185" y2="132" stroke="var(--color-navy)" stroke-width="1.2"></line>
+                  </g>
+                  <text id="slide17-text-erd-card-weak-N" class="diagram-card-text" x="172" y="123" font-family="var(--font-title)" font-weight="800" font-size="12px" fill="var(--color-blue)">N</text>
+
+                  <!-- UML (Right) -->
+                  <g id="slide17-node-uml-weak-owner" class="diagram-entity-node">
+                    <rect x="290" y="110" width="60" height="40" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <path d="M 290,113 A 3,3 0 0 1 293,110 H 347 A 3,3 0 0 1 350,113 V 124 H 290 Z" fill="var(--color-blue-bg)"></path>
+                    <line x1="290" y1="124" x2="350" y2="124" stroke="var(--color-navy)" stroke-width="1.2"></line>
+                    <text x="320" y="120" font-family="var(--font-title)" font-weight="800" font-size="9px" fill="var(--color-navy)" text-anchor="middle">Account</text>
+                  </g>
+                  
+                  <g id="slide17-node-uml-weak-qualifier" class="diagram-rel-group">
+                    <rect x="350" y="122" width="45" height="16" fill="url(#slide17-weakEntityGrad)" stroke="var(--color-navy)" stroke-width="1.2" rx="2"></rect>
+                    <text x="372.5" y="132.5" font-family="var(--font-body)" font-weight="700" font-size="6.5px" fill="var(--color-navy)" text-anchor="middle">transactionID</text>
+                  </g>
+                  
+                  <g id="slide17-node-uml-weak" class="diagram-entity-node">
+                    <rect x="410" y="110" width="60" height="40" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.8" rx="4" filter="url(#slide17-shadow)"></rect>
+                    <path d="M 410,113 A 3,3 0 0 1 413,110 H 467 A 3,3 0 0 1 470,113 V 124 H 410 Z" fill="var(--color-blue-bg)"></path>
+                    <line x1="410" y1="124" x2="470" y2="124" stroke="var(--color-navy)" stroke-width="1.2"></line>
+                    <text x="440" y="120" font-family="var(--font-title)" font-weight="800" font-size="8px" fill="var(--color-navy)" text-anchor="middle">Transaction</text>
+                  </g>
+                  
+                  <g id="slide17-conn-uml-weak" class="connection-group">
+                    <line class="conn-line-bg" x1="395" y1="130" x2="410" y2="130" stroke="var(--color-navy)" stroke-width="1.5"></line>
+                    <line class="conn-line-flow" x1="395" y1="130" x2="410" y2="130"></line>
+                  </g>
+                  <text id="slide17-text-uml-mult-weak" class="diagram-card-text" x="406" y="124" font-family="var(--font-title)" font-weight="800" font-size="10px" fill="var(--color-blue)" text-anchor="end">0..1</text>
                 </svg>
               </div>
 
@@ -1095,12 +1591,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="table-row">
+                  <!-- Row 1 -->
+                  <tr class="table-row table-row-highlightable" id="slide17-row-entity">
                     <td style="padding: 0.5rem 0.8rem; font-weight: 600;">Đơn vị lưu trữ</td>
-                    <td style="padding: 0.5rem 0.8rem;">Thực thể (Entity)</td>
-                    <td style="padding: 0.5rem 0.8rem;">Đối tượng (Object) / Lớp (Class)</td>
+                    <td>
+                      <div class="flip-card">
+                        <div class="flip-card-inner">
+                          <div class="flip-card-front">Thực thể (Entity)</div>
+                          <div class="flip-card-back">Đối tượng / Lớp (Class)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="uml-term">
+                      <div class="flip-card">
+                        <div class="flip-card-inner">
+                          <div class="flip-card-front" style="color: var(--color-blue);">Đối tượng / Lớp (Class)</div>
+                          <div class="flip-card-back" style="color: var(--color-white); background-color: var(--color-navy);">Thực thể (Entity)</div>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
-                  <tr class="table-row table-row-highlightable" id="row-term-rel">
+                  <!-- Row 2 -->
+                  <tr class="table-row table-row-highlightable" id="slide17-row-rel">
                     <td style="padding: 0.5rem 0.8rem; font-weight: 600;">Kết nối thực thể</td>
                     <td>
                       <div class="flip-card">
@@ -1110,7 +1622,7 @@
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <td class="uml-term">
                       <div class="flip-card">
                         <div class="flip-card-inner">
                           <div class="flip-card-front" style="color: var(--color-blue);">Liên kết (Association)</div>
@@ -1119,7 +1631,8 @@
                       </div>
                     </td>
                   </tr>
-                  <tr class="table-row table-row-highlightable" id="row-term-card">
+                  <!-- Row 3 -->
+                  <tr class="table-row table-row-highlightable" id="slide17-row-card">
                     <td style="padding: 0.5rem 0.8rem; font-weight: 600;">Ràng buộc bản số</td>
                     <td>
                       <div class="flip-card">
@@ -1129,7 +1642,7 @@
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <td class="uml-term">
                       <div class="flip-card">
                         <div class="flip-card-inner">
                           <div class="flip-card-front" style="color: var(--color-blue);">Độ đa dạng (Multiplicity)</div>
@@ -1138,10 +1651,25 @@
                       </div>
                     </td>
                   </tr>
-                  <tr class="table-row">
+                  <!-- Row 4 -->
+                  <tr class="table-row table-row-highlightable" id="slide17-row-weak">
                     <td style="padding: 0.5rem 0.8rem; font-weight: 600;">Thực thể yếu</td>
-                    <td style="padding: 0.5rem 0.8rem;">Weak Entity Type</td>
-                    <td style="padding: 0.5rem 0.8rem;">Qualified Association</td>
+                    <td>
+                      <div class="flip-card">
+                        <div class="flip-card-inner">
+                          <div class="flip-card-front">Thực thể yếu (Weak Entity)</div>
+                          <div class="flip-card-back">Qualified Association</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="uml-term">
+                      <div class="flip-card">
+                        <div class="flip-card-inner">
+                          <div class="flip-card-front" style="color: var(--color-blue);">Qualified Association</div>
+                          <div class="flip-card-back" style="color: var(--color-white); background-color: var(--color-navy);">Thực thể yếu (Weak Entity)</div>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -1152,24 +1680,127 @@
 
       <!-- SLIDE 18: MỐI QUAN HỆ BẬC CAO & MỐI QUAN HỆ TAM PHÂN -->
       <section class="slide" id="slide-18" data-index="18">
-        <div class="companion-slide-container">
-          <div class="companion-left">
+        <div class="companion-slide-container" style="align-items: center; position: relative;">
+          <!-- Glassmorphic Glowing Background Blobs -->
+          <div class="slide18-glow-blob blob-1"></div>
+          <div class="slide18-glow-blob blob-2"></div>
+
+          <div class="companion-left" style="position: relative; z-index: 1;">
             <div class="module-overview">
               <span class="overview-text">HIGHER-DEGREE RELATIONSHIPS</span>
               <div class="overview-line"></div>
             </div>
-            <h1 class="slide-title">Quan Hệ Bậc Cao (Tam Phân)</h1>
-            <p class="slide-subtitle">Tại sao không thể tùy tiện chia nhỏ thành quan hệ nhị phân.</p>
+            <h1 class="slide-title" style="background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Quan Hệ Bậc Cao (Tam Phân)</h1>
+            <p class="slide-subtitle" style="margin-bottom: 1.2rem;">Tại sao không thể tùy tiện chia nhỏ thành quan hệ nhị phân.</p>
             
-            <div class="objective-desc" style="font-size: 1.1rem; line-height: 1.6; color: var(--color-gray); margin-top: 1.5rem;">
-              <p>🔹 <strong>Quan hệ Tam phân (Ternary):</strong> Kết nối đồng thời 3 thực thể. Ví dụ: Mối liên kết <code>CUNG_CẤP</code> (SUPPLY) liên quan đến Nhà cung cấp, Dự án và Linh kiện.</p>
-              <p style="margin-top: 0.8rem;">⚠️ Việc phân rã thành 3 mối quan hệ nhị phân (Supplier-Part, Part-Project, Supplier-Project) sẽ làm mất đi ngữ nghĩa liên kết đồng thời, tạo ra dữ liệu ảo không tồn tại thực tế.</p>
+            <div class="slide18-cards-container" style="display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1.2rem;">
+              <div id="slide18-bullet-1" class="slide18-interactive-card ternary-card">
+                <div class="card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="icon-blue">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                  </svg>
+                </div>
+                <div class="card-content">
+                  <h4 class="card-title">Quan Hệ Tam Phân (Ternary)</h4>
+                  <p class="card-text">Kết nối đồng thời <strong>3 thực thể</strong>. Mối liên kết <code>CUNG_CẤP</code> (SUPPLY) liên kết đồng thời giữa Nhà cung cấp, Dự án và Linh kiện.</p>
+                </div>
+              </div>
+              
+              <div id="slide18-bullet-2" class="slide18-interactive-card binary-card">
+                <div class="card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="icon-red">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </div>
+                <div class="card-content">
+                  <h4 class="card-title">Hệ Lụy Khi Phân Rã Thành Nhị Phân</h4>
+                  <p class="card-text">Việc chia nhỏ thành 3 quan hệ nhị phân <strong>làm mất ngữ nghĩa liên kết đồng thời</strong>, tạo ra dữ liệu ảo (dữ liệu rác) không có thực.</p>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div class="companion-right">
-            <div class="relational-table-interactive animate-table" style="padding: 1.5rem; display: flex; align-items: center; justify-content: center; height: 350px;" data-lazy="diagram-ternary">
+          <div class="companion-right" style="position: relative; z-index: 1;">
+            <div class="relational-table-interactive animate-table" style="height: 380px; width: 100%; max-width: 520px; display: flex; align-items: center; justify-content: center;" data-lazy="diagram-ternary">
               <div id="ternary-lazy-placeholder" style="color: var(--color-gray-light); font-style: italic;">Đang tải sơ đồ...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 19: CẢM ƠN VÀ KẾT THÚC -->
+      <section class="slide" id="slide-19" data-index="19">
+        <div class="companion-slide-container slide19-container">
+          <!-- Glassmorphic Glowing Background Blobs -->
+          <div class="slide19-glow-blob blob-1"></div>
+          <div class="slide19-glow-blob blob-2"></div>
+          
+          <div class="companion-left slide19-left">
+            <div class="module-overview">
+              <span class="overview-text">THANK YOU & Q&A</span>
+              <div class="overview-line"></div>
+            </div>
+            
+            <h1 class="slide-title slide19-title animate-title">
+              Cảm Ơn Các Bạn!
+            </h1>
+            <p class="slide-subtitle slide19-subtitle animate-subtitle">Chúng mình rất trân trọng sự chú ý lắng nghe và đóng góp từ thầy cô và các bạn.</p>
+            
+            <div class="objectives-container slide19-credits animate-objectives" style="margin-top: 1.5rem;">
+              <span class="objectives-label">Thông Tin Đề Tài</span>
+              <div class="slide19-credits-content">
+                <div class="credit-item">
+                  <span class="credit-label">Nhóm thực hiện:</span>
+                  <span class="credit-value text-gradient-moewz">Nhóm 3 — MoewZ</span>
+                </div>
+                <div class="credit-item">
+                  <span class="credit-label">Chuyên đề:</span>
+                  <span class="credit-value">Thiết kế Khái niệm sử dụng Mô hình ER</span>
+                </div>
+                <div class="credit-item">
+                  <span class="credit-label">Đơn vị:</span>
+                  <span class="credit-value">Trường Đại học FPT (FPT University)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q&A Action -->
+            <div class="slide19-actions" style="margin-top: 1.8rem;">
+              <button class="action-btn active btn-qa-glow" id="btn-slide19-qa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle; display: inline-block;">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg><span style="vertical-align: middle;">Đặt Câu Hỏi (Q&A)</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="companion-right slide19-right">
+            <!-- Glassmorphic Card for Interactive 3D Sphere -->
+            <div class="thanks-diagram-card thanks-sphere-card">
+              <h3 class="thanks-diagram-title">Hệ Thống Dữ Liệu Tương Lai</h3>
+              <div class="sphere-wrapper">
+                <div class="sphere-core"></div>
+                <div class="sphere-3d">
+                  <!-- Longitudinal Rings (Vertical) -->
+                  <div class="sphere-ring"></div>
+                  <div class="sphere-ring"></div>
+                  <div class="sphere-ring"></div>
+                  <div class="sphere-ring"></div>
+                  <div class="sphere-ring"></div>
+                  <div class="sphere-ring"></div>
+                  <!-- Latitudinal Rings (Horizontal) -->
+                  <div class="sphere-ring lat-1"></div>
+                  <div class="sphere-ring lat-2"></div>
+                  <div class="sphere-ring lat-3"></div>
+                  <div class="sphere-ring lat-4"></div>
+                  <div class="sphere-ring lat-5"></div>
+                </div>
+              </div>
+              <div class="thanks-interactive-hint">Rê chuột lên hình cầu để tăng tốc năng lượng!</div>
             </div>
           </div>
         </div>
@@ -1193,7 +1824,7 @@
         </div>
       </div>
       <div class="footer-center">
-        <span class="slide-number-display">Slide <span id="current-slide-num">1</span> trên 18</span>
+        <span class="slide-number-display">Slide <span id="current-slide-num">1</span> trên 19</span>
       </div>
       <div class="footer-right">
         <span class="footer-topic">Chủ đề: Mô hình ER</span>
@@ -1210,7 +1841,7 @@
         </svg>
       </button>
       <div class="control-indicator">
-        <span id="bubble-current">1</span>/<span id="bubble-total">18</span>
+        <span id="bubble-current">1</span>/<span id="bubble-total">19</span>
       </div>
       <button class="control-btn" id="ctrl-next" aria-label="Slide tiếp theo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -362,14 +362,15 @@ body {
   gap: 0.8rem;
   cursor: pointer;
   outline: none;
-  padding: 0.35rem 0.5rem;
-  border-radius: 8px;
-  margin-left: -0.5rem;
-  transition: var(--transition-smooth);
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
+  margin-left: -0.85rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .objective-item:hover, .objective-item:focus-visible {
-  background-color: rgba(0, 34, 68, 0.03);
+  background-color: rgba(59, 130, 246, 0.05);
+  transform: translateX(6px);
 }
 
 .custom-checkbox {
@@ -415,23 +416,29 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1.05;
-  background-color: var(--color-navy);
-  border-radius: 12px;
+  background-color: #020617;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 45px rgba(0, 34, 68, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 45px rgba(0, 34, 68, 0.35), 0 0 35px rgba(59, 130, 246, 0.12);
+  border: 1.5px solid rgba(59, 130, 246, 0.25);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.server-image-container:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 25px 50px rgba(0, 34, 68, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
 }
 
 .server-bg-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(100%) contrast(1.15) brightness(0.95);
+  filter: grayscale(100%) contrast(1.2) brightness(0.7);
   transition: var(--transition-smooth);
 }
 
 .server-image-container:hover .server-bg-image {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .server-overlay-tint {
@@ -440,8 +447,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(0, 34, 68, 0.1) 0%, rgba(0, 34, 68, 0.5) 100%);
-  mix-blend-mode: multiply;
+  background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.18) 0%, rgba(2, 6, 23, 0.8) 100%);
+  mix-blend-mode: normal;
   pointer-events: none;
 }
 
@@ -452,23 +459,28 @@ body {
   width: 100%;
   height: 100%;
   padding: 2.2rem;
+  pointer-events: none;
 }
 
 .floating-card {
-  background-color: var(--color-white);
-  border-radius: 4px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(0, 34, 68, 0.08);
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-bounce);
-  animation: floatEffect 6s ease-in-out infinite alternate;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: floatEffect 5s ease-in-out infinite alternate;
+  pointer-events: auto;
 }
 
 .floating-card:hover {
-  transform: translateY(-5px) scale(1.04);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 12px rgba(59, 130, 246, 0.2);
+  background: rgba(15, 23, 42, 0.7);
 }
 
 .card-entities {
@@ -476,6 +488,7 @@ body {
   position: absolute;
   top: 10%;
   left: 10%;
+  border-left: 3px solid #22d3ee;
 }
 
 .card-attributes {
@@ -483,14 +496,14 @@ body {
   position: absolute;
   top: 10%;
   right: 10%;
-  animation-delay: -2s;
+  animation-delay: -1.8s;
+  border-left: 3px solid #60a5fa;
 }
 
 .arrow-container {
   position: absolute;
   top: 15%;
   height: 20px;
-  color: var(--color-navy);
 }
 
 .connecting-arrow {
@@ -501,12 +514,13 @@ body {
 .center-line-indicator {
   position: absolute;
   left: 50%;
-  top: 35%;
-  height: 30%;
-  width: 2px;
-  background-color: var(--color-navy);
+  top: 24%;
+  height: 100px;
+  width: 24px;
   transform: translateX(-50%);
-  opacity: 0.65;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-physical-schema {
@@ -515,36 +529,49 @@ body {
   right: 18%;
   bottom: 12%;
   height: 70px;
-  animation-delay: -4s;
+  animation-delay: -3.5s;
+  border-top: 3px solid #818cf8;
+  box-shadow: 0 10px 30px rgba(129, 140, 248, 0.15), inset 0 0 15px rgba(255, 255, 255, 0.05);
 }
 
 .card-physical-schema .schema-title {
   font-family: var(--font-title);
-  font-size: 1.8rem;
+  font-size: 1.45rem;
   font-weight: 700;
-  color: var(--color-navy);
+  color: #f8fafc;
+  text-shadow: 0 0 10px rgba(129, 140, 248, 0.4);
 }
 
 .mono-label {
   font-family: var(--font-mono);
   font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--color-navy);
+  font-weight: 700;
+}
+
+.card-entities .mono-label {
+  color: #22d3ee;
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.4);
+}
+
+.card-attributes .mono-label {
+  color: #60a5fa;
+  text-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
 }
 
 .tag-pk-fk {
   position: absolute;
   right: 10%;
   bottom: 8%;
-  background-color: var(--color-navy);
+  background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
   color: var(--color-white);
-  padding: 0.35rem 1.1rem;
+  padding: 0.4rem 1.2rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
-  border-radius: 2px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  box-shadow: 0 6px 15px rgba(6, 182, 212, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: var(--transition-bounce);
 }
 
@@ -607,6 +634,13 @@ body {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  transition: all 0.3s ease;
+  border: 1.5px solid transparent;
+}
+
+.db-table.highlight-table {
+  border-color: var(--color-blue) !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
 }
 
 .db-table th {
@@ -616,6 +650,7 @@ body {
   padding: 0.75rem 1.1rem;
   color: var(--color-navy);
   border-bottom: 1.5px solid var(--color-border);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .db-table td {
@@ -623,6 +658,14 @@ body {
   border-bottom: 1px solid var(--color-border);
   font-family: var(--font-mono);
   font-size: 0.9rem;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.db-table td.highlighted,
+.db-table th.highlighted {
+  background-color: var(--color-blue-bg) !important;
+  color: var(--color-blue) !important;
+  font-weight: 700;
 }
 
 .table-row {
@@ -637,31 +680,178 @@ body {
    SLIDE 2: FLOWCHART
    ========================================================================== */
 .flow-node {
-  background: var(--color-white);
-  border: 1.5px solid var(--color-border);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  width: 280px;
-  text-align: center;
-  font-weight: 600;
-  transition: var(--transition-smooth);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  padding: 0.85rem 1.5rem;
+  width: 440px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 34, 68, 0.04);
+  cursor: pointer;
 }
 
 .flow-node.highlight {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);
   border-color: var(--color-blue);
-  background: var(--color-blue-bg);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2), inset 0 0 12px rgba(59, 130, 246, 0.08);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.flow-node-content {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  text-align: left;
+}
+
+.flow-node-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(241, 245, 249, 0.9);
+  color: var(--color-gray);
+  transition: all 0.4s ease;
+  flex-shrink: 0;
+}
+
+.flow-node.highlight .flow-node-icon-wrapper {
+  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-navy) 100%);
+  color: var(--color-white);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.flow-node-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.flow-node-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.flow-node-num {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gray);
+  font-weight: 800;
+  transition: color 0.4s ease;
+}
+
+.flow-node.highlight .flow-node-num {
+  color: var(--color-blue);
+}
+
+.flow-node-title {
+  font-size: 0.98rem;
+  font-weight: 700;
   color: var(--color-navy);
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
 }
 
 .flow-arrow {
-  color: var(--color-gray-light);
-  font-size: 0.9rem;
-  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  transition: all 0.4s ease;
 }
 
-.flow-arrow.highlight {
+.flow-arrow-svg {
+  width: 24px;
+  height: 38px;
+}
+
+.arrow-line-bg {
+  stroke: rgba(226, 232, 240, 0.9);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  fill: none;
+  transition: stroke 0.4s ease;
+}
+
+.arrow-line-flow {
+  stroke: transparent;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 6 6;
+  fill: none;
+  transition: stroke 0.4s ease;
+}
+
+.arrow-head {
+  stroke: rgba(226, 232, 240, 0.9);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  transition: stroke 0.4s ease;
+}
+
+.flow-arrow.highlight .arrow-line-bg {
+  stroke: rgba(59, 130, 246, 0.15);
+}
+
+.flow-arrow.highlight .arrow-line-flow {
+  stroke: var(--color-blue);
+  animation: flowLineAnim 1.2s linear infinite;
+}
+
+.flow-arrow.highlight .arrow-head {
+  stroke: var(--color-blue);
+}
+
+@keyframes flowLineAnim {
+  0% {
+    stroke-dashoffset: 12;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Slide 2 left details card styles */
+.phase-desc-panel {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 25px rgba(0, 34, 68, 0.03);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 280px;
+  max-width: 100%;
+}
+
+.phase-desc-panel:hover {
+  box-shadow: 0 12px 30px rgba(0, 34, 68, 0.06);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.phase-desc-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--color-blue);
+  margin-bottom: 0.5rem;
+}
+
+.phase-desc-text {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-navy);
+  font-weight: 500;
+  transition: opacity 0.3s ease;
 }
 
 /* ==========================================================================
@@ -692,24 +882,86 @@ body {
 }
 
 .pillar-card {
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1.5px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  padding: 1.5rem !important;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-  transition: var(--transition-bounce);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 34, 68, 0.03);
 }
 
 .pillar-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(0, 34, 68, 0.2);
+  transform: translateY(-6px) scale(1.02);
   background-color: var(--color-white);
-  box-shadow: 0 15px 30px rgba(0, 34, 68, 0.08);
+  border-color: var(--color-blue);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.12), 0 0 15px rgba(59, 130, 246, 0.05);
+}
+
+.pillar-card.highlight-glow {
+  border-color: var(--color-blue) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.pillar-card.dimmed {
+  opacity: 0.35 !important;
+  transform: scale(0.97) !important;
+  filter: grayscale(15%) !important;
+}
+
+.relationship-badge {
+  background: var(--color-blue-bg);
+  color: var(--color-navy-light);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 30px;
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.relationship-badge.active-badge {
+  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-navy) 100%);
+  color: var(--color-white) !important;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transform: translate(-50%, -50%) scale(1.08) !important;
+}
+
+.conn-line-bg {
+  stroke: rgba(226, 232, 240, 0.8);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  fill: none;
+  transition: stroke 0.4s ease, stroke-width 0.4s ease;
+}
+
+.conn-line-flow {
+  stroke: transparent;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 8 8;
+  fill: none;
+  transition: stroke 0.4s ease;
+}
+
+.connection-group.active .conn-line-bg {
+  stroke: rgba(59, 130, 246, 0.15);
+  stroke-width: 3;
+}
+
+.connection-group.active .conn-line-flow {
+  stroke: var(--color-blue);
+  animation: flowLineAnim 1.5s linear infinite;
 }
 
 .pillar-header {
@@ -752,6 +1004,28 @@ body {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
+  transition: all 0.3s ease;
+}
+
+.nosql-code-display.highlight-block {
+  border-color: var(--color-blue) !important;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
+}
+
+#slide7-json-code span {
+  display: inline-block;
+  width: 100%;
+  transition: all 0.3s ease;
+  border-left: 2.5px solid transparent;
+  padding-left: 6px;
+  cursor: pointer;
+}
+
+#slide7-json-code span:hover,
+#slide7-json-code span.highlighted {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  color: #38bdf8 !important;
+  border-left-color: var(--color-blue);
 }
 
 .code-header {
@@ -955,6 +1229,14 @@ body {
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
 }
 
+#slide-1 .animate-title {
+  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent !important;
+}
+
 .slide .animate-subtitle {
   opacity: 0;
   transform: translateY(18px);
@@ -1074,22 +1356,103 @@ body {
   transform: translateY(0);
 }
 
+/* Slide 1 Laser Flow Line Colors & Animations */
+.arrow-container .arrow-line-flow {
+  stroke: #22d3ee !important;
+  animation: flowLineAnim 1.2s linear infinite !important;
+}
+
+.center-line-indicator .arrow-line-flow {
+  stroke: #60a5fa !important;
+  animation: flowLineAnim 1.2s linear infinite !important;
+}
+
 /* ==========================================================================
    SLIDE 17: HIGHLIGHT ANIMATIONS FOR UML
    ========================================================================== */
 #uml-compare-table tr.highlighted {
-  background-color: var(--color-blue-bg);
-  box-shadow: inset 4px 0 0 var(--color-blue);
+  background-color: var(--color-blue-bg) !important;
+  box-shadow: inset 4px 0 0 var(--color-blue) !important;
 }
 
 #uml-compare-table tr.highlighted td.uml-term {
   animation: pulseBlueTerm 1.5s infinite alternate;
-  font-size: 1.05rem;
 }
 
 @keyframes pulseBlueTerm {
   0% { color: var(--color-blue); text-shadow: 0 0 1px rgba(59, 130, 246, 0.1); }
   100% { color: var(--color-navy); text-shadow: 0 0 8px rgba(59, 130, 246, 0.5); }
+}
+
+#slide-17 .diagram-entity-node rect,
+#slide-17 .diagram-entity-node path,
+#slide-17 .diagram-rel-group polygon,
+#slide-17 .diagram-rel-group rect {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+#slide-17 .diagram-entity-node:hover rect,
+#slide-17 .diagram-entity-node.active rect {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 2.5px !important;
+  filter: drop-shadow(0 6px 12px rgba(59, 130, 246, 0.18)) !important;
+}
+
+#slide-17 .diagram-rel-group:hover polygon,
+#slide-17 .diagram-rel-group.active polygon,
+#slide-17 .diagram-rel-group:hover rect,
+#slide-17 .diagram-rel-group.active rect {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 2px !important;
+  filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.15)) !important;
+}
+
+#slide-17 .connection-group.active .conn-line-bg {
+  stroke: rgba(59, 130, 246, 0.15) !important;
+  stroke-width: 2.5px !important;
+}
+
+#slide-17 .connection-group.active .conn-line-flow {
+  stroke: var(--color-blue) !important;
+  stroke-width: 2.5px !important;
+  animation: flowLineAnim 1.5s linear infinite !important;
+}
+
+#slide-17 .diagram-card-text {
+  transition: all 0.4s ease;
+}
+
+#slide-17 .diagram-card-text.active {
+  fill: var(--color-blue) !important;
+  font-weight: 900 !important;
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3)) !important;
+}
+
+#slide-17 .diagram-entity-node.dimmed,
+#slide-17 .diagram-rel-group.dimmed,
+#slide-17 .connection-group.dimmed,
+#slide-17 .diagram-card-text.dimmed,
+#slide-17 line.dimmed {
+  opacity: 0.22 !important;
+}
+
+/* Glassmorphism style for Slide 17 companion right */
+#slide-17 .relational-table-interactive {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 34, 68, 0.05);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+#slide-17 .relational-table-interactive:hover {
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.08);
 }
 
 /* ==========================================================================
@@ -1159,16 +1522,997 @@ body {
 }
 
 .flowchart-container {
-  gap: 0.8rem !important;
+  gap: 0.1rem !important;
 }
 
 .flow-node {
-  width: 360px !important;
-  padding: 0.75rem 1.5rem !important;
-  font-size: 1.05rem !important;
+  width: 430px !important;
+  padding: 0.75rem 1.25rem !important;
 }
 
 .flow-arrow {
-  font-size: 1.25rem !important;
+  height: 36px !important;
 }
+
+/* Slide 4 Interactive Diagram Node Styles */
+.diagram-entity-node rect,
+.diagram-attr-node ellipse {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+.diagram-entity-node:hover rect,
+.diagram-entity-node.active rect {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 6px 15px rgba(59, 130, 246, 0.25));
+}
+
+.diagram-attr-node:hover ellipse,
+.diagram-attr-node.active ellipse {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 2.2px !important;
+  filter: drop-shadow(0 4px 10px rgba(59, 130, 246, 0.2));
+}
+
+.diagram-entity-node.dimmed,
+.diagram-attr-node.dimmed {
+  opacity: 0.35 !important;
+  filter: grayscale(15%) !important;
+}
+
+/* Slide 6 Interactive Styles */
+.objective-desc p {
+  padding-left: 0;
+  border-left: 3px solid transparent;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.objective-desc p.highlighted-bullet {
+  background-color: var(--color-blue-bg) !important;
+  border-left-color: var(--color-blue) !important;
+  padding-left: 10px !important;
+  border-radius: 4px !important;
+  color: var(--color-navy) !important;
+  font-weight: 600 !important;
+}
+
+@keyframes energyPulseAnim {
+  0% {
+    stroke-dashoffset: 24;
+    stroke-width: 5;
+    stroke: var(--color-blue);
+  }
+  50% {
+    stroke-dashoffset: 12;
+    stroke-width: 6;
+    stroke: #38bdf8;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    stroke-width: 5;
+    stroke: var(--color-blue);
+  }
+}
+
+.connection-group.energy-pulse .conn-line-flow {
+  stroke: #38bdf8 !important;
+  animation: energyPulseAnim 0.4s linear infinite !important;
+}
+
+/* Card header styling overrides to prevent body styles from breaking them */
+.diagram-card-header {
+  fill: var(--color-navy-light) !important;
+  stroke: none !important;
+  cursor: default !important;
+  transition: fill 0.4s ease;
+}
+
+.diagram-entity-node:hover .diagram-card-header,
+.diagram-entity-node.active .diagram-card-header {
+  fill: var(--color-navy) !important;
+  stroke: none !important;
+}
+
+/* Slide 15 Symbol Legend styles */
+.er-symbols-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.symbol-card {
+  border: 1px solid var(--color-border);
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.4);
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+
+.symbol-card:hover,
+.symbol-card.active {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: var(--color-blue) !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.12) !important;
+  transform: translateY(-2px);
+}
+
+.symbol-card.dimmed {
+  opacity: 0.35 !important;
+}
+
+.symbol-shape {
+  width: 46px;
+  height: 23px;
+  border: 1.5px solid var(--color-navy);
+  background: var(--color-blue-bg);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.symbol-card:hover .symbol-shape,
+.symbol-card.active .symbol-shape {
+  border-color: var(--color-blue);
+  background: var(--color-white);
+  filter: drop-shadow(0 2px 5px rgba(59, 130, 246, 0.15));
+}
+
+.shape-entity {
+  border-radius: 0;
+}
+
+.shape-weak-entity {
+  box-shadow: inset 0 0 0 2px white, inset 0 0 0 3px var(--color-navy);
+}
+
+.symbol-card:hover #slide15-symbol-weak-entity .symbol-shape,
+.symbol-card.active #slide15-symbol-weak-entity .symbol-shape {
+  box-shadow: inset 0 0 0 2px white, inset 0 0 0 3px var(--color-blue) !important;
+}
+
+.shape-rel {
+  width: 25px;
+  height: 25px;
+  transform: rotate(45deg);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.shape-identifying-rel {
+  width: 25px;
+  height: 25px;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 2px white, 0 0 0 3.5px var(--color-navy);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.symbol-card:hover #slide15-symbol-identifying-rel .symbol-shape,
+.symbol-card.active #slide15-symbol-identifying-rel .symbol-shape {
+  box-shadow: 0 0 0 2px white, 0 0 0 3.5px var(--color-blue) !important;
+}
+
+.shape-attr {
+  border-radius: 50%;
+}
+
+.shape-key-attr {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: underline;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-navy);
+}
+
+.shape-multivalued-attr {
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px white, inset 0 0 0 2px var(--color-navy);
+}
+
+.symbol-card:hover #slide15-symbol-multivalued-attr .symbol-shape,
+.symbol-card.active #slide15-symbol-multivalued-attr .symbol-shape {
+  box-shadow: inset 0 0 0 1px white, inset 0 0 0 2px var(--color-blue) !important;
+}
+
+.shape-derived-attr {
+  border-radius: 50%;
+  border-style: dashed;
+}
+
+/* Slide 9 Glassmorphic HTML Card Styling */
+.slide9-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.slide9-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 34, 68, 0.04);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide9-card:hover,
+.slide9-card.active {
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--color-blue);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.12);
+  background: var(--color-white);
+}
+
+.slide9-card.dimmed {
+  opacity: 0.35 !important;
+  transform: scale(0.97) !important;
+  filter: grayscale(10%) !important;
+}
+
+.slide9-card-header {
+  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
+  color: var(--color-white);
+  padding: 0.45rem 1rem;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+  border-bottom: 1.5px solid rgba(226, 232, 240, 0.5);
+}
+
+.slide9-card-body {
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--color-navy-light);
+  text-align: left;
+}
+
+.slide9-card-body div {
+  transition: all 0.3s ease;
+  line-height: 1.4;
+}
+
+.slide9-card-body .key-attr {
+  text-decoration: underline;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.slide9-card-body .multivalued-attr {
+  color: var(--color-navy-light);
+}
+
+.slide9-card-body .diagram-ref-text {
+  color: var(--color-blue);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.slide9-card-body .diagram-ref-text.active {
+  color: #38bdf8 !important;
+  transform: translateX(4px);
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+  font-weight: 700;
+}
+
+.slide9-card-body .diagram-ref-text.dimmed {
+  opacity: 0.35 !important;
+}
+
+/* ==========================================================================
+   SLIDE 15 INTERACTIVE TRANSITIONS & PREVIEWS
+   ========================================================================== */
+.slide15-panel {
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(-20px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.slide15-panel.show {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slide15-back-btn:hover {
+  background-color: var(--color-navy) !important;
+  color: var(--color-white) !important;
+  transform: scale(1.05);
+}
+
+.slide15-preview-box svg {
+  color: var(--color-navy);
+  overflow: visible;
+  transition: all 0.3s ease;
+}
+
+/* Micro-animation for active symbol card */
+.symbol-card.active {
+  animation: cardPulse 1.5s infinite alternate;
+}
+
+@keyframes cardPulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.12) !important;
+  }
+  100% {
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25) !important;
+  }
+}
+
+/* ==========================================================================
+   SLIDE 16 INTERACTIVE HIGHLIGHTS & FLOWS
+   ========================================================================== */
+.slide16-bullet {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  border-left: 3px solid transparent;
+}
+
+.slide16-bullet:hover,
+.slide16-bullet.highlighted-bullet {
+  background-color: var(--color-blue-bg) !important;
+  border-left-color: var(--color-blue) !important;
+  color: var(--color-navy) !important;
+  font-weight: 700 !important;
+  padding-left: 10px !important;
+  transform: translateX(4px);
+}
+
+/* SVG interactive nodes styles for Slide 16 */
+#slide-16 .diagram-entity-node,
+#slide-16 .diagram-rel-group,
+#slide-16 .card-group g {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+#slide-16 .diagram-entity-node:hover rect,
+#slide-16 .diagram-entity-node.active rect {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 6px 15px rgba(59, 130, 246, 0.25)) !important;
+}
+
+#slide-16 .diagram-rel-group:hover polygon,
+#slide-16 .diagram-rel-group.active polygon {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 2.5px !important;
+  filter: drop-shadow(0 4px 10px rgba(59, 130, 246, 0.2)) !important;
+}
+
+#slide-16 .diagram-entity-node.dimmed,
+#slide-16 .diagram-rel-group.dimmed,
+#slide-16 .card-group g.dimmed,
+#slide-16 .diagram-rel-group.dimmed line,
+#slide-16 .diagram-rel-group.dimmed path {
+  opacity: 0.25 !important;
+}
+
+#slide-16 .diagram-rel-group.active .conn-line-bg {
+  stroke: rgba(59, 130, 246, 0.15) !important;
+  stroke-width: 3px !important;
+}
+
+#slide-16 .diagram-rel-group.active .conn-line-flow {
+  stroke: var(--color-blue) !important;
+  stroke-width: 3px !important;
+  animation: flowLineAnim 1.5s linear infinite !important;
+}
+
+#slide-16 .card-group g.active text {
+  fill: var(--color-blue) !important;
+  font-weight: 900 !important;
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3)) !important;
+}
+
+/* ==========================================================================
+   SLIDE 19: CẢM ƠN & KẾT THÚC (GLASSMORPHISM & ANIMATIONS)
+   ========================================================================== */
+.slide19-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  height: 100%;
+  width: 100%;
+}
+
+/* Glowing background blobs */
+.slide19-glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.slide19-glow-blob.blob-1 {
+  top: -10%;
+  left: 20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+  animation: floatBlob1 12s infinite alternate ease-in-out;
+}
+
+.slide19-glow-blob.blob-2 {
+  bottom: -10%;
+  right: 15%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+  animation: floatBlob2 15s infinite alternate ease-in-out;
+}
+
+@keyframes floatBlob1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 30px) scale(1.1); }
+  100% { transform: translate(-30px, 60px) scale(0.95); }
+}
+
+@keyframes floatBlob2 {
+  0% { transform: translate(0, 0) scale(1.05); }
+  50% { transform: translate(-50px, -40px) scale(0.95); }
+  100% { transform: translate(30px, 20px) scale(1.1); }
+}
+
+/* Slide 19 content layouts */
+.slide19-left, .slide19-right {
+  position: relative;
+  z-index: 2;
+}
+
+.slide19-title {
+  font-family: var(--font-title);
+  font-size: 3.8rem !important;
+  font-weight: 850;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--color-navy) 0%, #3b82f6 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shineTitle 5s linear infinite;
+  line-height: 1.15;
+}
+
+@keyframes shineTitle {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.slide19-subtitle {
+  font-size: 1.15rem;
+  color: var(--color-gray);
+  max-width: 95%;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+/* Credits styling */
+.slide19-credits-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 0.5rem 0;
+}
+
+.credit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.05rem;
+}
+
+.credit-label {
+  color: var(--color-gray);
+  font-weight: 500;
+  min-width: 140px;
+}
+
+.credit-value {
+  color: var(--color-navy-light);
+  font-weight: 700;
+}
+
+.text-gradient-moewz {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+/* Q&A Button Glow */
+.btn-qa-glow {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-qa-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+/* Thanks Diagram Card */
+.thanks-diagram-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px) saturate(125%);
+  -webkit-backdrop-filter: blur(20px) saturate(125%);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  padding: 1.8rem;
+  box-shadow: 0 12px 36px rgba(0, 34, 68, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 440px;
+  width: 100%;
+  max-width: 580px;
+  transition: var(--transition-smooth);
+}
+
+.thanks-diagram-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 20px 45px rgba(59, 130, 246, 0.1);
+  transform: translateY(-3px);
+}
+
+.thanks-diagram-title {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-navy-light);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 34, 68, 0.05);
+  padding-bottom: 0.6rem;
+}
+
+.thanks-diagram-svg-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 290px;
+}
+
+.thanks-interactive-hint {
+  font-size: 0.85rem;
+  color: var(--color-gray-light);
+  text-align: center;
+  font-style: italic;
+  margin-top: 0.6rem;
+}
+
+/* ==========================================================================
+   SLIDE 19: 3D ROTATING HOLOGRAM SPHERE STYLING
+   ========================================================================== */
+.thanks-sphere-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 440px;
+  overflow: hidden;
+}
+
+.sphere-wrapper {
+  position: relative;
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  overflow: visible;
+  height: 330px;
+}
+
+/* 3D Sphere Core Container */
+.sphere-3d {
+  position: relative;
+  width: 330px;
+  height: 330px;
+  transform-style: preserve-3d;
+  animation: rotateSphere3D 14s linear infinite;
+  transition: transform 0.5s ease;
+}
+
+/* Glowing center core */
+.sphere-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110px;
+  height: 110px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.85) 0%, rgba(59, 130, 246, 0) 70%);
+  filter: blur(12px);
+  z-index: 1;
+  animation: sphereCorePulse 3s infinite alternate ease-in-out;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+/* Base ring class */
+.sphere-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid rgba(59, 130, 246, 0.35);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.12);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Longitudinal Rings (Vertical) */
+.sphere-ring:nth-child(1) { transform: rotateY(0deg); }
+.sphere-ring:nth-child(2) { transform: rotateY(30deg); }
+.sphere-ring:nth-child(3) { transform: rotateY(60deg); }
+.sphere-ring:nth-child(4) { transform: rotateY(90deg); }
+.sphere-ring:nth-child(5) { transform: rotateY(120deg); }
+.sphere-ring:nth-child(6) { transform: rotateY(150deg); }
+
+/* Latitudinal Rings (Horizontal) */
+.sphere-ring.lat-1 {
+  transform: rotateX(90deg) translateZ(0);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+.sphere-ring.lat-2 {
+  transform: rotateX(90deg) translateZ(56px) scale(0.94);
+}
+.sphere-ring.lat-3 {
+  transform: rotateX(90deg) translateZ(-56px) scale(0.94);
+}
+.sphere-ring.lat-4 {
+  transform: rotateX(90deg) translateZ(117px) scale(0.71);
+}
+.sphere-ring.lat-5 {
+  transform: rotateX(90deg) translateZ(-117px) scale(0.71);
+}
+
+/* Hover Interactivity */
+.thanks-sphere-card:hover .sphere-3d {
+  animation-duration: 5s; /* Speed up rotation on hover */
+}
+
+.thanks-sphere-card:hover .sphere-ring {
+  border-color: rgba(242, 113, 35, 0.65) !important; /* Transition to FPT Orange */
+  box-shadow: 0 0 20px rgba(242, 113, 35, 0.4) !important;
+}
+
+.thanks-sphere-card:hover .sphere-core {
+  background: radial-gradient(circle, rgba(242, 113, 35, 0.95) 0%, rgba(242, 113, 35, 0) 70%);
+  width: 155px;
+  height: 155px;
+  filter: blur(15px);
+}
+
+/* Animations */
+@keyframes rotateSphere3D {
+  0% { transform: rotateY(0deg) rotateX(15deg); }
+  100% { transform: rotateY(360deg) rotateX(15deg); }
+}
+
+@keyframes sphereCorePulse {
+  0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.9); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+}
+
+/* ==========================================================================
+   SLIDE 18: TERNARY RELATIONSHIP INTERACTIVITY STYLING
+   ========================================================================== */
+#slide-18 .relational-table-interactive {
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(16px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 36px rgba(0, 34, 68, 0.05) !important;
+  transition: var(--transition-smooth) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+#slide-18 .relational-table-interactive::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: 20%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+#slide-18 .relational-table-interactive::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  right: 15%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+#slide-18 svg {
+  position: relative;
+  z-index: 1;
+}
+
+#slide-18 .diagram-entity-node,
+#slide-18 .diagram-rel-node,
+#slide-18 .diagram-attr-node {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#slide-18 .diagram-entity-node:hover rect,
+#slide-18 .diagram-entity-node.active rect {
+  fill: #eff6ff !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 6px 15px rgba(59, 130, 246, 0.2)) !important;
+}
+
+#slide-18 .diagram-entity-node:hover text,
+#slide-18 .diagram-entity-node.active text {
+  fill: var(--color-blue) !important;
+  font-weight: 900 !important;
+}
+
+#slide-18 .diagram-rel-node:hover polygon,
+#slide-18 .diagram-rel-node.active polygon {
+  fill: #faf5ff !important;
+  stroke: #8b5cf6 !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 6px 15px rgba(139, 92, 246, 0.22)) !important;
+}
+
+#slide-18 .diagram-rel-node:hover text,
+#slide-18 .diagram-rel-node.active text {
+  fill: #6b21a8 !important;
+  font-weight: 900 !important;
+}
+
+#slide-18 .diagram-attr-node:hover ellipse,
+#slide-18 .diagram-attr-node.active ellipse {
+  fill: #f0fdf4 !important;
+  stroke: #22c55e !important;
+  stroke-width: 2.2px !important;
+  filter: drop-shadow(0 4px 10px rgba(34, 197, 94, 0.15)) !important;
+}
+
+#slide-18 .diagram-attr-node:hover text,
+#slide-18 .diagram-attr-node.active text {
+  fill: #166534 !important;
+  font-weight: 700 !important;
+}
+
+/* Connection Active (flowing) state */
+#slide-18 .connection-group.active .conn-line-bg {
+  stroke: rgba(59, 130, 246, 0.15) !important;
+  stroke-width: 3.5px !important;
+}
+
+#slide-18 .connection-group.active .conn-line-flow {
+  stroke: var(--color-blue) !important;
+  stroke-width: 3.5px !important;
+  animation: flowLineAnim 1.5s linear infinite !important;
+}
+
+#slide-18 .connection-group#slide18-conn-qty.active .conn-line-flow {
+  stroke: #22c55e !important;
+}
+
+#slide-18 .diagram-entity-node.dimmed,
+#slide-18 .diagram-rel-node.dimmed,
+#slide-18 .diagram-attr-node.dimmed {
+  opacity: 0.3 !important;
+}
+
+/* Slide 18 Card Styling & Hover Integration */
+#slide-18 .slide18-interactive-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem;
+  background: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(12px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 15px rgba(0, 34, 68, 0.02) !important;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+}
+
+#slide-18 .slide18-interactive-card .card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 10px rgba(0, 34, 68, 0.03);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+#slide-18 .slide18-interactive-card .icon-blue {
+  color: var(--color-blue);
+  transition: all 0.3s ease;
+}
+
+#slide-18 .slide18-interactive-card .icon-red {
+  color: var(--color-red);
+  transition: all 0.3s ease;
+}
+
+#slide-18 .slide18-interactive-card .card-content {
+  flex-grow: 1;
+}
+
+#slide-18 .slide18-interactive-card .card-title {
+  font-family: var(--font-title);
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: var(--color-navy);
+  margin: 0 0 0.35rem 0;
+  transition: all 0.3s ease;
+}
+
+#slide-18 .slide18-interactive-card .card-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-gray);
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+/* Hover & Highlighted States */
+#slide-18 .slide18-interactive-card:hover,
+#slide-18 .slide18-interactive-card.highlighted-bullet {
+  transform: translateX(6px) translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 34, 68, 0.07) !important;
+}
+
+#slide-18 .slide18-interactive-card.ternary-card:hover,
+#slide-18 .slide18-interactive-card.ternary-card.highlighted-bullet {
+  background: rgba(239, 246, 255, 0.75) !important;
+  border-color: rgba(59, 130, 246, 0.45) !important;
+}
+
+#slide-18 .slide18-interactive-card.ternary-card:hover .card-icon,
+#slide-18 .slide18-interactive-card.ternary-card.highlighted-bullet .card-icon {
+  background: var(--color-blue);
+}
+
+#slide-18 .slide18-interactive-card.ternary-card:hover .card-icon svg,
+#slide-18 .slide18-interactive-card.ternary-card.highlighted-bullet .card-icon svg {
+  color: var(--color-white);
+  transform: scale(1.1);
+}
+
+#slide-18 .slide18-interactive-card.ternary-card:hover .card-title,
+#slide-18 .slide18-interactive-card.ternary-card.highlighted-bullet .card-title {
+  color: var(--color-blue-dark);
+}
+
+#slide-18 .slide18-interactive-card.binary-card:hover,
+#slide-18 .slide18-interactive-card.binary-card.highlighted-bullet {
+  background: rgba(254, 242, 242, 0.75) !important;
+  border-color: rgba(239, 68, 68, 0.45) !important;
+}
+
+#slide-18 .slide18-interactive-card.binary-card:hover .card-icon,
+#slide-18 .slide18-interactive-card.binary-card.highlighted-bullet .card-icon {
+  background: var(--color-red);
+}
+
+#slide-18 .slide18-interactive-card.binary-card:hover .card-icon svg,
+#slide-18 .slide18-interactive-card.binary-card.highlighted-bullet .card-icon svg {
+  color: var(--color-white);
+  transform: scale(1.1) rotate(5deg);
+}
+
+#slide-18 .slide18-interactive-card.binary-card:hover .card-title,
+#slide-18 .slide18-interactive-card.binary-card.highlighted-bullet .card-title {
+  color: #991b1b;
+}
+
+/* Slide 18 glowing background blobs */
+#slide-18 .slide18-glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+#slide-18 .slide18-glow-blob.blob-1 {
+  top: 15%;
+  right: 5%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, var(--color-blue) 0%, transparent 70%);
+  animation: floatBlob1 12s infinite alternate ease-in-out;
+}
+
+#slide-18 .slide18-glow-blob.blob-2 {
+  bottom: 8%;
+  right: 25%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+  animation: floatBlob2 15s infinite alternate ease-in-out;
+}
+
+/* Red warning decomposition flow */
+#slide-18 .binary-split-line {
+  stroke: var(--color-red) !important;
+  stroke-width: 2.5px !important;
+  stroke-dasharray: 6 6;
+  animation: flowLineAnim 1s linear infinite !important;
+}
+
+@keyframes pulseRed {
+  0% {
+    r: 24px;
+    opacity: 0.5;
+  }
+  100% {
+    r: 32px;
+    opacity: 1;
+  }
+}
+
+
+
+
+
 

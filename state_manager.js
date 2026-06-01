@@ -3,7 +3,7 @@
 // ==========================================================================
 window.StateManager = {
   currentSlide: 1,
-  totalSlides: 18,
+  totalSlides: 19,
   currentStep: 0, // Used for Step-by-step Reveal on Slide 16 (0 to 3)
 
   init() {
@@ -83,7 +83,7 @@ window.StateManager = {
     }
 
     if (this.btnNext) {
-      if (this.currentSlide === this.totalSlides && (this.currentSlide !== 16 || this.currentStep === 3)) {
+      if (this.currentSlide === this.totalSlides && (this.currentSlide !== 16 || this.currentStep === 2)) {
         this.btnNext.style.opacity = '0.4';
         this.btnNext.style.pointerEvents = 'none';
       } else {
@@ -103,7 +103,7 @@ window.StateManager = {
     } else if (this.currentSlide >= 9 && this.currentSlide <= 13) {
       const el = document.getElementById('nav-relationship');
       if (el) el.classList.add('active');
-    } else if (this.currentSlide >= 14 && this.currentSlide <= 18) {
+    } else if (this.currentSlide >= 14 && this.currentSlide <= 19) {
       const el = document.getElementById('nav-uml');
       if (el) el.classList.add('active');
     }
@@ -117,7 +117,7 @@ window.StateManager = {
 
   next() {
     // If we are on Slide 16, handle step-by-step reveal
-    if (this.currentSlide === 16 && this.currentStep < 3) {
+    if (this.currentSlide === 16 && this.currentStep < 2) {
       this.currentStep++;
       if (window.DiagramAnimations) {
         window.DiagramAnimations.syncSlide16Step();
