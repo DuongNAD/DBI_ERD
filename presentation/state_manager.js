@@ -3,7 +3,7 @@
 // ==========================================================================
 window.StateManager = {
   currentSlide: 1,
-  totalSlides: 19,
+  totalSlides: 20,
   currentStep: 0, // Used for Step-by-step Reveal on Slide 16 (0 to 3)
 
   init() {
@@ -103,7 +103,7 @@ window.StateManager = {
     } else if (this.currentSlide >= 9 && this.currentSlide <= 13) {
       const el = document.getElementById('nav-relationship');
       if (el) el.classList.add('active');
-    } else if (this.currentSlide >= 14 && this.currentSlide <= 19) {
+    } else if (this.currentSlide >= 14 && this.currentSlide <= 20) {
       const el = document.getElementById('nav-uml');
       if (el) el.classList.add('active');
     }

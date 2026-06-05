@@ -12,6 +12,9 @@
   --color-border: rgba(0, 34, 68, 0.08);
   --color-white: #ffffff;
   
+  --color-red: #ef4444;
+  --color-red-bg: #fef2f2;
+  
   --font-title: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -1906,6 +1909,26 @@ body {
   filter: drop-shadow(0 6px 15px rgba(59, 130, 246, 0.25)) !important;
 }
 
+#slide-16 #slide16-entity-emp rect {
+  stroke: var(--color-red) !important;
+}
+
+#slide-16 #slide16-entity-emp text {
+  fill: var(--color-red) !important;
+}
+
+#slide-16 #slide16-entity-emp:hover rect,
+#slide-16 #slide16-entity-emp.active rect {
+  fill: var(--color-red-bg) !important;
+  stroke: var(--color-red) !important;
+  filter: drop-shadow(0 6px 15px rgba(239, 68, 68, 0.25)) !important;
+}
+
+#slide-16 #slide16-entity-emp:hover text,
+#slide-16 #slide16-entity-emp.active text {
+  fill: var(--color-red) !important;
+}
+
 #slide-16 .diagram-rel-group:hover polygon,
 #slide-16 .diagram-rel-group.active polygon {
   fill: var(--color-blue-bg) !important;
@@ -1940,9 +1963,104 @@ body {
 }
 
 /* ==========================================================================
-   SLIDE 19: CẢM ƠN & KẾT THÚC (GLASSMORPHISM & ANIMATIONS)
+   SLIDE 19: SƠ ĐỒ ERD TRƯỜNG HỌC CHI TIẾT
    ========================================================================== */
-.slide19-container {
+.slide19-bullet {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  border-left: 3px solid transparent;
+}
+
+.slide19-bullet:hover,
+.slide19-bullet.highlighted-bullet {
+  background-color: var(--color-blue-bg) !important;
+  border-left-color: var(--color-blue) !important;
+  color: var(--color-navy) !important;
+  font-weight: 700 !important;
+  padding-left: 10px !important;
+  transform: translateX(4px);
+}
+
+/* SVG interactive nodes styles for Slide 19 */
+#slide-19 .diagram-entity-node,
+#slide-19 .diagram-rel-group,
+#slide-19 .diagram-attr-node {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+#slide-19 .diagram-entity-node:hover rect,
+#slide-19 .diagram-entity-node.active rect {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 6px 15px rgba(59, 130, 246, 0.25)) !important;
+}
+
+#slide-19 .diagram-entity-node:hover text,
+#slide-19 .diagram-entity-node.active text {
+  fill: var(--color-navy) !important;
+  font-weight: 800 !important;
+}
+
+/* Weak Entity Styling (THÂN_NHÂN) */
+#slide-19 .diagram-entity-node.weak-entity:hover rect:nth-child(2),
+#slide-19 .diagram-entity-node.weak-entity.active rect:nth-child(2) {
+  fill: var(--color-red-bg) !important;
+  stroke: var(--color-red) !important;
+}
+
+#slide-19 .diagram-entity-node.weak-entity rect {
+  transition: all 0.4s ease;
+}
+
+/* Relationship Styling */
+#slide-19 .diagram-rel-group:hover polygon,
+#slide-19 .diagram-rel-group.active polygon {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 2.5px !important;
+  filter: drop-shadow(0 4px 10px rgba(59, 130, 246, 0.2)) !important;
+}
+
+/* Attribute Styling */
+#slide-19 .diagram-attr-node:hover ellipse,
+#slide-19 .diagram-attr-node.active ellipse {
+  fill: var(--color-blue-bg) !important;
+  stroke: var(--color-blue) !important;
+  stroke-width: 2px !important;
+  filter: drop-shadow(0 3px 8px rgba(59, 130, 246, 0.15)) !important;
+}
+
+#slide-19 .diagram-entity-node.dimmed,
+#slide-19 .diagram-rel-group.dimmed,
+#slide-19 .diagram-attr-node.dimmed,
+#slide-19 .connection-group.dimmed {
+  opacity: 0.25 !important;
+}
+
+#slide-19 .connection-group.active .conn-line-bg {
+  stroke: rgba(59, 130, 246, 0.15) !important;
+  stroke-width: 3px !important;
+}
+
+#slide-19 .connection-group.active .conn-line-flow {
+  stroke: var(--color-blue) !important;
+  stroke-width: 3px !important;
+  animation: flowLineAnim 1.5s linear infinite !important;
+}
+
+#slide-19 .card-group g.active text {
+  fill: var(--color-blue) !important;
+  font-weight: 900 !important;
+}
+
+/* ==========================================================================
+   SLIDE 20: CẢM ƠN & KẾT THÚC (GLASSMORPHISM & ANIMATIONS)
+   ========================================================================== */
+.slide20-container {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
@@ -1951,7 +2069,7 @@ body {
 }
 
 /* Glowing background blobs */
-.slide19-glow-blob {
+.slide20-glow-blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
@@ -1960,7 +2078,7 @@ body {
   pointer-events: none;
 }
 
-.slide19-glow-blob.blob-1 {
+.slide20-glow-blob.blob-1 {
   top: -10%;
   left: 20%;
   width: 300px;
@@ -1969,7 +2087,7 @@ body {
   animation: floatBlob1 12s infinite alternate ease-in-out;
 }
 
-.slide19-glow-blob.blob-2 {
+.slide20-glow-blob.blob-2 {
   bottom: -10%;
   right: 15%;
   width: 350px;
@@ -1990,13 +2108,13 @@ body {
   100% { transform: translate(30px, 20px) scale(1.1); }
 }
 
-/* Slide 19 content layouts */
-.slide19-left, .slide19-right {
+/* Slide 20 content layouts */
+.slide20-left, .slide20-right {
   position: relative;
   z-index: 2;
 }
 
-.slide19-title {
+.slide20-title {
   font-family: var(--font-title);
   font-size: 3.8rem !important;
   font-weight: 850;
@@ -2015,7 +2133,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-.slide19-subtitle {
+.slide20-subtitle {
   font-size: 1.15rem;
   color: var(--color-gray);
   max-width: 95%;
@@ -2025,7 +2143,7 @@ body {
 }
 
 /* Credits styling */
-.slide19-credits-content {
+.slide20-credits-content {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -2122,7 +2240,7 @@ body {
 }
 
 /* ==========================================================================
-   SLIDE 19: 3D ROTATING HOLOGRAM SPHERE STYLING
+   SLIDE 20: 3D ROTATING HOLOGRAM SPHERE STYLING
    ========================================================================== */
 .thanks-sphere-card {
   display: flex;

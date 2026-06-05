@@ -22,6 +22,7 @@ window.DiagramAnimations = {
     this.setupSlide15Interactivity();
     this.setupSlide18Interactivity();
     this.setupSlide19Interactivity();
+    this.setupSlide20Interactivity();
   },
 
   // 1. Lazy Load & SVG Scaling Manager
@@ -60,8 +61,8 @@ window.DiagramAnimations = {
             <g class="entity-group" style="transition: opacity 0.5s ease-in-out; opacity: 1;">
               <!-- NHÂN_VIÊN -->
               <g id="slide16-entity-emp" class="diagram-entity-node">
-                <rect x="80" y="255" width="140" height="50" fill="url(#entityGrad)" stroke="var(--color-navy)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
-                <text x="150" y="285" font-family="var(--font-title)" font-weight="800" font-size="13.5" fill="var(--color-navy)" text-anchor="middle">NHÂN_VIÊN</text>
+                <rect x="80" y="255" width="140" height="50" fill="url(#entityGrad)" stroke="var(--color-red)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
+                <text x="150" y="285" font-family="var(--font-title)" font-weight="800" font-size="13.5" fill="var(--color-red)" text-anchor="middle">NHÂN_VIÊN</text>
               </g>
               
               <!-- PHÒNG_BAN -->
@@ -202,6 +203,7 @@ window.DiagramAnimations = {
             </g>
           </svg>`;
         this.loadedDiagrams['company'] = true;
+        this.setupSlide16Interactivity();
       }
     }
 
@@ -294,6 +296,211 @@ window.DiagramAnimations = {
         `;
         this.loadedDiagrams['ternary'] = true;
         this.bindSlide18Events();
+      }
+    }
+
+    // Slide 19 Lazy Loading: Detailed School ERD
+    if (currentSlide === 19 && !this.loadedDiagrams['school']) {
+      const placeholder = document.getElementById('school-lazy-placeholder');
+      if (placeholder) {
+        placeholder.outerHTML = `
+          <svg width="100%" height="100%" viewBox="0 10 900 480" style="color: var(--color-navy); width: 100%; height: auto; max-height: 100%; overflow: visible;">
+            <defs>
+              <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0, 34, 68, 0.1)"/>
+              </filter>
+              <linearGradient id="entityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#f8fafc" />
+              </linearGradient>
+              <linearGradient id="weakEntityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#fef2f2" />
+              </linearGradient>
+              <linearGradient id="relGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#f0f9ff" />
+              </linearGradient>
+            </defs>
+
+            <!-- CONNECTIONS -->
+            <!-- TRỰC_THUỘC -->
+            <g id="slide19-conn-tructhuoc" class="connection-group">
+              <line class="conn-line-bg" x1="125" y1="106" x2="125" y2="240" stroke="var(--color-navy)" stroke-width="2"></line>
+              <line class="conn-line-flow" x1="125" y1="106" x2="125" y2="240"></line>
+            </g>
+            <!-- MỞ -->
+            <g id="slide19-conn-mo" class="connection-group">
+              <line class="conn-line-bg" x1="190" y1="83" x2="385" y2="83" stroke="var(--color-navy)" stroke-width="2"></line>
+              <line class="conn-line-flow" x1="190" y1="83" x2="385" y2="83"></line>
+            </g>
+            <!-- CHỦ_NHIỆM -->
+            <g id="slide19-conn-chunhiem" class="connection-group">
+              <line class="conn-line-bg" x1="190" y1="245" x2="385" y2="95" stroke="var(--color-navy)" stroke-width="2"></line>
+              <line class="conn-line-flow" x1="190" y1="245" x2="385" y2="95"></line>
+            </g>
+            <!-- THUỘC_LỚP -->
+            <g id="slide19-conn-thuoclop" class="connection-group">
+              <line class="conn-line-bg" x1="450" y1="106" x2="450" y2="240" stroke="var(--color-navy)" stroke-width="2"></line>
+              <line class="conn-line-flow" x1="450" y1="106" x2="450" y2="240"></line>
+            </g>
+            <!-- KẾT_QUẢ (HỌC) -->
+            <g id="slide19-conn-ketqua" class="connection-group">
+              <line class="conn-line-bg" x1="515" y1="263" x2="710" y2="263" stroke="var(--color-navy)" stroke-width="2"></line>
+              <line class="conn-line-flow" x1="515" y1="263" x2="710" y2="263"></line>
+              <line class="conn-line-bg" x1="615" y1="263" x2="615" y2="330" stroke="var(--color-navy)" stroke-width="1.5" stroke-dasharray="3 3"></line>
+              <line class="conn-line-flow" x1="615" y1="263" x2="615" y2="330" stroke-dasharray="3 3"></line>
+            </g>
+            <!-- GIẢNG_DẠY -->
+            <g id="slide19-conn-giangday" class="connection-group">
+              <path class="conn-line-bg" d="M 125,286 V 358 H 775 V 286" fill="none" stroke="var(--color-navy)" stroke-width="2"></path>
+              <path class="conn-line-flow" d="M 125,286 V 358 H 775 V 286" fill="none"></path>
+            </g>
+            <!-- BẢO_LÃNH -->
+            <g id="slide19-conn-baolanh" class="connection-group">
+              <line class="conn-line-bg" x1="450" y1="286" x2="450" y2="420" stroke="var(--color-navy)" stroke-width="2"></line>
+              <line class="conn-line-flow" x1="450" y1="286" x2="450" y2="420"></line>
+            </g>
+
+            <!-- RELATIONSHIPS (Diamonds) -->
+            <!-- TRỰC_THUỘC -->
+            <g id="slide19-rel-tructhuoc" class="diagram-rel-group">
+              <polygon points="125,150 155,168 125,186 95,168" fill="url(#relGrad)" stroke="var(--color-navy)" stroke-width="2" filter="url(#shadow)"></polygon>
+              <text x="125" y="172" font-family="var(--font-title)" font-weight="800" font-size="8.5" fill="var(--color-navy)" text-anchor="middle">TRỰC_THUỘC</text>
+            </g>
+            <!-- MỞ -->
+            <g id="slide19-rel-mo" class="diagram-rel-group">
+              <polygon points="285,65 310,83 285,101 260,83" fill="url(#relGrad)" stroke="var(--color-navy)" stroke-width="2" filter="url(#shadow)"></polygon>
+              <text x="285" y="87" font-family="var(--font-title)" font-weight="800" font-size="9" fill="var(--color-navy)" text-anchor="middle">MỞ</text>
+            </g>
+            <!-- CHỦ_NHIỆM -->
+            <g id="slide19-rel-chunhiem" class="diagram-rel-group">
+              <polygon points="285,150 315,168 285,186 255,168" fill="url(#relGrad)" stroke="var(--color-navy)" stroke-width="2" filter="url(#shadow)"></polygon>
+              <text x="285" y="172" font-family="var(--font-title)" font-weight="800" font-size="8.5" fill="var(--color-navy)" text-anchor="middle">CHỦ_NHIỆM</text>
+            </g>
+            <!-- THUỘC_LỚP -->
+            <g id="slide19-rel-thuoclop" class="diagram-rel-group">
+              <polygon points="450,150 475,168 450,186 425,168" fill="url(#relGrad)" stroke="var(--color-navy)" stroke-width="2" filter="url(#shadow)"></polygon>
+              <text x="450" y="172" font-family="var(--font-title)" font-weight="800" font-size="9" fill="var(--color-navy)" text-anchor="middle">THUỘC</text>
+            </g>
+            <!-- KẾT_QUẢ -->
+            <g id="slide19-rel-ketqua" class="diagram-rel-group">
+              <polygon points="615,245 645,263 615,281 585,263" fill="url(#relGrad)" stroke="var(--color-navy)" stroke-width="2" filter="url(#shadow)"></polygon>
+              <text x="615" y="267" font-family="var(--font-title)" font-weight="800" font-size="8.5" fill="var(--color-navy)" text-anchor="middle">KẾT_QUẢ</text>
+            </g>
+            <!-- GIẢNG_DẠY -->
+            <g id="slide19-rel-giangday" class="diagram-rel-group">
+              <polygon points="285,340 315,358 285,376 255,358" fill="url(#relGrad)" stroke="var(--color-navy)" stroke-width="2" filter="url(#shadow)"></polygon>
+              <text x="285" y="362" font-family="var(--font-title)" font-weight="800" font-size="8.5" fill="var(--color-navy)" text-anchor="middle">GIẢNG_DẠY</text>
+            </g>
+            <!-- BẢO_LÃNH (Double Diamond for Identifying) -->
+            <g id="slide19-rel-baolanh" class="diagram-rel-group">
+              <polygon points="450,335 480,353 450,371 420,353" fill="none" stroke="var(--color-navy)" stroke-width="2" filter="url(#shadow)"></polygon>
+              <polygon points="450,338 476,353 450,368 424,353" fill="url(#relGrad)" stroke="var(--color-navy)" stroke-width="1"></polygon>
+              <text x="450" y="357" font-family="var(--font-title)" font-weight="800" font-size="8.5" fill="var(--color-navy)" text-anchor="middle">BẢO_LÃNH</text>
+            </g>
+
+            <!-- CARDINALITIES -->
+            <g class="card-group">
+              <!-- TRỰC_THUỘC -->
+              <text x="133" y="125" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">1</text>
+              <text x="133" y="228" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">N</text>
+              <!-- MỞ -->
+              <text x="205" y="77" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">1</text>
+              <text x="370" y="77" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">N</text>
+              <!-- CHỦ_NHIỆM -->
+              <text x="205" y="222" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">1</text>
+              <text x="368" y="112" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">1</text>
+              <!-- THUỘC_LỚP -->
+              <text x="458" y="125" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">1</text>
+              <text x="458" y="228" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">N</text>
+              <!-- KẾT_QUẢ -->
+              <text x="532" y="255" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">N</text>
+              <text x="695" y="255" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">M</text>
+              <!-- GIẢNG_DẠY -->
+              <text x="135" y="315" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">N</text>
+              <text x="785" y="315" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">M</text>
+              <!-- BẢO_LÃNH -->
+              <text x="458" y="310" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">1</text>
+              <text x="458" y="412" font-family="var(--font-title)" font-weight="800" font-size="14" fill="var(--color-blue)">N</text>
+            </g>
+
+            <!-- ENTITIES (Rects) -->
+            <!-- KHOA -->
+            <g id="slide19-entity-khoa" class="diagram-entity-node">
+              <rect x="60" y="60" width="130" height="46" fill="url(#entityGrad)" stroke="var(--color-navy)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
+              <text x="125" y="88" font-family="var(--font-title)" font-weight="800" font-size="12.5" fill="var(--color-navy)" text-anchor="middle">KHOA</text>
+            </g>
+            <!-- GIÁO_VIÊN -->
+            <g id="slide19-entity-gv" class="diagram-entity-node">
+              <rect x="60" y="240" width="130" height="46" fill="url(#entityGrad)" stroke="var(--color-navy)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
+              <text x="125" y="268" font-family="var(--font-title)" font-weight="800" font-size="12.5" fill="var(--color-navy)" text-anchor="middle">GIÁO_VIÊN</text>
+            </g>
+            <!-- LỚP_HỌC -->
+            <g id="slide19-entity-lh" class="diagram-entity-node">
+              <rect x="385" y="60" width="130" height="46" fill="url(#entityGrad)" stroke="var(--color-navy)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
+              <text x="450" y="88" font-family="var(--font-title)" font-weight="800" font-size="12.5" fill="var(--color-navy)" text-anchor="middle">LỚP_HỌC</text>
+            </g>
+            <!-- SINH_VIÊN -->
+            <g id="slide19-entity-sv" class="diagram-entity-node">
+              <rect x="385" y="240" width="130" height="46" fill="url(#entityGrad)" stroke="var(--color-navy)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
+              <text x="450" y="268" font-family="var(--font-title)" font-weight="800" font-size="12.5" fill="var(--color-navy)" text-anchor="middle">SINH_VIÊN</text>
+            </g>
+            <!-- THÂN_NHÂN (Weak Entity) -->
+            <g id="slide19-entity-tn" class="diagram-entity-node weak-entity">
+              <rect x="385" y="420" width="130" height="46" fill="#ffffff" stroke="var(--color-navy)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
+              <rect x="389" y="424" width="122" height="38" fill="url(#weakEntityGrad)" stroke="var(--color-navy)" stroke-width="1.2" rx="4"></rect>
+              <text x="450" y="448" font-family="var(--font-title)" font-weight="800" font-size="12.5" fill="var(--color-navy)" text-anchor="middle">THÂN_NHÂN</text>
+            </g>
+            <!-- MÔN_HỌC -->
+            <g id="slide19-entity-mh" class="diagram-entity-node">
+              <rect x="710" y="240" width="130" height="46" fill="url(#entityGrad)" stroke="var(--color-navy)" stroke-width="2.5" rx="6" filter="url(#shadow)"></rect>
+              <text x="775" y="268" font-family="var(--font-title)" font-weight="800" font-size="12.5" fill="var(--color-navy)" text-anchor="middle">MÔN_HỌC</text>
+            </g>
+
+            <!-- ATTRIBUTES -->
+            <!-- MãSV -->
+            <g id="slide19-conn-masv" class="connection-group">
+              <line class="conn-line-bg" x1="300" y1="210" x2="385" y2="250" stroke="var(--color-navy)" stroke-width="1.5"></line>
+              <line class="conn-line-flow" x1="300" y1="210" x2="385" y2="250"></line>
+            </g>
+            <g id="slide19-attr-masv" class="diagram-attr-node">
+              <ellipse cx="300" cy="210" rx="32" ry="16" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.5" filter="url(#shadow)"></ellipse>
+              <text x="300" y="214" font-family="var(--font-mono)" font-size="11" fill="var(--color-navy)" text-anchor="middle" text-decoration="underline">MãSV</text>
+            </g>
+
+            <!-- {SốĐT} -->
+            <g id="slide19-conn-sodt" class="connection-group">
+              <line class="conn-line-bg" x1="300" y1="275" x2="385" y2="263" stroke="var(--color-navy)" stroke-width="1.5"></line>
+              <line class="conn-line-flow" x1="300" y1="275" x2="385" y2="263"></line>
+            </g>
+            <g id="slide19-attr-sodt" class="diagram-attr-node">
+              <ellipse cx="300" cy="275" rx="32" ry="16" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.8" filter="url(#shadow)"></ellipse>
+              <ellipse cx="300" cy="275" rx="27" ry="12" fill="none" stroke="var(--color-navy)" stroke-width="0.8"></ellipse>
+              <text x="300" y="279" font-family="var(--font-body)" font-size="10.5" fill="var(--color-navy)" text-anchor="middle">SốĐT</text>
+            </g>
+
+            <!-- HọTên (Weak Partial Key) -->
+            <g id="slide19-conn-hotentn" class="connection-group">
+              <line class="conn-line-bg" x1="300" y1="443" x2="385" y2="443" stroke="var(--color-navy)" stroke-width="1.5"></line>
+              <line class="conn-line-flow" x1="300" y1="443" x2="385" y2="443"></line>
+            </g>
+            <g id="slide19-attr-hotentn" class="diagram-attr-node">
+              <ellipse cx="300" cy="443" rx="32" ry="16" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.5" filter="url(#shadow)"></ellipse>
+              <text x="300" y="447" font-family="var(--font-body)" font-size="10.5" fill="var(--color-navy)" text-anchor="middle">HọTên</text>
+              <line x1="282" y1="452" x2="318" y2="452" stroke="var(--color-navy)" stroke-width="1.2" stroke-dasharray="3 2"></line>
+            </g>
+
+            <!-- ĐiểmThi -->
+            <g id="slide19-attr-diemthi" class="diagram-attr-node">
+              <ellipse cx="615" cy="345" rx="32" ry="15" fill="#ffffff" stroke="var(--color-navy)" stroke-width="1.5" filter="url(#shadow)"></ellipse>
+              <text x="615" y="349" font-family="var(--font-body)" font-size="10.5" fill="var(--color-navy)" text-anchor="middle">ĐiểmThi</text>
+            </g>
+
+          </svg>
+        `;
+        this.loadedDiagrams['school'] = true;
+        this.bindSlide19Events();
       }
     }
   },
@@ -2156,9 +2363,206 @@ window.DiagramAnimations = {
     }
   },
 
-  // 7.19. Interactive sync for Slide 19 (3D Hologram Sphere & Q&A)
+  // 7.19. Interactive sync for Slide 19 (School ERD)
   setupSlide19Interactivity() {
-    const qaBtn = document.getElementById('btn-slide19-qa');
+    this.bindSlide19Events();
+  },
+
+  bindSlide19Events() {
+    const slide19 = document.getElementById('slide-19');
+    if (!slide19) return;
+
+    // SVG Nodes
+    const khoaNode = document.getElementById('slide19-entity-khoa');
+    const gvNode = document.getElementById('slide19-entity-gv');
+    const lhNode = document.getElementById('slide19-entity-lh');
+    const svNode = document.getElementById('slide19-entity-sv');
+    const tnNode = document.getElementById('slide19-entity-tn');
+    const mhNode = document.getElementById('slide19-entity-mh');
+
+    const relTructhuoc = document.getElementById('slide19-rel-tructhuoc');
+    const relMo = document.getElementById('slide19-rel-mo');
+    const relChunhiem = document.getElementById('slide19-rel-chunhiem');
+    const relThuoclop = document.getElementById('slide19-rel-thuoclop');
+    const relKetqua = document.getElementById('slide19-rel-ketqua');
+    const relGiangday = document.getElementById('slide19-rel-giangday');
+    const relBaolanh = document.getElementById('slide19-rel-baolanh');
+
+    // Attributes
+    const attrMasv = document.getElementById('slide19-attr-masv');
+    const attrSodt = document.getElementById('slide19-attr-sodt');
+    const attrHotentn = document.getElementById('slide19-attr-hotentn');
+    const attrDiemthi = document.getElementById('slide19-attr-diemthi');
+
+    // Connections
+    const connTructhuoc = document.getElementById('slide19-conn-tructhuoc');
+    const connMo = document.getElementById('slide19-conn-mo');
+    const connChunhiem = document.getElementById('slide19-conn-chunhiem');
+    const connThuoclop = document.getElementById('slide19-conn-thuoclop');
+    const connKetqua = document.getElementById('slide19-conn-ketqua');
+    const connGiangday = document.getElementById('slide19-conn-giangday');
+    const connBaolanh = document.getElementById('slide19-conn-baolanh');
+    const connMasv = document.getElementById('slide19-conn-masv');
+    const connSodt = document.getElementById('slide19-conn-sodt');
+    const connHotentn = document.getElementById('slide19-conn-hotentn');
+
+    // HTML Bullets
+    const bulletKhoa = document.getElementById('slide19-bullet-khoa');
+    const bulletGvLh = document.getElementById('slide19-bullet-gv-lh');
+    const bulletSvLh = document.getElementById('slide19-bullet-sv-lh');
+    const bulletSvMh = document.getElementById('slide19-bullet-sv-mh');
+    const bulletGvMh = document.getElementById('slide19-bullet-gv-mh');
+    const bulletSvTn = document.getElementById('slide19-bullet-sv-tn');
+
+    const allNodes = [
+      khoaNode, gvNode, lhNode, svNode, tnNode, mhNode,
+      relTructhuoc, relMo, relChunhiem, relThuoclop, relKetqua, relGiangday, relBaolanh,
+      attrMasv, attrSodt, attrHotentn, attrDiemthi
+    ];
+
+    const allConns = [
+      connTructhuoc, connMo, connChunhiem, connThuoclop, connKetqua, connGiangday, connBaolanh,
+      connMasv, connSodt, connHotentn
+    ];
+
+    const allBullets = [bulletKhoa, bulletGvLh, bulletSvLh, bulletSvMh, bulletGvMh, bulletSvTn];
+
+    const clearAll = () => {
+      allNodes.forEach(n => { if (n) n.classList.remove('active', 'dimmed'); });
+      allConns.forEach(c => { if (c) c.classList.remove('active', 'dimmed'); });
+      allBullets.forEach(b => { if (b) b.classList.remove('highlighted-bullet'); });
+    };
+
+    const highlightConcept = (activeNodes, activeConns, activeBullets) => {
+      allNodes.forEach(n => {
+        if (n) {
+          if (activeNodes.includes(n)) n.classList.add('active');
+          else n.classList.add('dimmed');
+        }
+      });
+      allConns.forEach(c => {
+        if (c) {
+          if (activeConns.includes(c)) c.classList.add('active');
+          else c.classList.add('dimmed');
+        }
+      });
+      allBullets.forEach(b => {
+        if (b) {
+          if (activeBullets.includes(b)) b.classList.add('highlighted-bullet');
+        }
+      });
+    };
+
+    // Bullets Hover Listeners
+    if (bulletKhoa) {
+      bulletKhoa.addEventListener('mouseenter', () => {
+        highlightConcept([khoaNode, lhNode, gvNode, relTructhuoc, relMo], [connTructhuoc, connMo], [bulletKhoa]);
+      });
+      bulletKhoa.addEventListener('mouseleave', clearAll);
+    }
+    if (bulletGvLh) {
+      bulletGvLh.addEventListener('mouseenter', () => {
+        highlightConcept([gvNode, lhNode, relChunhiem], [connChunhiem], [bulletGvLh]);
+      });
+      bulletGvLh.addEventListener('mouseleave', clearAll);
+    }
+    if (bulletSvLh) {
+      bulletSvLh.addEventListener('mouseenter', () => {
+        highlightConcept([svNode, lhNode, relThuoclop], [connThuoclop], [bulletSvLh]);
+      });
+      bulletSvLh.addEventListener('mouseleave', clearAll);
+    }
+    if (bulletSvMh) {
+      bulletSvMh.addEventListener('mouseenter', () => {
+        highlightConcept([svNode, mhNode, relKetqua, attrDiemthi, attrMasv, attrSodt], [connKetqua, connMasv, connSodt], [bulletSvMh]);
+      });
+      bulletSvMh.addEventListener('mouseleave', clearAll);
+    }
+    if (bulletGvMh) {
+      bulletGvMh.addEventListener('mouseenter', () => {
+        highlightConcept([gvNode, mhNode, relGiangday], [connGiangday], [bulletGvMh]);
+      });
+      bulletGvMh.addEventListener('mouseleave', clearAll);
+    }
+    if (bulletSvTn) {
+      bulletSvTn.addEventListener('mouseenter', () => {
+        highlightConcept([svNode, tnNode, relBaolanh, attrHotentn], [connBaolanh, connHotentn], [bulletSvTn]);
+      });
+      bulletSvTn.addEventListener('mouseleave', clearAll);
+    }
+
+    // SVG Element Hover Listeners
+    if (khoaNode) {
+      khoaNode.addEventListener('mouseenter', () => {
+        highlightConcept([khoaNode, lhNode, gvNode, relTructhuoc, relMo], [connTructhuoc, connMo], [bulletKhoa]);
+      });
+      khoaNode.addEventListener('mouseleave', clearAll);
+    }
+    if (gvNode) {
+      gvNode.addEventListener('mouseenter', () => {
+        highlightConcept([gvNode, khoaNode, lhNode, mhNode, relTructhuoc, relChunhiem, relGiangday], [connTructhuoc, connChunhiem, connGiangday], [bulletKhoa, bulletGvLh, bulletGvMh]);
+      });
+      gvNode.addEventListener('mouseleave', clearAll);
+    }
+    if (lhNode) {
+      lhNode.addEventListener('mouseenter', () => {
+        highlightConcept([lhNode, khoaNode, gvNode, svNode, relMo, relChunhiem, relThuoclop], [connMo, connChunhiem, connThuoclop], [bulletKhoa, bulletGvLh, bulletSvLh]);
+      });
+      lhNode.addEventListener('mouseleave', clearAll);
+    }
+    if (svNode) {
+      svNode.addEventListener('mouseenter', () => {
+        highlightConcept([svNode, lhNode, mhNode, tnNode, relThuoclop, relKetqua, relBaolanh, attrMasv, attrSodt, attrDiemthi, attrHotentn], [connThuoclop, connKetqua, connBaolanh, connMasv, connSodt], [bulletSvLh, bulletSvMh, bulletSvTn]);
+      });
+      svNode.addEventListener('mouseleave', clearAll);
+    }
+    if (mhNode) {
+      mhNode.addEventListener('mouseenter', () => {
+        highlightConcept([mhNode, svNode, gvNode, relKetqua, relGiangday, attrDiemthi], [connKetqua, connGiangday], [bulletSvMh, bulletGvMh]);
+      });
+      mhNode.addEventListener('mouseleave', clearAll);
+    }
+    if (tnNode) {
+      tnNode.addEventListener('mouseenter', () => {
+        highlightConcept([tnNode, svNode, relBaolanh, attrHotentn], [connBaolanh, connHotentn], [bulletSvTn]);
+      });
+      tnNode.addEventListener('mouseleave', clearAll);
+    }
+
+    // Relationships
+    if (relTructhuoc) {
+      relTructhuoc.addEventListener('mouseenter', () => highlightConcept([khoaNode, gvNode, relTructhuoc], [connTructhuoc], [bulletKhoa]));
+      relTructhuoc.addEventListener('mouseleave', clearAll);
+    }
+    if (relMo) {
+      relMo.addEventListener('mouseenter', () => highlightConcept([khoaNode, lhNode, relMo], [connMo], [bulletKhoa]));
+      relMo.addEventListener('mouseleave', clearAll);
+    }
+    if (relChunhiem) {
+      relChunhiem.addEventListener('mouseenter', () => highlightConcept([gvNode, lhNode, relChunhiem], [connChunhiem], [bulletGvLh]));
+      relChunhiem.addEventListener('mouseleave', clearAll);
+    }
+    if (relThuoclop) {
+      relThuoclop.addEventListener('mouseenter', () => highlightConcept([svNode, lhNode, relThuoclop], [connThuoclop], [bulletSvLh]));
+      relThuoclop.addEventListener('mouseleave', clearAll);
+    }
+    if (relKetqua) {
+      relKetqua.addEventListener('mouseenter', () => highlightConcept([svNode, mhNode, relKetqua, attrDiemthi], [connKetqua], [bulletSvMh]));
+      relKetqua.addEventListener('mouseleave', clearAll);
+    }
+    if (relGiangday) {
+      relGiangday.addEventListener('mouseenter', () => highlightConcept([gvNode, mhNode, relGiangday], [connGiangday], [bulletGvMh]));
+      relGiangday.addEventListener('mouseleave', clearAll);
+    }
+    if (relBaolanh) {
+      relBaolanh.addEventListener('mouseenter', () => highlightConcept([svNode, tnNode, relBaolanh, attrHotentn], [connBaolanh, connHotentn], [bulletSvTn]));
+      relBaolanh.addEventListener('mouseleave', clearAll);
+    }
+  },
+
+  // 7.20. Interactive sync for Slide 20 (3D Hologram Sphere & Q&A)
+  setupSlide20Interactivity() {
+    const qaBtn = document.getElementById('btn-slide20-qa');
     const sphere3d = document.querySelector('.sphere-3d');
     const sphereCore = document.querySelector('.sphere-core');
     const rings = document.querySelectorAll('.sphere-ring');
@@ -2179,7 +2583,7 @@ window.DiagramAnimations = {
           ring.style.boxShadow = '0 0 20px rgba(242, 113, 35, 0.5)';
         });
 
-        const text = document.querySelector('.slide19-subtitle');
+        const text = document.querySelector('.slide20-subtitle');
         if (text) {
           const originalText = text.textContent;
           text.textContent = "Nhóm 3 xin mời thầy cô và các bạn đặt câu hỏi thảo luận! 💬";

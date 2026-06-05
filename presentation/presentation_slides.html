@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBMS: Từ Thực thể ERD sang Lược đồ Quan hệ Bệnh viện</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & THEMING
+       ========================================================================== */
+    :root {
+      --bg-main: #05070c;
+      --bg-slide: rgba(13, 20, 35, 0.5);
+      --bg-card: rgba(21, 27, 42, 0.55);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(59, 130, 246, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      /* Subsystem Colors for visuals */
+      --color-blue: #38bdf8;
+      --color-teal: #2dd4bf;
+      --color-purple: #a78bfa;
+      --color-orange: #fb923c;
+      --color-rose: #f43f5e;
+      --color-indigo: #6366f1;
+      
+      --font-title: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      position: relative;
+    }
+
+    /* Decorative glowing background blobs */
+    .glow-blob {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.09) 0%, transparent 70%);
+      filter: blur(50px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-blob-1 { top: -200px; left: -100px; }
+    .glow-blob-2 { bottom: -200px; right: -100px; }
+    .glow-blob-3 { top: 30%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(45, 212, 191, 0.06) 0%, transparent 70%); }
+
+    /* Header Nav */
+    header {
+      background: rgba(13, 17, 29, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .chapter-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #818cf8;
+      padding: 0.15rem 0.55rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-shortcuts {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 1.2rem;
+      font-weight: 500;
+    }
+
+    .key-cap {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+      padding: 0.05rem 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-main);
+    }
+
+    /* Presentation Area */
+    .slides-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1500px;
+      z-index: 1;
+      overflow: hidden;
+      padding: 1.5rem 2.5rem;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1550px;
+      height: 100%;
+      max-height: 800px;
+      background-color: var(--bg-slide);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      padding: 2.5rem 3rem;
+      display: none;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      opacity: 0;
+      transform: scale(0.96) translateY(15px);
+      transition: var(--transition-smooth);
+      overflow: hidden;
+    }
+
+    .slide.active {
+      display: grid;
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      z-index: 5;
+    }
+
+    .slide-layout-split {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .slide-layout-uneven {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+
+    .slide.maximized {
+      grid-template-columns: 1fr !important;
+    }
+
+    .slide.maximized .info-panel {
+      display: none !important;
+    }
+
+    .slide.maximized .diagram-panel {
+      height: 100% !important;
+      width: 100% !important;
+    }
+
+    .slide.maximized .diagram-img {
+      max-width: 98% !important;
+      max-height: 98% !important;
+    }
+
+    /* Left Side Elements (Diagram Containers) */
+    .diagram-panel {
+      position: relative;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.25);
+      transition: var(--transition-smooth);
+    }
+
+    .diagram-img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .diagram-img:hover {
+      transform: scale(1.015);
+    }
+
+    .diagram-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: #05070c;
+    }
+
+    .panel-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 100;
+    }
+
+    .action-mini-btn {
+      background: rgba(13, 20, 35, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 0.75rem;
+      font-family: var(--font-title);
+      font-weight: 700;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition-smooth);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .action-mini-btn:hover {
+      background: #3b82f6;
+      border-color: #60a5fa;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .iframe-overlay-tip {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(13, 20, 35, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      padding: 0.45rem 1rem;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      color: var(--color-blue);
+      font-weight: 600;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+
+    /* Right Side Elements (Explanations) */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      padding-left: 0.5rem;
+    }
+
+    .info-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .info-category {
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-indigo);
+      margin-bottom: 0.35rem;
+    }
+
+    .info-title {
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 1.85rem;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .info-desc-paragraph {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 0.5rem;
+    }
+
+    .info-body-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      overflow-y: auto;
+      max-height: 380px;
+      padding-right: 0.5rem;
+    }
+
+    /* Scrollbar Styling */
+    .info-body-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .info-body-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .info-body-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .info-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      transition: var(--transition-smooth);
+    }
+
+    .info-item:hover {
+      border-color: var(--border-glow);
+      background: rgba(21, 27, 42, 0.8);
+      transform: translateX(4px);
+    }
+
+    .info-item-bullet {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .info-item-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .info-item-title {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .info-item-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* 3D Asset Container styling */
+    .asset-image-card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(99, 102, 241, 0.07) 0%, transparent 70%);
+      position: relative;
+    }
+
+    .asset-3d-img {
+      max-width: 90%;
+      max-height: 85%;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6)) drop-shadow(0 0 20px rgba(56, 189, 248, 0.15));
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(0.5deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* Slide specific styles */
+    /* Slide 1: Welcome */
+    .welcome-text-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .welcome-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .welcome-tagline {
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-blue);
+    }
+
+    .slide-title-large {
+      font-family: var(--font-title);
+      font-size: 2.85rem;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #f8fafc 10%, #cbd5e1 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .welcome-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .welcome-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      transition: var(--transition-smooth);
+    }
+
+    .welcome-card:hover {
+      border-color: var(--color-blue);
+      transform: translateY(-3px);
+    }
+
+    .welcome-card-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .welcome-card-title {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .welcome-card-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Grid Layout Slide 5 (Mapping Rules) */
+    .mapping-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+      height: calc(100% - 4.5rem);
+      margin-top: 1rem;
+    }
+
+    .mapping-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-smooth);
+    }
+
+    .mapping-card:hover {
+      border-color: var(--accent-color, var(--color-blue));
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .mapping-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .mapping-card-icon {
+      font-size: 1.8rem;
+    }
+
+    .mapping-card-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-title);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--accent-color, var(--text-main));
+    }
+
+    .mapping-card-title {
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .mapping-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      flex: 1;
+      margin-bottom: 1.2rem;
+    }
+
+    .mapping-box-compare {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .compare-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .compare-label {
+      color: var(--text-muted);
+    }
+
+    .compare-val {
+      font-weight: 600;
+      color: var(--accent-color, var(--text-main));
+    }
+
+    .mapping-compare-arrow {
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.75rem;
+      margin: 0.05rem 0;
+    }
+
+    /* Final Slide Call to Action */
+    .action-btn-container {
+      margin-top: 1.25rem;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, var(--color-indigo) 0%, #4f46e5 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-family: var(--font-title);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.75rem 1.75rem;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+      transition: var(--transition-smooth);
+      animation: pulse 3s infinite;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.55);
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35); }
+      50% { box-shadow: 0 4px 25px rgba(79, 70, 229, 0.65); }
+      100% { box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35); }
+    }
+
+    /* Navigation & Indicators Bar */
+    .controls-bar {
+      background: rgba(13, 17, 29, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-color);
+      padding: 1.1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .indicators {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .dot.active {
+      background: var(--color-blue);
+      width: 30px;
+      border-radius: 6px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--text-muted);
+    }
+
+    .slide-num-indicator {
+      font-family: var(--font-title);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin: 0 0.6rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Animatable slide elements */
+    .slide-content-side {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .slide.active .slide-content-side {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide.active .slide-content-side:nth-child(2) {
+      transition-delay: 0.15s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Glow effects behind elements -->
+  <div class="glow-blob glow-blob-1"></div>
+  <div class="glow-blob glow-blob-2"></div>
+  <div class="glow-blob glow-blob-3"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      Hệ thống Quản lý Bệnh viện <span class="chapter-badge">DBMS 101</span>
+    </div>
+    <div class="nav-shortcuts">
+      <span>Trình chiếu: <span class="key-cap">◀</span> / <span class="key-cap">▶</span> hoặc <span class="key-cap">Space</span></span>
+      <span>Hủy chọn sơ đồ: <span class="key-cap">Click Nền</span></span>
+    </div>
+  </header>
+
+  <!-- Presentation Slides Workspace -->
+  <main class="slides-container">
+    
+    <!-- SLIDE 1: WELCOME & INTRO (Trang bìa công nghệ) -->
+    <section class="slide active slide-layout-split" id="slide-1">
+      <!-- Left side: Welcome text -->
+      <div class="welcome-text-side slide-content-side">
+        <div class="welcome-title-group">
+          <span class="welcome-tagline">Báo cáo chuyên đề - Chương 3</span>
+          <h1 class="slide-title-large">
+            Thiết kế Cơ sở Dữ liệu:<br>Từ Sơ đồ Thực thể ERD<br>sang Lược đồ Quan hệ
+          </h1>
+        </div>
+        <p class="slide-subtitle">
+          Khảo sát, thiết kế và tối ưu cấu trúc dữ liệu y khoa mức khái niệm độc lập với DBMS, sau đó chuẩn hóa sang hệ thống dạng bảng vật lý tối ưu.
+        </p>
+        
+        <div class="welcome-mini-grid">
+          <!-- Feature 1 -->
+          <div class="welcome-card" style="border-top: 3px solid var(--color-blue);">
+            <div class="welcome-card-icon">📐</div>
+            <div class="welcome-card-title">Mô hình ERD</div>
+            <div class="welcome-card-desc">Thiết kế thực thể mạnh/yếu và bản số y khoa khái niệm.</div>
+          </div>
+          <!-- Feature 2 -->
+          <div class="welcome-card" style="border-top: 3px solid var(--color-teal);">
+            <div class="welcome-card-icon">🗂️</div>
+            <div class="welcome-card-title">Quan hệ Vật lý</div>
+            <div class="welcome-card-desc">Chuẩn hóa khóa chính/ngoại liên thông giữa 6 phân hệ.</div>
+          </div>
+          <!-- Feature 3 -->
+          <div class="welcome-card" style="border-top: 3px solid var(--color-purple);">
+            <div class="welcome-card-icon">⚡</div>
+            <div class="welcome-card-title">Tương tác cao</div>
+            <div class="welcome-card-desc">Click-to-Highlight dọn dẹp trực quan sơ đồ phức tạp.</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right side: 3D Core Image -->
+      <div class="asset-image-card slide-content-side">
+        <img src="./database_core.png" alt="Lõi CSDL Bệnh viện" class="asset-3d-img">
+      </div>
+    </section>
+
+    <!-- SLIDE 2: REQUIREMENTS SURVEY (Khảo sát nghiệp vụ) -->
+    <section class="slide slide-layout-uneven" id="slide-2">
+      <!-- Left side: 3D Requirements Image -->
+      <div class="asset-image-card slide-content-side">
+        <img src="./hospital_requirements.png" alt="Yêu cầu nghiệp vụ bệnh viện" class="asset-3d-img" style="animation-delay: -3s;">
+      </div>
+      
+      <!-- Right side: Detailed Subsystem breakdown -->
+      <div class="info-panel slide-content-side">
+        <div class="info-header">
+          <div class="info-category" style="color: var(--color-teal);">business requirements</div>
+          <h2 class="info-title">Yêu cầu nghiệp vụ & Phân loại Phân hệ</h2>
+          <p class="info-desc-paragraph">Hệ thống bệnh viện đa khoa được chuẩn hóa thành 6 phân hệ y khoa độc lập nhưng liên thông dữ liệu chặt chẽ.</p>
+        </div>
+        
+        <div class="info-body-list" style="max-height: 400px;">
+          <!-- Subsystem 1 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-blue); border-color: rgba(56, 189, 248, 0.25);">01</div>
+            <div class="info-item-content">
+              <span class="info-item-title" style="color: var(--color-blue);">Bệnh nhân & Tiếp đón</span>
+              <span class="info-item-desc">Lưu trữ hành chính (Bệnh nhân, thẻ Bảo hiểm y tế) và điều phối Lịch hẹn khám chữa bệnh.</span>
+            </div>
+          </div>
+          <!-- Subsystem 2 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-teal); border-color: rgba(45, 212, 191, 0.25);">02</div>
+            <div class="info-item-content">
+              <span class="info-item-title" style="color: var(--color-teal);">Chẩn đoán & Điều trị</span>
+              <span class="info-item-desc">Hồ sơ Bệnh án cốt lõi, nhật ký Chẩn đoán bệnh lý chi tiết, kê Đơn thuốc và áp dụng Phác đồ điều trị chuẩn.</span>
+            </div>
+          </div>
+          <!-- Subsystem 3 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-purple); border-color: rgba(167, 139, 250, 0.25);">03</div>
+            <div class="info-item-content">
+              <span class="info-item-title" style="color: var(--color-purple);">Xét nghiệm & Cận lâm sàng</span>
+              <span class="info-item-desc">Đo lường kết quả Sinh hóa (Xét nghiệm), lưu trữ hình ảnh CT/X-Ray (Chẩn đoán hình ảnh) và mẫu Bệnh phẩm.</span>
+            </div>
+          </div>
+          <!-- Subsystem 4 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-orange); border-color: rgba(251, 146, 60, 0.25);">04</div>
+            <div class="info-item-content">
+              <span class="info-item-title" style="color: var(--color-orange);">Nhân sự & Khoa phòng</span>
+              <span class="info-item-desc">Quản lý Bác sĩ/Điều dưỡng theo Khoa, phân bổ giường bệnh (Phòng bệnh) và điều phối Lịch trực y bác sĩ.</span>
+            </div>
+          </div>
+          <!-- Subsystem 5 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-rose); border-color: rgba(244, 63, 94, 0.25);">05</div>
+            <div class="info-item-content">
+              <span class="info-item-title" style="color: var(--color-rose);">Dược phẩm & Vật tư</span>
+              <span class="info-item-desc">Kiểm soát Nhà cung cấp thuốc, quản lý kho biệt dược và Phiếu xuất kho cấp phát vật tư tiêu hao.</span>
+            </div>
+          </div>
+          <!-- Subsystem 6 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-indigo); border-color: rgba(99, 102, 241, 0.25);">06</div>
+            <div class="info-item-content">
+              <span class="info-item-title" style="color: var(--color-indigo);">Tài chính & Viện phí</span>
+              <span class="info-item-desc">Tính toán Hóa đơn tổng, miễn giảm theo BHYT, in Biên lai thanh toán và đối soát bảo hiểm bồi thường.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: ERD CONCEPTUAL MODEL (Sơ đồ ERD khái niệm) -->
+    <section class="slide slide-layout-uneven" id="slide-3">
+      <!-- Left side: Interactive ERD viewer -->
+      <div class="diagram-panel slide-content-side">
+        <div class="panel-actions">
+          <button class="action-mini-btn btn-maximize">🔍 Phóng to</button>
+          <a href="./conceptual_erd.html" target="_blank" class="action-mini-btn">🔗 Mở tab mới</a>
+        </div>
+        <iframe src="./conceptual_erd.html" class="diagram-iframe" title="Interactive ERD Diagram"></iframe>
+        <div class="iframe-overlay-tip">
+          <span>🖱️ Tương tác: Kéo thả chuột để di chuyển sơ đồ ERD, cuộn để Zoom phóng to/thu nhỏ</span>
+        </div>
+      </div>
+      
+      <!-- Right side: Explanation of ERD features -->
+      <div class="info-panel slide-content-side">
+        <div class="info-header">
+          <div class="info-category" style="color: var(--color-blue);">conceptual model</div>
+          <h2 class="info-title">Sơ đồ Thực thể ERD (Chen Notation)</h2>
+          <p class="info-desc-paragraph">Bản vẽ thực thể ERD khái niệm mô tả chính xác thực tại khách quan bệnh viện trước khi chuyển dịch vật lý.</p>
+        </div>
+        
+        <div class="info-body-list" style="max-height: 400px;">
+          <!-- Point 1 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-blue);">01</div>
+            <div class="info-item-content">
+              <span class="info-item-title">Thực thể Mạnh & Khóa duy nhất</span>
+              <span class="info-item-desc">Các lớp thực thể y khoa trọng yếu như <code>BỆNH NHÂN</code>, <code>NHÂN VIÊN</code>, <code>HÓA ĐƠN</code>... được xác định bằng các thuộc tính khóa gạch chân.</span>
+            </div>
+          </div>
+          <!-- Point 2 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-teal);">02</div>
+            <div class="info-item-content">
+              <span class="info-item-title">Mối quan hệ Thực thể Yếu (Weak Entity)</span>
+              <span class="info-item-desc">Thực thể <code>BẢO HIỂM Y TẾ</code> là thực thể yếu phụ thuộc vào <code>BỆNH NHÂN</code> thông qua liên kết xác định được biểu diễn bằng hình thoi viền kép.</span>
+            </div>
+          </div>
+          <!-- Point 3 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-purple);">03</div>
+            <div class="info-item-content">
+              <span class="info-item-title">Bản số ràng buộc (Cardinality Ratio)</span>
+              <span class="info-item-desc">Mô tả ràng buộc số lượng: quan hệ 1:1 giữa Bệnh nhân và Thẻ bảo hiểm, quan hệ 1:N giữa Bệnh nhân và Bệnh án, và quan hệ N:M giữa Đơn thuốc và Thuốc.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: PHYSICAL RELATIONAL MAP (Bản đồ quan hệ tương tác) -->
+    <section class="slide slide-layout-uneven" id="slide-4">
+      <!-- Left side: Live Iframe Embed of Relational Diagram -->
+      <div class="diagram-panel slide-content-side">
+        <div class="panel-actions">
+          <button class="action-mini-btn btn-maximize">🔍 Phóng to</button>
+          <a href="./relational_diagram.html" target="_blank" class="action-mini-btn">🔗 Mở tab mới</a>
+        </div>
+        <iframe src="./relational_diagram.html" class="diagram-iframe" title="Interactive Diagram"></iframe>
+        <div class="iframe-overlay-tip">
+          <span>🖱️ Thao tác: Kéo thả các thẻ, cuộn chuột để Zoom và Click vào card để xem liên kết</span>
+        </div>
+      </div>
+      
+      <!-- Right side: Relational details -->
+      <div class="info-panel slide-content-side">
+        <div class="info-header">
+          <div class="info-category" style="color: var(--color-indigo);">logical & physical map</div>
+          <h2 class="info-title">Lược đồ Quan hệ dạng Bảng (Relational Diagram)</h2>
+          <p class="info-desc-paragraph">Lược đồ biểu diễn cấu trúc bảng SQL thực tế của bệnh viện với các kiểu dữ liệu và khóa liên thông.</p>
+        </div>
+        
+        <div class="info-body-list" style="max-height: 400px;">
+          <!-- Detail 1 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-teal);">01</div>
+            <div class="info-item-content">
+              <span class="info-item-title">Chuẩn hóa Tên Cột y khoa</span>
+              <span class="info-item-desc">Sử dụng tiền tố phân biệt phân hệ rõ ràng (như <code>BN_HoTen</code>, <code>HA_ImagingID</code>) giúp lập trình viên viết truy vấn SQL mạch lạc.</span>
+            </div>
+          </div>
+          <!-- Detail 2 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-blue);">02</div>
+            <div class="info-item-content">
+              <span class="info-item-title">Ánh xạ khóa PK / FK chặt chẽ</span>
+              <span class="info-item-desc">Đánh nhãn khóa chính màu vàng <code>PK</code> và khóa ngoại màu xanh <code>FK</code> bên cạnh mỗi cột giúp hình dung rõ luồng tham chiếu dữ liệu.</span>
+            </div>
+          </div>
+          <!-- Detail 3 -->
+          <div class="info-item">
+            <div class="info-item-bullet" style="color: var(--color-purple);">03</div>
+            <div class="info-item-content">
+              <span class="info-item-title">Giải pháp ẩn dây dẫn mặc định</span>
+              <span class="info-item-desc">Các đường kết nối (mạng nhện) mặc định được ẩn đi để sơ đồ sạch sẽ. Đường dẫn chỉ tự hiển thị phát sáng khi bạn click hoặc hover bảng.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: MAPPING RULES (Quy tắc ánh xạ chi tiết) -->
+    <section class="slide" id="slide-5" style="grid-template-columns: 1fr;">
+      <div class="info-header slide-content-side">
+        <div class="info-category" style="color: var(--color-purple);">transformation mathematics</div>
+        <h2 class="info-title">Quy tắc ánh xạ thực thể ER sang bảng cơ sở dữ liệu</h2>
+        <p class="info-desc-paragraph">Ba quy tắc chuyển dịch toán học giúp chuẩn hóa mô hình ERD khái niệm thành các quan hệ bảng ở dạng chuẩn 3NF.</p>
+      </div>
+      
+      <div class="mapping-grid slide-content-side">
+        <!-- Rule 1 -->
+        <div class="mapping-card" style="--accent-color: var(--color-blue);">
+          <div class="mapping-card-header">
+            <span class="mapping-card-icon">🧱</span>
+            <span class="mapping-card-badge">Quy tắc 1</span>
+          </div>
+          <div>
+            <h3 class="mapping-card-title">Thực thể Mạnh ➔ Bảng độc lập</h3>
+            <p class="mapping-card-desc">Mỗi thực thể mạnh ánh xạ thành một bảng quan hệ riêng biệt. Khóa định danh của thực thể trở thành Khóa chính (PK) của bảng.</p>
+          </div>
+          <div class="mapping-box-compare" style="--accent-color: var(--color-blue);">
+            <div class="compare-line">
+              <span class="compare-label">ER:</span>
+              <span class="compare-val">BỆNH NHÂN (MãBN)</span>
+            </div>
+            <div class="mapping-compare-arrow">➔</div>
+            <div class="compare-line">
+              <span class="compare-label">Bảng:</span>
+              <span class="compare-val">BenhNhan (BN_PatientID PK)</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Rule 2 -->
+        <div class="mapping-card" style="--accent-color: var(--color-teal);">
+          <div class="mapping-card-header">
+            <span class="mapping-card-icon">🔗</span>
+            <span class="mapping-card-badge">Quy tắc 2</span>
+          </div>
+          <div>
+            <h3 class="mapping-card-title">Thực thể Yếu ➔ Khóa ngoại liên kết</h3>
+            <p class="mapping-card-desc">Thực thể yếu chuyển thành bảng riêng biệt. Khóa chính gồm khóa ngoại (FK) trỏ tới bảng thực thể chủ cộng với khóa bộ phận.</p>
+          </div>
+          <div class="mapping-box-compare" style="--accent-color: var(--color-teal);">
+            <div class="compare-line">
+              <span class="compare-label">ER:</span>
+              <span class="compare-val">BẢO HIỂM Y TẾ (Sở hữu)</span>
+            </div>
+            <div class="mapping-compare-arrow">➔</div>
+            <div class="compare-line">
+              <span class="compare-label">Bảng:</span>
+              <span class="compare-val">BaoHiemYT (BN_PatientID FK)</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Rule 3 -->
+        <div class="mapping-card" style="--accent-color: var(--color-purple);">
+          <div class="mapping-card-header">
+            <span class="mapping-card-icon">🔀</span>
+            <span class="mapping-card-badge">Quy tắc 3</span>
+          </div>
+          <div>
+            <h3 class="mapping-card-title">Liên kết Nhiều-Nhiều ➔ Bảng cầu</h3>
+            <p class="mapping-card-desc">Mối quan hệ N:M ánh xạ thành bảng liên kết trung gian chứa các khóa ngoại (FK) tham chiếu tới khóa chính của hai thực thể chủ.</p>
+          </div>
+          <div class="mapping-box-compare" style="--accent-color: var(--color-purple);">
+            <div class="compare-line">
+              <span class="compare-label">ER:</span>
+              <span class="compare-val">Đơn thuốc ──(Kê)── Thuốc</span>
+            </div>
+            <div class="mapping-compare-arrow">➔</div>
+            <div class="compare-line">
+              <span class="compare-label">Bảng:</span>
+              <span class="compare-val">ChiTietDonThuoc (FK1, FK2)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Nav Controls -->
+  <footer class="controls-bar">
+    <!-- Slide dots indicators -->
+    <div class="indicators" id="indicators">
+      <div class="dot active" data-slide="1"></div>
+      <div class="dot" data-slide="2"></div>
+      <div class="dot" data-slide="3"></div>
+      <div class="dot" data-slide="4"></div>
+      <div class="dot" data-slide="5"></div>
+    </div>
+    
+    <!-- Next & Prev buttons -->
+    <div class="nav-buttons">
+      <button class="nav-btn" id="btn-prev" title="Slide trước (Mũi tên Trái / ArrowLeft)">◀</button>
+      <span class="slide-num-indicator" id="slide-num">SLIDE 1 / 5</span>
+      <button class="nav-btn" id="btn-next" title="Slide tiếp (Mũi tên Phải / Space / ArrowRight)">▶</button>
+    </div>
+  </footer>
+
+  <!-- Script for Slides Navigation Control -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Maximize toggle logic
+      const maximizeButtons = document.querySelectorAll(".btn-maximize");
+      maximizeButtons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const slide = btn.closest(".slide");
+          const isMaximized = slide.classList.toggle("maximized");
+          btn.innerHTML = isMaximized ? "🔍 Thu nhỏ" : "🔍 Phóng to";
+        });
+      });
+
+      const slides = document.querySelectorAll(".slide");
+      const dots = document.querySelectorAll(".dot");
+      const btnPrev = document.getElementById("btn-prev");
+      const btnNext = document.getElementById("btn-next");
+      const slideNumIndicator = document.getElementById("slide-num");
+      
+      let currentSlide = 1;
+      const totalSlides = slides.length;
+
+      function updateSlide(targetIndex) {
+        if (targetIndex < 1 || targetIndex > totalSlides) return;
+        
+        // Remove active from current slide and dot
+        document.querySelector(".slide.active").classList.remove("active");
+        document.querySelector(".dot.active").classList.remove("active");
+        
+        // Add active to target slide and dot
+        slides[targetIndex - 1].classList.add("active");
+        dots[targetIndex - 1].classList.add("active");
+        
+        currentSlide = targetIndex;
+        
+        // Update counter text
+        slideNumIndicator.textContent = `SLIDE ${currentSlide} / ${totalSlides}`;
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides) {
+          updateSlide(currentSlide + 1);
+        } else {
+          // Wrap around to slide 1
+          updateSlide(1);
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 1) {
+          updateSlide(currentSlide - 1);
+        } else {
+          // Wrap around to last slide
+          updateSlide(totalSlides);
+        }
+      }
+
+      // Button listeners
+      btnNext.addEventListener("click", nextSlide);
+      btnPrev.addEventListener("click", prevSlide);
+
+      // Dot listeners
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          updateSlide(index + 1);
+        });
+      });
+
+      // Keyboard listeners
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "Spacebar" || e.key === " ") {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          prevSlide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -32,6 +32,8 @@
         <button class="nav-item" data-slide="4" id="nav-entity">Thực thể</button>
         <button class="nav-item" data-slide="10" id="nav-relationship">Mối quan hệ</button>
         <button class="nav-item" data-slide="14" id="nav-uml">Thực thể yếu & UML</button>
+        <a href="relational_schema.html" target="_blank" class="nav-item" style="text-decoration: none; color: var(--color-blue); display: inline-flex; align-items: center; gap: 0.25rem;">Bảng Quan hệ ➔</a>
+        <a href="relational_diagram.html" target="_blank" class="nav-item" style="text-decoration: none; color: #a78bfa; display: inline-flex; align-items: center; gap: 0.25rem;">Bản đồ Quan hệ ➔</a>
       </nav>
       <div class="header-sub">
         <span class="sub-chapter">Chương 3:</span>
@@ -92,6 +94,21 @@
                   </li>
                 </ul>
               </div>
+            </div>
+            
+            <div class="intro-actions animate-subtitle" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+              <a href="relational_schema.html" target="_blank" class="action-btn active" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; padding: 0.6rem 1.2rem; border-color: var(--color-blue); color: var(--color-navy);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle;">
+                  <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                Xem Dạng Bảng ➔
+              </a>
+              <a href="relational_diagram.html" target="_blank" class="action-btn active" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; padding: 0.6rem 1.2rem; border-color: #a78bfa; color: var(--color-navy);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle;">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                Xem Bản đồ Quan hệ ➔
+              </a>
             </div>
           </div>
           
@@ -1386,7 +1403,7 @@
                 <div class="objectives-line-indicator"></div>
                 <div class="objective-desc" style="font-size: 1rem; line-height: 1.5; color: var(--color-gray);">
                   <p>Các thuộc tính tham chiếu ban đầu (ở Slide 9) được chuẩn hóa thành các mối quan hệ đồ họa:</p>
-                  <p class="slide16-bullet" id="slide16-bullet-works-for" style="margin-top: 0.5rem;">👉 <code>WORKS_FOR</code> (Nhân viên thuộc phòng ban)</p>
+                  <p class="slide16-bullet" id="slide16-bullet-works-for" color: var(--color-red) style="margin-top: 0.5rem;">👉 <code>WORKS_FOR</code> (Nhân viên thuộc phòng ban)</p>
                   <p class="slide16-bullet" id="slide16-bullet-manages" style="margin-top: 0.2rem;">👉 <code>MANAGES</code> (Quản lý phòng ban)</p>
                   <p class="slide16-bullet" id="slide16-bullet-controls" style="margin-top: 0.2rem;">👉 <code>CONTROLS</code> (Phòng ban quản lý dự án)</p>
                   <p class="slide16-bullet" id="slide16-bullet-works-on" style="margin-top: 0.2rem;">👉 <code>WORKS_ON</code> (Nhân viên làm dự án - N:N)</p>
@@ -1732,27 +1749,66 @@
         </div>
       </section>
 
-      <!-- SLIDE 19: CẢM ƠN VÀ KẾT THÚC -->
+      <!-- SLIDE 19: SƠ ĐỒ ERD TRƯỜNG HỌC CHI TIẾT -->
       <section class="slide" id="slide-19" data-index="19">
-        <div class="companion-slide-container slide19-container">
-          <!-- Glassmorphic Glowing Background Blobs -->
-          <div class="slide19-glow-blob blob-1"></div>
-          <div class="slide19-glow-blob blob-2"></div>
+        <div class="companion-slide-container" style="grid-template-columns: 0.82fr 1.18fr; gap: 2rem;">
+          <div class="companion-left">
+            <div class="module-overview">
+              <span class="overview-text">ỨNG DỤNG THỰC TẾ</span>
+              <div class="overview-line"></div>
+            </div>
+            <h1 class="slide-title" style="font-size: 2.2rem; line-height: 1.25; margin-bottom: 0.4rem;">Sơ Đồ ERD Trường Học</h1>
+            <p class="slide-subtitle" style="font-size: 1rem; margin-top: 0.2rem; margin-bottom: 0.8rem; line-height: 1.45;">Kịch bản quản lý đào tạo, phân công giảng dạy và liên kết thân nhân học sinh.</p>
+            
+            <div class="objectives-container" style="margin-top: 0.5rem;">
+              <span class="objectives-label" style="font-size: 0.8rem; margin-bottom: 0.4rem;">Thành phần sơ đồ (Rê chuột để xem liên kết)</span>
+              <div class="objectives-list-wrapper" style="padding-left: 0.8rem;">
+                <div class="objectives-line-indicator" style="width: 3px; background-color: var(--color-blue);"></div>
+                <div class="objective-desc" style="font-size: 0.88rem; line-height: 1.5; color: var(--color-gray); display: flex; flex-direction: column; gap: 0.35rem;">
+                  <p class="slide19-bullet" id="slide19-bullet-khoa" style="cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; transition: all 0.2s ease; border-left: 3px solid transparent;">🏢 <strong>KHOA:</strong> Quản lý các lớp học (1:N) và giáo viên (1:N).</p>
+                  <p class="slide19-bullet" id="slide19-bullet-gv-lh" style="cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; transition: all 0.2s ease; border-left: 3px solid transparent;">👨‍🏫 <strong>GIÁO_VIÊN & LỚP_HỌC:</strong> Phân công giáo viên <code>CHỦ_NHIỆM</code> lớp (1:1).</p>
+                  <p class="slide19-bullet" id="slide19-bullet-sv-lh" style="cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; transition: all 0.2s ease; border-left: 3px solid transparent;">🎓 <strong>SINH_VIÊN & LỚP_HỌC:</strong> Sinh viên <code>THUỘC_LỚP</code> (N:1) học tập cố định.</p>
+                  <p class="slide19-bullet" id="slide19-bullet-sv-mh" style="cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; transition: all 0.2s ease; border-left: 3px solid transparent;">📚 <strong>SINH_VIÊN & MÔN_HỌC:</strong> Đăng ký học <code>KẾT_QUẢ</code> (N:M) có <code>ĐiểmThi</code>.</p>
+                  <p class="slide19-bullet" id="slide19-bullet-gv-mh" style="cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; transition: all 0.2s ease; border-left: 3px solid transparent;">📖 <strong>GIÁO_VIÊN & MÔN_HỌC:</strong> Giáo viên <code>GIẢNG_DẠY</code> (N:M) môn học.</p>
+                  <p class="slide19-bullet" id="slide19-bullet-sv-tn" style="cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; transition: all 0.2s ease; border-left: 3px solid transparent;">👪 <strong>THÂN_NHÂN:</strong> Thực thể yếu kết nối <code>BẢO_LÃNH</code> (1:N) từ Sinh viên.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div id="slide19-helper-text" style="margin-top: 1rem; background: var(--color-blue-bg); border-left: 4px solid var(--color-blue); padding: 0.5rem 0.8rem; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); border-radius: 0 6px 6px 0;">
+              💡 <strong>Gợi ý:</strong> Di chuột lên các dòng danh sách hoặc các đối tượng sơ đồ để xem liên kết mạng lưới làm nổi bật trực quan.
+            </div>
+          </div>
           
-          <div class="companion-left slide19-left">
+          <div class="companion-right" style="position: relative;">
+            <div class="relational-table-interactive animate-table" style="padding: 0.5rem; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 480px;" data-lazy="diagram-school">
+              <div id="school-lazy-placeholder" style="color: var(--color-gray-light); font-style: italic;">Đang tải sơ đồ ERD Trường học...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 20: CẢM ƠN VÀ KẾT THÚC -->
+      <section class="slide" id="slide-20" data-index="20">
+        <div class="companion-slide-container slide20-container">
+          <!-- Glassmorphic Glowing Background Blobs -->
+          <div class="slide20-glow-blob blob-1"></div>
+          <div class="slide20-glow-blob blob-2"></div>
+          
+          <div class="companion-left slide20-left">
             <div class="module-overview">
               <span class="overview-text">THANK YOU & Q&A</span>
               <div class="overview-line"></div>
             </div>
             
-            <h1 class="slide-title slide19-title animate-title">
+            <h1 class="slide-title slide20-title animate-title">
               Cảm Ơn Các Bạn!
             </h1>
-            <p class="slide-subtitle slide19-subtitle animate-subtitle">Chúng mình rất trân trọng sự chú ý lắng nghe và đóng góp từ thầy cô và các bạn.</p>
+            <p class="slide-subtitle slide20-subtitle animate-subtitle">Chúng mình rất trân trọng sự chú ý lắng nghe và đóng góp từ thầy cô và các bạn.</p>
             
-            <div class="objectives-container slide19-credits animate-objectives" style="margin-top: 1.5rem;">
+            <div class="objectives-container slide20-credits animate-objectives" style="margin-top: 1.5rem;">
               <span class="objectives-label">Thông Tin Đề Tài</span>
-              <div class="slide19-credits-content">
+              <div class="slide20-credits-content">
                 <div class="credit-item">
                   <span class="credit-label">Nhóm thực hiện:</span>
                   <span class="credit-value text-gradient-moewz">Nhóm 3 — MoewZ</span>
@@ -1769,8 +1825,8 @@
             </div>
 
             <!-- Q&A Action -->
-            <div class="slide19-actions" style="margin-top: 1.8rem;">
-              <button class="action-btn active btn-qa-glow" id="btn-slide19-qa">
+            <div class="slide20-actions" style="margin-top: 1.8rem;">
+              <button class="action-btn active btn-qa-glow" id="btn-slide20-qa">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle; display: inline-block;">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg><span style="vertical-align: middle;">Đặt Câu Hỏi (Q&A)</span>
@@ -1778,7 +1834,7 @@
             </div>
           </div>
           
-          <div class="companion-right slide19-right">
+          <div class="companion-right slide20-right">
             <!-- Glassmorphic Card for Interactive 3D Sphere -->
             <div class="thanks-diagram-card thanks-sphere-card">
               <h3 class="thanks-diagram-title">Hệ Thống Dữ Liệu Tương Lai</h3>
@@ -1824,7 +1880,7 @@
         </div>
       </div>
       <div class="footer-center">
-        <span class="slide-number-display">Slide <span id="current-slide-num">1</span> trên 19</span>
+        <span class="slide-number-display">Slide <span id="current-slide-num">1</span> trên 20</span>
       </div>
       <div class="footer-right">
         <span class="footer-topic">Chủ đề: Mô hình ER</span>
@@ -1841,7 +1897,7 @@
         </svg>
       </button>
       <div class="control-indicator">
-        <span id="bubble-current">1</span>/<span id="bubble-total">19</span>
+        <span id="bubble-current">1</span>/<span id="bubble-total">20</span>
       </div>
       <button class="control-btn" id="ctrl-next" aria-label="Slide tiếp theo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

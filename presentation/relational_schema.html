@@ -1,0 +1,3678 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lược đồ Quan hệ - Hệ thống Quản lý Bệnh viện</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-dark: #090d16;
+      --bg-panel: #111625;
+      --bg-card: #182032;
+      --bg-card-hover: #1f2a42;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(59, 130, 246, 0.3);
+      --font-title: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Subsystem colors */
+      --color-sys1: #38bdf8; /* Patient & Reception (Blue) */
+      --color-sys2: #2dd4bf; /* Diagnosis & Treatment (Teal) */
+      --color-sys3: #a78bfa; /* Testing & Imaging (Purple) */
+      --color-sys4: #fb923c; /* HR & Dept (Orange) */
+      --color-sys5: #f43f5e; /* Pharmacy & Supplies (Rose) */
+      --color-sys6: #6366f1; /* Finance & Billing (Indigo) */
+
+      --transition-smooth: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Grid blueprint background */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-size: 50px 50px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Header */
+    header {
+      background-color: rgba(17, 22, 37, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .back-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-family: var(--font-title);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .header-title {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Main Workspace */
+    .workspace {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 70px);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sidebar Panel */
+    .sidebar {
+      width: 300px;
+      background-color: var(--bg-panel);
+      border-right: 1px solid var(--border-color);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .search-input:focus {
+      border-color: rgba(59, 130, 246, 0.5);
+      background-color: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .section-title {
+      font-family: var(--font-title);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .subsystems-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .subsystem-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border-color);
+      transition: var(--transition-smooth);
+    }
+
+    .subsystem-item:hover, .subsystem-item.active {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .subsystem-item.active {
+      border-left-width: 4px;
+    }
+
+    .subsystem-item[data-sys="1"].active { border-left-color: var(--color-sys1); }
+    .subsystem-item[data-sys="2"].active { border-left-color: var(--color-sys2); }
+    .subsystem-item[data-sys="3"].active { border-left-color: var(--color-sys3); }
+    .subsystem-item[data-sys="4"].active { border-left-color: var(--color-sys4); }
+    .subsystem-item[data-sys="5"].active { border-left-color: var(--color-sys5); }
+    .subsystem-item[data-sys="6"].active { border-left-color: var(--color-sys6); }
+
+    .subsystem-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .subsystem-count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .sidebar-stats {
+      margin-top: auto;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 0.8rem;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-row:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-color: rgba(9, 13, 22, 0.4);
+    }
+
+    /* Navigation Tabs */
+    .tabs-bar {
+      display: flex;
+      background-color: rgba(17, 22, 37, 0.5);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-title);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 1rem 0.5rem;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: #3b82f6;
+      border-radius: 2px 2px 0 0;
+      transform: scaleX(0);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tab-btn.active {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active::after {
+      transform: scaleX(1);
+    }
+
+    /* Panels Container */
+    .panels-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .tab-panel {
+      display: none;
+      height: 100%;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Schema Grid View */
+    .schema-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Table Cards */
+    .table-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .table-card:hover {
+      transform: translateY(-4px);
+      background-color: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .table-card.highlighted-ref {
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.35);
+      transform: translateY(-4px) scale(1.01);
+      z-index: 5;
+    }
+
+    .table-card.focused {
+      border-color: var(--accent-color, #3b82f6);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    }
+
+    .card-header {
+      padding: 0.85rem 1.2rem;
+      background-color: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 3px solid var(--accent-color, #cbd5e1);
+    }
+
+    .card-title-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-family: var(--font-title);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .card-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .card-body {
+      padding: 0.75rem 0;
+    }
+
+    .column-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.45rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.01);
+      transition: background-color 0.2s ease;
+      position: relative;
+    }
+
+    .column-row:hover {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .column-name-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .key-badge {
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 0.65rem;
+      border-radius: 4px;
+      padding: 0.05rem 0.25rem;
+      display: inline-block;
+    }
+
+    .key-pk {
+      background-color: rgba(234, 179, 8, 0.12);
+      color: #fbbf24;
+      border: 1px solid rgba(234, 179, 8, 0.3);
+    }
+
+    .key-fk {
+      background-color: rgba(59, 130, 246, 0.12);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .column-name {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .column-name.pk-col {
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    .column-name.fk-col {
+      color: #60a5fa;
+      font-weight: 500;
+    }
+
+    .column-name.pk-fk-col {
+      color: #c084fc;
+      font-weight: 600;
+    }
+
+    .column-type {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .ref-tooltip {
+      position: absolute;
+      bottom: 105%;
+      left: 50%;
+      transform: translateX(-50%) translateY(5px);
+      background-color: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .column-row:hover .ref-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .ref-tooltip-title {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .ref-tooltip-content {
+      font-size: 0.75rem;
+      color: #38bdf8;
+      font-weight: 600;
+      margin-top: 0.1rem;
+    }
+
+    /* Detail Drawer */
+    .detail-drawer {
+      width: 360px;
+      background-color: var(--bg-panel);
+      border-left: 1px solid var(--border-color);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .drawer-empty {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-muted);
+      padding: 2rem;
+    }
+
+    .drawer-empty-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+
+    .drawer-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+
+    .drawer-subtitle {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .drawer-title {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .drawer-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 0.5rem;
+    }
+
+    .drawer-section-title {
+      font-family: var(--font-title);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .drawer-col-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .drawer-col-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .drawer-col-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .drawer-col-name {
+      color: var(--text-main);
+    }
+
+    .drawer-col-name.pk {
+      color: #fbbf24;
+    }
+
+    .drawer-col-type {
+      color: var(--text-muted);
+    }
+
+    .drawer-col-desc {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      line-height: 1.4;
+      margin-top: 0.2rem;
+    }
+
+    .drawer-col-ref {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #60a5fa;
+      margin-top: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .mapping-explanation {
+      background: rgba(59, 130, 246, 0.03);
+      border: 1px dashed rgba(59, 130, 246, 0.2);
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+
+    /* SQL DDL Panel */
+    .sql-panel-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    .sql-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sql-btn {
+      background: #3b82f6;
+      border: none;
+      color: var(--text-main);
+      font-family: var(--font-title);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-smooth);
+    }
+
+    .sql-btn:hover {
+      background: #2563eb;
+    }
+
+    .sql-btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .sql-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .code-container {
+      flex: 1;
+      background-color: #020617;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      overflow: auto;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .code-block {
+      color: #f8fafc;
+    }
+
+    .code-comment { color: #64748b; font-style: italic; }
+    .code-keyword { color: #f43f5e; font-weight: 600; }
+    .code-type { color: #60a5fa; }
+    .code-table { color: #2dd4bf; font-weight: 600; }
+    .code-key { color: #fbbf24; }
+
+    /* Mapping Guide Panel */
+    .guide-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .guide-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .guide-step {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .guide-card-title {
+      font-family: var(--font-title);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .guide-card-content {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .guide-diagram {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    /* Original ERD Panel (Zoom & Pan) */
+    .erd-panel-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    .erd-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .erd-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .erd-viewport {
+      flex: 1;
+      background-color: #0d121f;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+      min-height: 500px;
+    }
+
+    .erd-viewport:active {
+      cursor: grabbing;
+    }
+
+    .erd-canvas {
+      position: absolute;
+      transform-origin: 0 0;
+      transition: transform 0.1s ease-out;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .erd-canvas object {
+      max-width: 100%;
+      max-height: 100%;
+      pointer-events: none;
+    }
+
+    /* Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: #10b981;
+      color: var(--text-main);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-family: var(--font-title);
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <a href="index.html" class="back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Trở lại slide
+      </a>
+      <div>
+        <h1 class="header-title">Lược đồ Quan hệ Vật lý (Relational Schema)</h1>
+        <div class="header-subtitle">Ánh xạ từ Mô hình ERD Phân hệ Quản lý Bệnh viện</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <a href="relational_diagram.html" class="back-btn" style="color: var(--color-sys1); border-color: rgba(56, 189, 248, 0.3); padding: 0.5rem 1rem;">
+        🗺️ Bản đồ Trực quan (Diagram) ➔
+      </a>
+      <div style="text-align: right;">
+        <span style="font-family: var(--font-title); font-weight: 800; color: #3b82f6; font-size: 1.1rem;">Nhóm 3: MoewZ</span>
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;">Chapter 3: ER Mapping</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Area -->
+  <div class="workspace">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      
+      <!-- Search -->
+      <div class="search-box">
+        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="table-search" placeholder="Tìm bảng hoặc thuộc tính...">
+      </div>
+
+      <!-- Subsystems Filter -->
+      <div>
+        <div class="section-title">Lọc theo phân hệ</div>
+        <div class="subsystems-list">
+          <div class="subsystem-item active" data-sys="all">
+            <span class="subsystem-name">Tất cả phân hệ</span>
+            <span class="subsystem-count" id="count-all">32</span>
+          </div>
+          <div class="subsystem-item" data-sys="1">
+            <span class="subsystem-name" style="border-left: 3px solid var(--color-sys1); padding-left: 0.5rem;">Bệnh nhân & Tiếp đón</span>
+            <span class="subsystem-count" id="count-1">4</span>
+          </div>
+          <div class="subsystem-item" data-sys="2">
+            <span class="subsystem-name" style="border-left: 3px solid var(--color-sys2); padding-left: 0.5rem;">Chẩn đoán & Điều trị</span>
+            <span class="subsystem-count" id="count-2">6</span>
+          </div>
+          <div class="subsystem-item" data-sys="3">
+            <span class="subsystem-name" style="border-left: 3px solid var(--color-sys3); padding-left: 0.5rem;">Xét nghiệm & Chẩn đoán hình ảnh</span>
+            <span class="subsystem-count" id="count-3">6</span>
+          </div>
+          <div class="subsystem-item" data-sys="4">
+            <span class="subsystem-name" style="border-left: 3px solid var(--color-sys4); padding-left: 0.5rem;">Nhân sự & Khoa phòng</span>
+            <span class="subsystem-count" id="count-4">6</span>
+          </div>
+          <div class="subsystem-item" data-sys="5">
+            <span class="subsystem-name" style="border-left: 3px solid var(--color-sys5); padding-left: 0.5rem;">Dược & Vật tư y tế</span>
+            <span class="subsystem-count" id="count-5">5</span>
+          </div>
+          <div class="subsystem-item" data-sys="6">
+            <span class="subsystem-name" style="border-left: 3px solid var(--color-sys6); padding-left: 0.5rem;">Tài chính & Viện phí</span>
+            <span class="subsystem-count" id="count-6">5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Summary -->
+      <div class="sidebar-stats">
+        <div class="section-title" style="margin-bottom: 0.5rem;">Thống kê mô hình</div>
+        <div class="stat-row">
+          <span style="color: var(--text-muted);">Tổng số bảng:</span>
+          <span style="font-weight: 700; color: var(--text-main);">32</span>
+        </div>
+        <div class="stat-row">
+          <span style="color: var(--text-muted);">Số Khóa chính (PK):</span>
+          <span style="font-weight: 700; color: #fbbf24;">32</span>
+        </div>
+        <div class="stat-row">
+          <span style="color: var(--text-muted);">Số Khóa ngoại (FK):</span>
+          <span style="font-weight: 700; color: #60a5fa;">35</span>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Content Workspace -->
+    <div class="content-area">
+      
+      <!-- Tab Controls -->
+      <nav class="tabs-bar">
+        <button class="tab-btn active" data-tab="schema">📊 Lược đồ Quan hệ</button>
+        <button class="tab-btn" data-tab="guide">🔄 Quy trình Ánh xạ ERD → Relational</button>
+        <button class="tab-btn" data-tab="erd">🗺️ Sơ đồ ER Gốc (Graphviz)</button>
+        <button class="tab-btn" data-tab="ddl">📜 Script SQL DDL</button>
+      </nav>
+
+      <!-- Panel display -->
+      <div class="panels-container">
+        
+        <!-- Tab 1: Schema Tables Grid -->
+        <div class="tab-panel active" id="panel-schema">
+          <div class="schema-grid" id="tables-container">
+            <!-- Table Cards loaded dynamically by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Mapping Guide -->
+        <div class="tab-panel" id="panel-guide">
+          <div class="guide-container">
+            
+            <div class="guide-card">
+              <div class="guide-card-header">
+                <div class="guide-step">1</div>
+                <h3 class="guide-card-title">Ánh xạ Thực thể mạnh</h3>
+              </div>
+              <div class="guide-card-content">
+                Mỗi thực thể mạnh trong ERD được chuyển trực tiếp thành một bảng quan hệ riêng biệt. 
+                Các thuộc tính đơn giản của nó trở thành các cột tương ứng trong bảng. Thuộc tính khóa của thực thể trở thành Khóa chính (Primary Key - PK) của bảng.
+                <div class="guide-diagram">[Thực thể mạnh] ➔ Bảng (Khóa chính)</div>
+              </div>
+            </div>
+
+            <div class="guide-card">
+              <div class="guide-card-header">
+                <div class="guide-step">2</div>
+                <h3 class="guide-card-title">Ánh xạ Thực thể yếu</h3>
+              </div>
+              <div class="guide-card-content">
+                Thực thể yếu không tự xác định khóa chính. Khi ánh xạ, tạo một bảng riêng gồm tất cả thuộc tính của nó cộng với **Khóa chính của thực thể chủ** (đóng vai trò Khóa ngoại - FK).
+                Khóa chính của bảng yếu là sự kết hợp (composite key) giữa Khóa ngoại đó và thuộc tính khóa bộ phận của thực thể yếu.
+                <div class="guide-diagram">[Thực thể yếu] ➔ Bảng (FK Chủ + Khóa bộ phận)</div>
+              </div>
+            </div>
+
+            <div class="guide-card">
+              <div class="guide-card-header">
+                <div class="guide-step">3</div>
+                <h3 class="guide-card-title">Mối quan hệ 1:1 (Binary 1:1)</h3>
+              </div>
+              <div class="guide-card-content">
+                Có 3 phương pháp để ánh xạ:
+                <br>1. **Foreign Key Approach**: Lấy Khóa chính của bảng này làm Khóa ngoại bên bảng kia (thường chọn bên tham gia toàn bộ). Cột Khóa ngoại này phải có ràng buộc <code>UNIQUE</code>.
+                <br>2. **Merged Relation**: Gộp hai thực thể làm một bảng (nếu cả 2 tham gia toàn bộ).
+                <br>3. **Cross Reference**: Tạo bảng trung gian.
+                <div class="guide-diagram">Bảng A ➔ Bảng B (FK A + UNIQUE)</div>
+              </div>
+            </div>
+
+            <div class="guide-card">
+              <div class="guide-card-header">
+                <div class="guide-step">4</div>
+                <h3 class="guide-card-title">Mối quan hệ 1:N (Binary 1:N)</h3>
+              </div>
+              <div class="guide-card-content">
+                Chuyển đổi mối quan hệ bằng cách thêm Khóa chính của bảng phía nhánh 1 làm Khóa ngoại (FK) vào bảng phía nhánh N.
+                Ví dụ: Quan hệ <i>DatAppointment</i> giữa <b>Bệnh nhân (1)</b> và <b>Lịch hẹn (N)</b> ➔ Thêm <code>LH_PatientID_FK</code> làm khóa ngoại trong bảng <b>Lịch hẹn</b>.
+                <div class="guide-diagram">Bảng Nhánh N (Thêm FK từ Bảng Nhánh 1)</div>
+              </div>
+            </div>
+
+            <div class="guide-card">
+              <div class="guide-card-header">
+                <div class="guide-step">5</div>
+                <h3 class="guide-card-title">Mối quan hệ N:M (Binary N:M)</h3>
+              </div>
+              <div class="guide-card-content">
+                Mỗi mối quan hệ N:M được ánh xạ thành một **Bảng quan hệ trung gian** (Junction Table).
+                Bảng này chứa các Khóa ngoại tham chiếu đến hai bảng ban đầu. Cả hai cột này gộp lại làm Khóa chính phức hợp cho bảng trung gian. Các thuộc tính mô tả quan hệ cũng được đặt ở đây.
+                <div class="guide-diagram">Bảng M:N (PK_A (FK), PK_B (FK))</div>
+              </div>
+            </div>
+
+            <div class="guide-card">
+              <div class="guide-card-header">
+                <div class="guide-step">6</div>
+                <h3 class="guide-card-title">Thuộc tính Đa trị</h3>
+              </div>
+              <div class="guide-card-content">
+                Tạo một bảng mới riêng biệt cho thuộc tính đa trị. Bảng này sẽ chứa thuộc tính đó cộng với Khóa chính của thực thể gốc làm Khóa ngoại.
+                Cả hai cột này gộp lại làm Khóa chính cho bảng mới.
+                <div class="guide-diagram">Bảng mới (FK Thực thể + Thuộc tính đa trị)</div>
+              </div>
+            </div>
+
+            <div class="guide-card">
+              <div class="guide-card-header">
+                <div class="guide-step">7</div>
+                <h3 class="guide-card-title">Chuyên biệt hóa (IS-A)</h3>
+              </div>
+              <div class="guide-card-content">
+                Có nhiều phương án ánh xạ lớp cha/lớp con:
+                <br>- Tạo bảng cho Lớp cha chứa các thuộc tính chung, và các bảng cho Lớp con chứa các thuộc tính chuyên biệt kèm Khóa chính lớp cha (đóng vai trò PK kiêm FK).
+                <br>Ví dụ: Bảng <b>BacSi</b> và <b>DieuDuong</b> kế thừa khóa chính từ bảng cha <b>NhanVien</b>.
+                <div class="guide-diagram">Bảng con (PK kiêm FK ➔ Lớp cha)</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Tab 3: Zoomable ERD View -->
+        <div class="tab-panel" id="panel-erd">
+          <div class="erd-panel-container">
+            <div class="erd-toolbar">
+              <div style="font-size: 0.9rem; color: var(--text-muted);">
+                Sử dụng chuột kéo để di chuyển sơ đồ hoặc cuộn chuột để phóng to/thu nhỏ.
+              </div>
+              <div class="erd-controls">
+                <button class="sql-btn sql-btn-secondary" id="erd-zoom-in">➕ Phóng to</button>
+                <button class="sql-btn sql-btn-secondary" id="erd-zoom-out">➖ Thu nhỏ</button>
+                <button class="sql-btn sql-btn-secondary" id="erd-zoom-reset">🔄 Reset</button>
+              </div>
+            </div>
+            <div class="erd-viewport" id="erd-viewport">
+              <div class="erd-canvas" id="erd-canvas">
+                <object data="complete_erd (1).svg" type="image/svg+xml">
+                  Trình duyệt của bạn không hỗ trợ hiển thị ảnh SVG trực tiếp. Hãy tải ảnh về hoặc mở bằng phần mềm ngoài.
+                </object>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: SQL DDL Panel -->
+        <div class="tab-panel" id="panel-ddl">
+          <div class="sql-panel-container">
+            <div class="sql-actions">
+              <div style="font-size: 0.9rem; color: var(--text-muted);">
+                Đoạn script SQL DDL tạo 32 bảng cơ sở dữ liệu hoàn chỉnh dưới đây với đầy đủ ràng buộc khóa ngoại.
+              </div>
+              <button class="sql-btn" id="copy-sql-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Sao chép mã SQL
+              </button>
+            </div>
+            <div class="code-container">
+              <pre class="code-block" id="sql-code-display"></pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Right Details Panel -->
+    <aside class="detail-drawer" id="detail-drawer">
+      <div class="drawer-empty" id="drawer-empty-msg">
+        <svg class="drawer-empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+        </svg>
+        <p>Chọn một bảng bất kỳ trong danh sách hoặc nhấp trực tiếp vào bảng để xem chi tiết ánh xạ, cấu trúc trường và mã SQL DDL cụ thể.</p>
+      </div>
+      
+      <!-- Drawer Content loaded dynamically by JS -->
+      <div id="drawer-content" style="display: none;">
+        <div class="drawer-header">
+          <div class="drawer-subtitle" id="drawer-sys-tag" style="color: var(--color-sys1);">Phân hệ</div>
+          <h2 class="drawer-title" id="drawer-table-name">TableName</h2>
+          <p class="drawer-desc" id="drawer-table-desc">Table description will go here.</p>
+        </div>
+        
+        <div>
+          <div class="drawer-section-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="3" y1="15" x2="21" y2="15"></line>
+              <line x1="10" y1="9" x2="10" y2="21"></line>
+            </svg>
+            Cấu trúc thuộc tính
+          </div>
+          <div class="drawer-col-list" id="drawer-cols-list">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+
+        <div>
+          <div class="drawer-section-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Giải thích ánh xạ ER
+          </div>
+          <div class="mapping-explanation" id="drawer-mapping-explain">
+            Giải thích ánh xạ chi tiết.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="copy-toast">Đã sao chép mã SQL vào bộ nhớ đệm!</div>
+
+  <!-- Database Schema Definition and Dashboard Controller -->
+  <script>
+    // ==========================================================================
+    // DATABASE SCHEMA SCHEMA OBJECT (32 Tables Mapped from complete_erd (1).svg)
+    // ==========================================================================
+    const dbSchema = [
+  {
+    "id": "benhnhan",
+    "name": "BenhNhan",
+    "vnName": "Bệnh Nhân",
+    "subsystem": 1,
+    "subsystemName": "Bệnh nhân & Tiếp đón",
+    "description": "Bảng lưu trữ thông tin hành chính cốt lõi của tất cả Bệnh nhân đăng ký khám chữa bệnh tại bệnh viện.",
+    "mappingExplain": "Được chuyển đổi từ thực thể mạnh BỆNH NHÂN. Khóa chính BN_PatientID được sinh ra làm khóa nhận diện duy nhất. Các thuộc tính đơn của thực thể được cấu hình thành các cột tương ứng.",
+    "columns": [
+      {
+        "name": "BN_PatientID",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã bệnh nhân duy nhất (Khóa chính tự tăng)",
+        "vnName": "Mã bệnh nhân"
+      },
+      {
+        "name": "BN_HoTen",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Họ và tên đầy đủ của bệnh nhân",
+        "vnName": "Họ và tên"
+      },
+      {
+        "name": "BN_NgaySinh",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày sinh của bệnh nhân",
+        "vnName": "Ngày sinh"
+      },
+      {
+        "name": "BN_GioiTinh",
+        "type": "VARCHAR(10)",
+        "key": "",
+        "ref": null,
+        "desc": "Giới tính (Nam, Nữ, Khác)",
+        "vnName": "Giới tính"
+      },
+      {
+        "name": "BN_SoDienThoai",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Số điện thoại liên hệ chính",
+        "vnName": "Số điện thoại"
+      },
+      {
+        "name": "BN_DiaChi",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Địa chỉ thường trú",
+        "vnName": "Địa chỉ"
+      },
+      {
+        "name": "BN_Email",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Địa chỉ email (không bắt buộc)",
+        "vnName": "Thư điện tử (Email)"
+      }
+    ],
+    "pos": {
+      "x": 50,
+      "y": 150
+    }
+  },
+  {
+    "id": "baohiemyt",
+    "name": "BaoHiemYT",
+    "vnName": "Bảo Hiểm Y Tế",
+    "subsystem": 1,
+    "subsystemName": "Bệnh nhân & Tiếp đón",
+    "description": "Thông tin thẻ bảo hiểm y tế của bệnh nhân dùng trong việc miễn giảm viện phí.",
+    "mappingExplain": "Được chuyển đổi từ thực thể BẢO HIỂM Y TẾ. Mối quan hệ CoInsurance với BỆNH NHÂN là mối quan hệ 1:1, do đó thuộc tính BN_PatientID được đưa sang làm Khóa ngoại và bổ sung ràng buộc UNIQUE để đảm bảo mỗi bệnh nhân chỉ có tối đa một thẻ bảo hiểm hoạt động.",
+    "columns": [
+      {
+        "name": "BH_InsuranceID",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã số hệ thống bảo hiểm y tế (Khóa chính)",
+        "vnName": "Mã bảo hiểm y tế"
+      },
+      {
+        "name": "BH_MaSoBảo hiểm y tế",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Mã số in trên thẻ Bảo hiểm y tế vật lý (UNIQUE)",
+        "vnName": "Mã số thẻ bảo hiểm"
+      },
+      {
+        "name": "BH_NhaCungCap",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Cơ quan/Nhà cung cấp bảo hiểm phát hành",
+        "vnName": "Nhà cung cấp bảo hiểm"
+      },
+      {
+        "name": "BH_NgayHieuLuc",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày bắt đầu hiệu lực thẻ",
+        "vnName": "Ngày hiệu lực"
+      },
+      {
+        "name": "BH_NgayHetHan",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày hết hạn của thẻ",
+        "vnName": "Ngày hết hạn"
+      },
+      {
+        "name": "BN_PatientID",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhNhan",
+        "desc": "Mã bệnh nhân sở hữu (Khóa ngoại tham chiếu BenhNhan, UNIQUE)",
+        "vnName": "Mã bệnh nhân"
+      }
+    ],
+    "pos": {
+      "x": 50,
+      "y": 456
+    }
+  },
+  {
+    "id": "lichhen",
+    "name": "LichHen",
+    "vnName": "Lịch Hẹn",
+    "subsystem": 1,
+    "subsystemName": "Bệnh nhân & Tiếp đón",
+    "description": "Lịch hẹn khám bệnh do bệnh nhân đặt trước qua tổng đài hoặc website bệnh viện.",
+    "mappingExplain": "Được chuyển đổi từ thực thể LỊCH HẸN. Mối quan hệ DatAppointment (ĐẶT) giữa BỆNH NHÂN (1) và LỊCH HẸN (N) là quan hệ 1:N, do đó thuộc tính LH_PatientID_FK được chèn vào bảng LỊCH HẸN đóng vai trò khóa ngoại.",
+    "columns": [
+      {
+        "name": "LH_AppointmentID",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã lịch hẹn (Khóa chính tự tăng)",
+        "vnName": "Mã lịch hẹn"
+      },
+      {
+        "name": "LH_NgayHen",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày hẹn khám",
+        "vnName": "Ngày hẹn khám"
+      },
+      {
+        "name": "LH_GioHen",
+        "type": "TIME",
+        "key": "",
+        "ref": null,
+        "desc": "Giờ hẹn khám",
+        "vnName": "Giờ hẹn khám"
+      },
+      {
+        "name": "LH_TrangThai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Trạng thái (Đã đặt, Đã khám, Đã hủy)",
+        "vnName": "Trạng thái lịch hẹn"
+      },
+      {
+        "name": "LH_LyDoKham",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Mô tả triệu chứng hoặc lý do đăng ký",
+        "vnName": "Lý do khám bệnh"
+      },
+      {
+        "name": "LH_PatientID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhNhan",
+        "desc": "Khóa ngoại liên kết bệnh nhân đặt lịch (tham chiếu BenhNhan)",
+        "vnName": "Mã bệnh nhân"
+      }
+    ],
+    "pos": {
+      "x": 50,
+      "y": 734
+    }
+  },
+  {
+    "id": "hosonhapvien",
+    "name": "HoSoNhapVien",
+    "vnName": "Hồ Sơ Nhập Viện",
+    "subsystem": 1,
+    "subsystemName": "Bệnh nhân & Tiếp đón",
+    "description": "Hồ sơ ghi nhận thông tin nội trú khi bệnh nhân có chỉ định nhập viện điều trị.",
+    "mappingExplain": "Được chuyển từ thực thể HỒ SƠ NHẬP VIỆN. Liên kết với BỆNH NHÂN qua mối quan hệ NhapVien (1:N), do đó thuộc tính HS_PatientID_FK là khóa ngoại tham chiếu đến BenhNhan. Khóa chính là HS_AdmissionID.",
+    "columns": [
+      {
+        "name": "HS_AdmissionID",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã hồ sơ nhập viện (Khóa chính)",
+        "vnName": "Mã hồ sơ nhập viện"
+      },
+      {
+        "name": "HS_NgayNhapVien",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày giờ nhập viện chính thức",
+        "vnName": "Ngày giờ nhập viện"
+      },
+      {
+        "name": "HS_NgayRaVien",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày giờ ra viện (cho phép NULL)",
+        "vnName": "Ngày giờ ra viện"
+      },
+      {
+        "name": "HS_LyDoNhapVien",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Lý do nhập viện điều trị",
+        "vnName": "Lý do nhập viện"
+      },
+      {
+        "name": "HS_KhoaDieuTri",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên khoa tiếp nhận điều trị lâm sàng ban đầu",
+        "vnName": "Khoa lâm sàng tiếp nhận"
+      },
+      {
+        "name": "HS_TrangThai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Trạng thái (Đang điều trị, Đã ra viện)",
+        "vnName": "Trạng thái nội trú"
+      },
+      {
+        "name": "HS_PatientID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhNhan",
+        "desc": "Mã bệnh nhân điều trị nội trú (Khóa ngoại tham chiếu BenhNhan)",
+        "vnName": "Mã bệnh nhân"
+      }
+    ],
+    "pos": {
+      "x": 50,
+      "y": 1012
+    }
+  },
+  {
+    "id": "benhan",
+    "name": "BenhAn",
+    "vnName": "Bệnh Án",
+    "subsystem": 2,
+    "subsystemName": "Chẩn đoán & Điều trị",
+    "description": "Bệnh án lâm sàng của bệnh nhân, chứa các thông tin tổng hợp về quá trình khám chữa bệnh.",
+    "mappingExplain": "Được chuyển đổi từ thực thể BỆNH ÁN. Đây là thực thể trung tâm kết nối Bệnh nhân và Hồ sơ nhập viện. Chứa khóa ngoại BA_PatientID_FK và BA_AdmissionID_FK để ánh xạ các liên kết CoRecord (1:N) và TaoTu (1:1).",
+    "columns": [
+      {
+        "name": "BA_RecordID",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã bệnh án y khoa (Khóa chính)",
+        "vnName": "Mã bệnh án y khoa"
+      },
+      {
+        "name": "BA_NgayTao",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày giờ khởi tạo bệnh án",
+        "vnName": "Ngày lập bệnh án"
+      },
+      {
+        "name": "BA_ChanDoan",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Tóm tắt chẩn đoán tổng quan",
+        "vnName": "Chẩn đoán chung"
+      },
+      {
+        "name": "BA_DieuTri",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Tóm tắt phương hướng điều trị",
+        "vnName": "Hướng điều trị tổng quát"
+      },
+      {
+        "name": "BA_GhiChu",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Ghi chú theo dõi đặc biệt",
+        "vnName": "Ghi chú theo dõi"
+      },
+      {
+        "name": "BA_PatientID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhNhan",
+        "desc": "Bệnh nhân sở hữu bệnh án (Khóa ngoại tham chiếu BenhNhan)",
+        "vnName": "Mã bệnh nhân"
+      },
+      {
+        "name": "BA_AdmissionID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "HoSoNhapVien",
+        "desc": "Hồ sơ nhập viện tương ứng (Khóa ngoại tham chiếu HoSoNhapVien, cho phép NULL nếu ngoại trú)",
+        "vnName": "Mã hồ sơ nhập viện"
+      }
+    ],
+    "pos": {
+      "x": 450,
+      "y": 150
+    }
+  },
+  {
+    "id": "chandoan",
+    "name": "ChanDoan",
+    "vnName": "Chẩn Đoán",
+    "subsystem": 2,
+    "subsystemName": "Chẩn đoán & Điều trị",
+    "description": "Bảng chi tiết các lượt chẩn đoán bệnh lý của bệnh án do bác sĩ thực hiện.",
+    "mappingExplain": "Được chuyển đổi từ thực thể CHẨN ĐOÁN. Kết nối trực tiếp với BỆNH ÁN (1:N) qua quan hệ CoChanDoan và liên kết với BÁC SĨ (1:N) qua quan hệ ThucHienCD. Các khóa ngoại tương ứng là BA_RecordID_FK và BS_MaBS_FK được thêm vào bảng.",
+    "columns": [
+      {
+        "name": "CD_MaChanDoan",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã chẩn đoán (Khóa chính)",
+        "vnName": "Mã chẩn đoán chi tiết"
+      },
+      {
+        "name": "CD_TenChanDoan",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên bệnh lý / Chẩn đoán y khoa chính",
+        "vnName": "Tên bệnh lý kết luận"
+      },
+      {
+        "name": "CD_MoTa",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Mô tả triệu chứng lâm sàng cụ thể",
+        "vnName": "Mô tả triệu chứng"
+      },
+      {
+        "name": "CD_NgayChanDoan",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày giờ đưa ra kết luận chẩn đoán",
+        "vnName": "Ngày giờ chẩn đoán"
+      },
+      {
+        "name": "BA_RecordID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhAn",
+        "desc": "Mã bệnh án lâm sàng liên kết (Khóa ngoại tham chiếu BenhAn)",
+        "vnName": "Mã bệnh án y khoa"
+      },
+      {
+        "name": "BS_MaBS_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BacSi",
+        "desc": "Mã bác sĩ thực hiện chẩn đoán (Khóa ngoại tham chiếu BacSi)",
+        "vnName": "Mã bác sĩ thực hiện"
+      }
+    ],
+    "pos": {
+      "x": 450,
+      "y": 456
+    }
+  },
+  {
+    "id": "donthuoc",
+    "name": "DonThuoc",
+    "vnName": "Đơn Thuốc",
+    "subsystem": 2,
+    "subsystemName": "Chẩn đoán & Điều trị",
+    "description": "Đơn thuốc được kê dựa trên kết quả chẩn đoán bệnh lý của bệnh nhân.",
+    "mappingExplain": "Được chuyển đổi từ thực thể ĐƠN THUỐC. Liên kết 1:N với CHẨN ĐOÁN (CoDonThuoc) và 1:N với BÁC SĨ (KeDon). Hai cột CD_MaChanDoan_FK và BS_MaBS_FK đóng vai trò khóa ngoại.",
+    "columns": [
+      {
+        "name": "DT_MaDonThuoc",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã đơn thuốc (Khóa chính)",
+        "vnName": "Mã đơn thuốc"
+      },
+      {
+        "name": "DT_NgayKeDon",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày giờ kê đơn thuốc",
+        "vnName": "Ngày giờ kê đơn"
+      },
+      {
+        "name": "DT_GhiChu",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Ghi chú liều dùng hoặc khuyến cáo ăn uống",
+        "vnName": "Hướng dẫn sử dụng chung"
+      },
+      {
+        "name": "CD_MaChanDoan_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "ChanDoan",
+        "desc": "Mã chẩn đoán trực tiếp chỉ định đơn (Khóa ngoại tham chiếu ChanDoan)",
+        "vnName": "Mã chẩn đoán chi tiết"
+      },
+      {
+        "name": "BS_MaBS_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BacSi",
+        "desc": "Mã bác sĩ kê đơn (Khóa ngoại tham chiếu BacSi)",
+        "vnName": "Mã bác sĩ kê đơn"
+      }
+    ],
+    "pos": {
+      "x": 450,
+      "y": 734
+    }
+  },
+  {
+    "id": "chitietdonthuoc",
+    "name": "ChiTietDonThuoc",
+    "vnName": "Chi Tiết Đơn Thuốc",
+    "subsystem": 2,
+    "subsystemName": "Chẩn đoán & Điều trị",
+    "description": "Bảng chi tiết chứa thông tin về từng tên thuốc, liều dùng và số lượng kê trong đơn thuốc.",
+    "mappingExplain": "Được chuyển đổi từ thực thể CHI TIẾT ĐƠN THUỐC. Mối quan hệ CoChiTiet là 1:N với ĐƠN THUỐC, và PrescribedIn là N:1 với THUỐC. DT_MaDonThuoc_FK và TH_MaThuoc_FK đóng vai trò khóa ngoại.",
+    "columns": [
+      {
+        "name": "CT_MaChiTiet",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã chi tiết đơn thuốc (Khóa chính)",
+        "vnName": "Mã chi tiết đơn thuốc"
+      },
+      {
+        "name": "CT_SoLuong",
+        "type": "INT",
+        "key": "",
+        "ref": null,
+        "desc": "Số lượng viên/hộp thuốc được kê",
+        "vnName": "Số lượng cấp phát"
+      },
+      {
+        "name": "CT_LieuDung",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Liều dùng chi tiết (Ví dụ: Uống 2 viên/ngày chia 2 lần)",
+        "vnName": "Liều dùng chi tiết"
+      },
+      {
+        "name": "CT_ThoiGianSuDung",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Số ngày sử dụng thuốc (Ví dụ: 7 ngày, 14 ngày)",
+        "vnName": "Thời gian uống thuốc"
+      },
+      {
+        "name": "DT_MaDonThuoc_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "DonThuoc",
+        "desc": "Đơn thuốc chứa chi tiết này (Khóa ngoại tham chiếu DonThuoc)",
+        "vnName": "Mã đơn thuốc"
+      },
+      {
+        "name": "TH_MaThuoc_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "Thuoc",
+        "desc": "Mã thuốc chỉ định (Khóa ngoại tham chiếu Thuoc)",
+        "vnName": "Mã thuốc biệt dược"
+      }
+    ],
+    "pos": {
+      "x": 450,
+      "y": 984
+    }
+  },
+  {
+    "id": "phacdodieutri",
+    "name": "PhacDoDieuTri",
+    "vnName": "Phác Đồ Điều Trị",
+    "subsystem": 2,
+    "subsystemName": "Chẩn đoán & Điều trị",
+    "description": "Các phác đồ điều trị được chuẩn hóa của bệnh viện áp dụng cho bệnh lý cụ thể.",
+    "mappingExplain": "Được chuyển đổi từ thực thể PHÁC ĐỒ ĐIỀU TRỊ. Liên kết 1:N với chẩn đoán cụ thể (CoPhacDo), bổ sung khóa ngoại CD_MaChanDoan_FK.",
+    "columns": [
+      {
+        "name": "PD_MaPhacDo",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã phác đồ điều trị (Khóa chính)",
+        "vnName": "Mã phác đồ mẫu"
+      },
+      {
+        "name": "PD_TenPhacDo",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên phác đồ mẫu",
+        "vnName": "Tên phác đồ điều trị"
+      },
+      {
+        "name": "PD_MoTa",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Mô tả quy trình thực hiện phác đồ",
+        "vnName": "Quy trình thực hiện"
+      },
+      {
+        "name": "PD_ThoiGianDieuTri",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Thời gian điều trị tiêu chuẩn",
+        "vnName": "Thời gian điều trị chuẩn"
+      },
+      {
+        "name": "CD_MaChanDoan_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "ChanDoan",
+        "desc": "Chẩn đoán chỉ định phác đồ (Khóa ngoại tham chiếu ChanDoan)",
+        "vnName": "Mã chẩn đoán chi tiết"
+      }
+    ],
+    "pos": {
+      "x": 450,
+      "y": 1262
+    }
+  },
+  {
+    "id": "sudung",
+    "name": "SuDung",
+    "vnName": "Sử Dụng",
+    "subsystem": 2,
+    "subsystemName": "Chẩn đoán & Điều trị",
+    "description": "Bảng trung gian ghi nhận việc chỉ định sử dụng các dịch vụ y tế theo phác đồ điều trị.",
+    "mappingExplain": "Bảng trung gian chuyển đổi từ mối quan hệ nhiều-nhiều (M:N) SuDung giữa PHÁC ĐỒ ĐIỀU TRỊ (M) và DỊCH VỤ Y TẾ (N). Khóa chính bao gồm 2 khóa ngoại PD_MaPhacDo_FK và DV_MaDichVu_FK kết hợp lại.",
+    "columns": [
+      {
+        "name": "PD_MaPhacDo_FK",
+        "type": "INT",
+        "key": "PK, FK",
+        "ref": "PhacDoDieuTri",
+        "desc": "Mã phác đồ y khoa (Khóa ngoại tham chiếu PhacDoDieuTri)",
+        "vnName": "Mã phác đồ mẫu"
+      },
+      {
+        "name": "DV_MaDichVu_FK",
+        "type": "VARCHAR(50)",
+        "key": "PK, FK",
+        "ref": "DichVuYTe",
+        "desc": "Mã dịch vụ sử dụng (Khóa ngoại tham chiếu DichVuYTe)",
+        "vnName": "Mã dịch vụ y tế"
+      },
+      {
+        "name": "NgaySuDung",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày bắt đầu áp dụng dịch vụ trong phác đồ",
+        "vnName": "Ngày bắt đầu áp dụng"
+      }
+    ],
+    "pos": {
+      "x": 450,
+      "y": 1512
+    }
+  },
+  {
+    "id": "dichvuyte",
+    "name": "DichVuYTe",
+    "vnName": "Dịch Vụ Y Tế",
+    "subsystem": 3,
+    "subsystemName": "Xét nghiệm & Chẩn đoán hình ảnh",
+    "description": "Danh mục các dịch vụ y tế, khám chữa bệnh, chụp chiếu và chăm sóc tại bệnh viện.",
+    "mappingExplain": "Được chuyển đổi từ thực thể mạnh DỊCH VỤ Y TẾ. Khóa chính là DV_MaDichVu.",
+    "columns": [
+      {
+        "name": "DV_MaDichVu",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã dịch vụ y tế chuẩn (Khóa chính)",
+        "vnName": "Mã dịch vụ y tế"
+      },
+      {
+        "name": "DV_TenDichVu",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên dịch vụ y tế",
+        "vnName": "Tên dịch vụ kỹ thuật"
+      },
+      {
+        "name": "DV_GiaDichVu",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Đơn giá chưa giảm trừ",
+        "vnName": "Đơn giá dịch vụ"
+      },
+      {
+        "name": "DV_MoTa",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Mô tả chi tiết kỹ thuật/dịch vụ",
+        "vnName": "Mô tả dịch vụ"
+      },
+      {
+        "name": "DV_LoaiDichVu",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Phân loại (Siêu âm, Xét nghiệm, Khám lâm sàng...)",
+        "vnName": "Phân loại dịch vụ"
+      }
+    ],
+    "pos": {
+      "x": 850,
+      "y": 150
+    }
+  },
+  {
+    "id": "danhmucxetnghiem",
+    "name": "DanhMucXetNghiem",
+    "vnName": "Danh Mục Xét Nghiệm",
+    "subsystem": 3,
+    "subsystemName": "Xét nghiệm & Chẩn đoán hình ảnh",
+    "description": "Danh mục chi tiết các loại xét nghiệm sinh hóa, huyết học bệnh viện có thể thực hiện.",
+    "mappingExplain": "Được chuyển đổi từ thực thể mạnh DANH MỤC XÉT NGHIỆM. Khóa chính là DM_TestID.",
+    "columns": [
+      {
+        "name": "DM_TestID",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã loại xét nghiệm y khoa (Khóa chính)",
+        "vnName": "Mã xét nghiệm"
+      },
+      {
+        "name": "DM_TenXetNghiem",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên xét nghiệm cụ thể",
+        "vnName": "Tên loại xét nghiệm"
+      },
+      {
+        "name": "DM_LoaiXetNghiem",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Loại xét nghiệm (Huyết học, Sinh hóa, Vi sinh...)",
+        "vnName": "Phân khoa xét nghiệm"
+      },
+      {
+        "name": "DM_MoTa",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Mô tả chi tiết và ý nghĩa chỉ số",
+        "vnName": "Ý nghĩa chỉ số đo"
+      },
+      {
+        "name": "DM_DonViTinh",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Đơn vị đo kết quả (Ví dụ: mmol/L, g/L)",
+        "vnName": "Đơn vị đo kết quả"
+      },
+      {
+        "name": "DM_GiaTien",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Giá dịch vụ xét nghiệm",
+        "vnName": "Đơn giá xét nghiệm"
+      }
+    ],
+    "pos": {
+      "x": 850,
+      "y": 400
+    }
+  },
+  {
+    "id": "ketquaxetnghiem",
+    "name": "KetQuaXetNghiem",
+    "vnName": "Kết Quả Xét Nghiệm",
+    "subsystem": 3,
+    "subsystemName": "Xét nghiệm & Chẩn đoán hình ảnh",
+    "description": "Kết quả xét nghiệm lâm sàng chi tiết của bệnh nhân.",
+    "mappingExplain": "Được chuyển đổi từ thực thể KẾT QUẢ XÉT NGHIỆM. Chứa 3 khóa ngoại: KQ_RecordID_FK liên kết với BỆNH ÁN (CoResult 1:N), KQ_TestID_FK liên kết với DANH MỤC XÉT NGHIỆM (ThuocDM N:1) và KQ_SampleID_FK liên kết với MẪU BỆNH PHẨM (TaoTuMau N:1).",
+    "columns": [
+      {
+        "name": "KQ_ResultID",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã kết quả xét nghiệm (Khóa chính)",
+        "vnName": "Mã kết quả xét nghiệm"
+      },
+      {
+        "name": "KQ_NgayThucHien",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày giờ hoàn tất xét nghiệm",
+        "vnName": "Ngày giờ hoàn tất"
+      },
+      {
+        "name": "KQ_KetQua",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Kết quả tổng quan (Bình thường / Tăng / Giảm)",
+        "vnName": "Kết quả tổng quan"
+      },
+      {
+        "name": "KQ_ChiSoDo",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Chỉ số đo lường thực tế",
+        "vnName": "Chỉ số đo thực tế"
+      },
+      {
+        "name": "KQ_GiaTriThamChieu",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Giới hạn trị số bình thường",
+        "vnName": "Trị số tham chiếu bình thường"
+      },
+      {
+        "name": "KQ_KetLuan",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Kết luận / Chẩn đoán từ bác sĩ chuyên khoa",
+        "vnName": "Kết luận chuyên môn"
+      },
+      {
+        "name": "KQ_RecordID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhAn",
+        "desc": "Mã bệnh án liên quan (Khóa ngoại tham chiếu BenhAn)",
+        "vnName": "Mã bệnh án y khoa"
+      },
+      {
+        "name": "KQ_TestID_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "DanhMucXetNghiem",
+        "desc": "Loại xét nghiệm y khoa (Khóa ngoại tham chiếu DanhMucXetNghiem)",
+        "vnName": "Mã xét nghiệm"
+      },
+      {
+        "name": "KQ_SampleID_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "MauBenhPham",
+        "desc": "Mẫu bệnh phẩm được lấy xét nghiệm (Khóa ngoại tham chiếu MauBenhPham)",
+        "vnName": "Mã mẫu bệnh phẩm"
+      }
+    ],
+    "pos": {
+      "x": 850,
+      "y": 678
+    }
+  },
+  {
+    "id": "thietbiyte",
+    "name": "ThietBiYTe",
+    "vnName": "Thiết Bị Y Tế",
+    "subsystem": 3,
+    "subsystemName": "Xét nghiệm & Chẩn đoán hình ảnh",
+    "description": "Bảng quản lý danh mục thiết bị, máy móc y tế phục vụ công tác chẩn đoán hình ảnh và điều trị.",
+    "mappingExplain": "Được chuyển đổi từ thực thể mạnh THIẾT BỊ Y TẾ. Khóa chính là TB_DeviceID.",
+    "columns": [
+      {
+        "name": "TB_DeviceID",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã thiết bị y tế (Khóa chính)",
+        "vnName": "Mã thiết bị y tế"
+      },
+      {
+        "name": "TB_TenThietBi",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên máy (Ví dụ: Máy chụp MRI 3.0 Tesla)",
+        "vnName": "Tên máy móc thiết bị"
+      },
+      {
+        "name": "TB_LoaiThietBi",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Phân loại thiết bị (X-Ray, Siêu âm, MRI...)",
+        "vnName": "Phân loại thiết bị"
+      },
+      {
+        "name": "TB_HangSanXuat",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Hãng sản xuất máy móc y tế",
+        "vnName": "Hãng sản xuất"
+      },
+      {
+        "name": "TB_NgayBaoTri",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày bảo dưỡng máy gần nhất",
+        "vnName": "Ngày bảo dưỡng gần nhất"
+      },
+      {
+        "name": "TB_TrangThai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Trạng thái (Sẵn sàng, Đang sửa chữa, Bảo trì)",
+        "vnName": "Trạng thái hoạt động"
+      }
+    ],
+    "pos": {
+      "x": 850,
+      "y": 1040
+    }
+  },
+  {
+    "id": "chandoanhinhanh",
+    "name": "ChanDoanHinhAnh",
+    "vnName": "Chẩn Đoán Hình Ảnh",
+    "subsystem": 3,
+    "subsystemName": "Xét nghiệm & Chẩn đoán hình ảnh",
+    "description": "Hồ sơ lưu trữ kết quả và tệp tin hình ảnh chụp chiếu (X-Ray, CT-Scan, MRI) của bệnh nhân.",
+    "mappingExplain": "Được chuyển đổi từ thực thể CHẨN ĐOÁN HÌNH ẢNH. Chứa khóa ngoại HA_RecordID_FK liên kết với BỆNH ÁN (CoImaging 1:N) và HA_DeviceID_FK liên kết với THIẾT BỊ Y TẾ (ThucHien N:1).",
+    "columns": [
+      {
+        "name": "HA_ImagingID",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã chẩn đoán hình ảnh (Khóa chính)",
+        "vnName": "Mã hình ảnh y khoa"
+      },
+      {
+        "name": "HA_LoaiChanDoan",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Phương pháp chụp chiếu (CT, MRI, X-Ray)",
+        "vnName": "Phương pháp chụp chiếu"
+      },
+      {
+        "name": "HA_NgayThucHien",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày thực hiện kỹ thuật chụp",
+        "vnName": "Ngày giờ thực hiện"
+      },
+      {
+        "name": "HA_KetQua",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Mô tả tổn thương tìm thấy",
+        "vnName": "Mô tả hình ảnh tổn thương"
+      },
+      {
+        "name": "HA_HinhAnh",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Đường dẫn liên kết tệp ảnh DICOM/JPG",
+        "vnName": "Đường dẫn tệp hình ảnh"
+      },
+      {
+        "name": "HA_KetLuan",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Kết luận chẩn đoán hình ảnh từ bác sĩ chuyên khoa",
+        "vnName": "Kết luận chẩn đoán"
+      },
+      {
+        "name": "HA_RecordID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhAn",
+        "desc": "Mã bệnh án liên quan (Khóa ngoại tham chiếu BenhAn)",
+        "vnName": "Mã bệnh án y khoa"
+      },
+      {
+        "name": "HA_DeviceID_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "ThietBiYTe",
+        "desc": "Mã thiết bị y tế dùng để thực hiện (Khóa ngoại tham chiếu ThietBiYTe)",
+        "vnName": "Mã thiết bị y tế"
+      }
+    ],
+    "pos": {
+      "x": 850,
+      "y": 1318
+    }
+  },
+  {
+    "id": "maubenhpham",
+    "name": "MauBenhPham",
+    "vnName": "Mẫu Bệnh Phẩm",
+    "subsystem": 3,
+    "subsystemName": "Xét nghiệm & Chẩn đoán hình ảnh",
+    "description": "Các mẫu sinh học (máu, nước tiểu, dịch...) được lấy từ bệnh nhân phục vụ xét nghiệm.",
+    "mappingExplain": "Được chuyển đổi từ thực thể MẪU BỆNH PHẨM. Có mối quan hệ LayTu (N:1) với BỆNH NHÂN, do đó thuộc tính BP_PatientID_FK đóng vai trò khóa ngoại tham chiếu đến BenhNhan. Khóa chính là BP_SampleID.",
+    "columns": [
+      {
+        "name": "BP_SampleID",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã mẫu bệnh phẩm (Khóa chính)",
+        "vnName": "Mã mẫu bệnh phẩm"
+      },
+      {
+        "name": "BP_LoaiMau",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Loại bệnh phẩm (Máu toàn phần, Huyết tương, Dịch tủy...)",
+        "vnName": "Loại sinh phẩm y tế"
+      },
+      {
+        "name": "BP_NgayLayMau",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày lấy mẫu bệnh phẩm",
+        "vnName": "Ngày lấy mẫu"
+      },
+      {
+        "name": "BP_GioLayMau",
+        "type": "TIME",
+        "key": "",
+        "ref": null,
+        "desc": "Giờ lấy mẫu bệnh phẩm",
+        "vnName": "Giờ lấy mẫu"
+      },
+      {
+        "name": "BP_TinhTrangMau",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Tình trạng mẫu (Đạt chuẩn, Đông máu, Vỡ hồng cầu...)",
+        "vnName": "Tình trạng bảo quản"
+      },
+      {
+        "name": "BP_PatientID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhNhan",
+        "desc": "Mã bệnh nhân được lấy mẫu (Khóa ngoại tham chiếu BenhNhan)",
+        "vnName": "Mã bệnh nhân"
+      }
+    ],
+    "pos": {
+      "x": 850,
+      "y": 1652
+    }
+  },
+  {
+    "id": "khoa",
+    "name": "Khoa",
+    "vnName": "Khoa",
+    "subsystem": 4,
+    "subsystemName": "Nhân sự & Khoa phòng",
+    "description": "Bảng quản lý thông tin các khoa chuyên môn của bệnh viện (Nội, Ngoại, Sản, Nhi...).",
+    "mappingExplain": "Được chuyển đổi từ thực thể KHOA. Thiết lập quan hệ TruongKhoa (1:1) với BÁC SĨ để quản lý trưởng khoa, đưa KH_TruongKhoa_FK làm khóa ngoại.",
+    "columns": [
+      {
+        "name": "KH_MaKhoa",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã khoa phòng chuyên môn (Khóa chính)",
+        "vnName": "Mã khoa phòng chuyên môn"
+      },
+      {
+        "name": "KH_TenKhoa",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên khoa",
+        "vnName": "Tên khoa"
+      },
+      {
+        "name": "KH_MoTa",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Mô tả chức năng chuyên khoa",
+        "vnName": "Chức năng nhiệm vụ"
+      },
+      {
+        "name": "KH_SoDienThoai",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Số điện thoại khoa của khoa.",
+        "vnName": "Số điện thoại khoa"
+      },
+      {
+        "name": "KH_ViTri",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Vị trí khoa của khoa.",
+        "vnName": "Vị trí khoa"
+      },
+      {
+        "name": "KH_TruongKhoa_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BacSi",
+        "desc": "Mã bác sĩ đảm nhận Trưởng khoa (Khóa ngoại tham chiếu BacSi, duy nhất)",
+        "vnName": "Mã bác sĩ Trưởng khoa"
+      }
+    ],
+    "pos": {
+      "x": 1250,
+      "y": 150
+    }
+  },
+  {
+    "id": "phongbenh",
+    "name": "PhongBenh",
+    "vnName": "Phòng Bệnh",
+    "subsystem": 4,
+    "subsystemName": "Nhân sự & Khoa phòng",
+    "description": "Danh sách phòng bệnh nội trú điều trị thuộc sự quản lý của các khoa lâm sàng.",
+    "mappingExplain": "Được chuyển đổi từ thực thể PHÒNG BỆNH. Liên kết 1:N với KHOA (BaoGom), bổ sung khóa ngoại KH_MaKhoa_FK.",
+    "columns": [
+      {
+        "name": "PB_MaPhong",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã phòng bệnh (Khóa chính)",
+        "vnName": "Mã phòng bệnh nội trú"
+      },
+      {
+        "name": "PB_SoPhong",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Số phòng thực tế",
+        "vnName": "Số phòng thực tế"
+      },
+      {
+        "name": "PB_LoaiPhong",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Loại phòng bệnh (Thường, VIP, Hồi sức tích cực)",
+        "vnName": "Phân hạng phòng bệnh"
+      },
+      {
+        "name": "PB_SucChua",
+        "type": "INT",
+        "key": "",
+        "ref": null,
+        "desc": "Số lượng giường bệnh tối đa",
+        "vnName": "Số giường tối đa"
+      },
+      {
+        "name": "PB_TrangThai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Trạng thái giường (Còn trống / Đầy)",
+        "vnName": "Tình trạng sử dụng"
+      },
+      {
+        "name": "KH_MaKhoa_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "Khoa",
+        "desc": "Khoa quản lý phòng bệnh này (Khóa ngoại tham chiếu Khoa)",
+        "vnName": "Mã khoa phòng chuyên môn"
+      }
+    ],
+    "pos": {
+      "x": 1250,
+      "y": 428
+    }
+  },
+  {
+    "id": "nhanvien",
+    "name": "NhanVien",
+    "vnName": "Nhân Viên",
+    "subsystem": 4,
+    "subsystemName": "Nhân sự & Khoa phòng",
+    "description": "Bảng cơ sở lưu trữ dữ liệu nhân sự dùng chung cho toàn bộ cán bộ y tế trong bệnh viện.",
+    "mappingExplain": "Lớp thực thể cha NHÂN VIÊN phục vụ cho mô hình chuyên biệt hóa kế thừa (IS-A) để phân cấp thành Bác sĩ và Điều dưỡng. Liên kết với KHOA qua mối quan hệ ThuocKhoa (1:N), do đó thuộc tính KH_MaKhoa_FK là khóa ngoại.",
+    "columns": [
+      {
+        "name": "NV_MaNV",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã số nhân viên (Khóa chính)",
+        "vnName": "Mã nhân viên"
+      },
+      {
+        "name": "NV_Ten",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Họ và tên nhân viên y tế",
+        "vnName": "Họ và tên nhân viên"
+      },
+      {
+        "name": "NV_NgaySinh",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày sinh nhân viên",
+        "vnName": "Ngày sinh"
+      },
+      {
+        "name": "NV_GioiTinh",
+        "type": "VARCHAR(10)",
+        "key": "",
+        "ref": null,
+        "desc": "Giới tính",
+        "vnName": "Giới tính"
+      },
+      {
+        "name": "NV_SDT",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Số điện thoại liên hệ cá nhân",
+        "vnName": "Số điện thoại liên hệ"
+      },
+      {
+        "name": "NV_CCCD",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Số định danh / CCCD",
+        "vnName": "Căn cước công dân"
+      },
+      {
+        "name": "NV_VaiTro",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Vai trò y tế (Bác sĩ, Điều dưỡng, Kỹ thuật viên...)",
+        "vnName": "Chức danh vai trò"
+      },
+      {
+        "name": "KH_MaKhoa_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "Khoa",
+        "desc": "Khoa y tế công tác (Khóa ngoại tham chiếu Khoa)",
+        "vnName": "Mã khoa phòng chuyên môn"
+      }
+    ],
+    "pos": {
+      "x": 1250,
+      "y": 706
+    }
+  },
+  {
+    "id": "bacsi",
+    "name": "BacSi",
+    "vnName": "Bác Sĩ",
+    "subsystem": 4,
+    "subsystemName": "Nhân sự & Khoa phòng",
+    "description": "Bảng lưu thông tin nghiệp vụ chuyên sâu của Bác sĩ.",
+    "mappingExplain": "Lớp thực thể con chuyên biệt hóa kế thừa từ NHÂN VIÊN. Mã bác sĩ BS_MaBS đóng vai trò Khóa chính đồng thời là Khóa ngoại tham chiếu trực tiếp đến NhanVien.NV_MaNV để thực thi mối liên kết kế thừa (IS-A).",
+    "columns": [
+      {
+        "name": "BS_MaBS",
+        "type": "INT",
+        "key": "PK, FK",
+        "ref": "NhanVien",
+        "desc": "Mã bác sĩ (Khóa chính kiêm Khóa ngoại tham chiếu NhanVien)",
+        "vnName": "Mã bác sĩ"
+      },
+      {
+        "name": "BS_ChuyenKhoa",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Chuyên khoa lâm sàng thực hành",
+        "vnName": "Chuyên khoa lâm sàng"
+      },
+      {
+        "name": "BS_CapBac",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Hạng bác sĩ (BS, ThS.BS, CK1, CK2)",
+        "vnName": "Cấp bậc bác sĩ"
+      },
+      {
+        "name": "BS_HocVi",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Học hàm học vị (Phó Giáo sư, Tiến sĩ...)",
+        "vnName": "Học hàm học vị"
+      },
+      {
+        "name": "BS_CCHN",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Số Chứng chỉ hành nghề y tế (UNIQUE)",
+        "vnName": "Số chứng chỉ hành nghề"
+      },
+      {
+        "name": "BS_NamKN",
+        "type": "INT",
+        "key": "",
+        "ref": null,
+        "desc": "Số năm kinh nghiệm lâm sàng thực tế",
+        "vnName": "Số năm kinh nghiệm"
+      }
+    ],
+    "pos": {
+      "x": 1250,
+      "y": 1040
+    }
+  },
+  {
+    "id": "dieuduong",
+    "name": "DieuDuong",
+    "vnName": "Điều Dưỡng",
+    "subsystem": 4,
+    "subsystemName": "Nhân sự & Khoa phòng",
+    "description": "Bảng lưu trữ thông tin nghiệp vụ và bằng cấp chứng chỉ chuyên môn của lực lượng Điều dưỡng.",
+    "mappingExplain": "Lớp thực thể con chuyên biệt hóa kế thừa từ NHÂN VIÊN (IS-A). Khóa chính DD_MaDD đóng vai trò đồng thời là Khóa ngoại tham chiếu trực tiếp đến NhanVien.NV_MaNV.",
+    "columns": [
+      {
+        "name": "DD_MaDD",
+        "type": "INT",
+        "key": "PK, FK",
+        "ref": "NhanVien",
+        "desc": "Mã điều dưỡng (Khóa chính kiêm Khóa ngoại tham chiếu NhanVien)",
+        "vnName": "Mã điều dưỡng"
+      },
+      {
+        "name": "DD_CapBac",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Cấp bậc điều dưỡng (Cao đẳng, Đại học, Chuyên khoa)",
+        "vnName": "Cấp bậc điều dưỡng"
+      },
+      {
+        "name": "DD_CCHN",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Số Chứng chỉ hành nghề điều dưỡng",
+        "vnName": "Số chứng chỉ hành nghề"
+      }
+    ],
+    "pos": {
+      "x": 1250,
+      "y": 1318
+    }
+  },
+  {
+    "id": "lichtruc",
+    "name": "LichTruc",
+    "vnName": "Lịch Trực",
+    "subsystem": 4,
+    "subsystemName": "Nhân sự & Khoa phòng",
+    "description": "Bảng quản lý ca trực, phân công công việc hàng ngày của nhân viên y tế tại các khoa phòng.",
+    "mappingExplain": "Được chuyển đổi từ thực thể LỊCH TRỰC. Chứa khóa ngoại NV_MaNV_FK liên kết với NHÂN VIÊN (PhanCong 1:N) và KH_MaKhoa_FK liên kết với KHOA (QuanLyLich 1:N).",
+    "columns": [
+      {
+        "name": "LT_MaLT",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã lịch trực phân công (Khóa chính)",
+        "vnName": "Mã lịch trực"
+      },
+      {
+        "name": "LT_Ngay",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày trực",
+        "vnName": "Ngày trực"
+      },
+      {
+        "name": "LT_Ca",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Ca trực (Sáng, Chiều, Đêm)",
+        "vnName": "Ca trực"
+      },
+      {
+        "name": "LT_TrangThai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Trạng thái ca (Đã phân công, Đang trống)",
+        "vnName": "Trạng thái ca trực"
+      },
+      {
+        "name": "LT_GhiChu",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Ghi chú phân công chi tiết",
+        "vnName": "Ghi chú nhiệm vụ"
+      },
+      {
+        "name": "LT_TGBD",
+        "type": "TIME",
+        "key": "",
+        "ref": null,
+        "desc": "Giờ bắt đầu ca trực",
+        "vnName": "Giờ bắt đầu ca trực"
+      },
+      {
+        "name": "LT_TGKT",
+        "type": "TIME",
+        "key": "",
+        "ref": null,
+        "desc": "Giờ kết thúc ca trực",
+        "vnName": "Giờ kết thúc ca trực"
+      },
+      {
+        "name": "NV_MaNV_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "NhanVien",
+        "desc": "Nhân viên trực ca (Khóa ngoại tham chiếu NhanVien)",
+        "vnName": "Mã nhân viên"
+      },
+      {
+        "name": "KH_MaKhoa_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "Khoa",
+        "desc": "Khoa chịu trách nhiệm trực (Khóa ngoại tham chiếu Khoa)",
+        "vnName": "Mã khoa phòng chuyên môn"
+      }
+    ],
+    "pos": {
+      "x": 1250,
+      "y": 1512
+    }
+  },
+  {
+    "id": "nhacungcap",
+    "name": "NhaCungCap",
+    "vnName": "Nhà Cung Cấp",
+    "subsystem": 5,
+    "subsystemName": "Dược & Vật tư y tế",
+    "description": "Thông tin liên hệ, thuế của các nhà cung cấp dược phẩm, hóa chất và vật tư tiêu hao.",
+    "mappingExplain": "Được chuyển đổi từ thực thể mạnh NHÀ CUNG CẤP. Khóa chính là NCC_MaNCC.",
+    "columns": [
+      {
+        "name": "NCC_MaNCC",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã nhà cung cấp (Khóa chính)",
+        "vnName": "Mã nhà cung cấp"
+      },
+      {
+        "name": "NCC_TenNCC",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên công ty cung cấp",
+        "vnName": "Tên nhà cung cấp"
+      },
+      {
+        "name": "NCC_SDT",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Số điện thoại liên hệ",
+        "vnName": "Số điện thoại liên hệ"
+      },
+      {
+        "name": "NCC_DiaChi",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Địa chỉ văn phòng giao dịch",
+        "vnName": "Địa chỉ văn phòng"
+      },
+      {
+        "name": "NCC_MST",
+        "type": "VARCHAR(20)",
+        "key": "",
+        "ref": null,
+        "desc": "Mã số thuế công ty (UNIQUE)",
+        "vnName": "Mã số thuế"
+      }
+    ],
+    "pos": {
+      "x": 1650,
+      "y": 150
+    }
+  },
+  {
+    "id": "donnhaphang",
+    "name": "DonNhapHang",
+    "vnName": "Đơn Nhập Hàng",
+    "subsystem": 5,
+    "subsystemName": "Dược & Vật tư y tế",
+    "description": "Các đơn đặt hàng nhập kho thuốc và vật tư y tế từ nhà cung cấp.",
+    "mappingExplain": "Được chuyển đổi từ thực thể ĐƠN NHẬP HÀNG. Có quan hệ CungCap (1:N) với NHÀ CUNG CẤP, do đó đưa NCC_MaNCC_FK làm khóa ngoại trong bảng này.",
+    "columns": [
+      {
+        "name": "DNH_MaDon",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã đơn hàng nhập (Khóa chính)",
+        "vnName": "Mã đơn hàng nhập"
+      },
+      {
+        "name": "DNH_NgayLap",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày lập đơn hàng",
+        "vnName": "Ngày lập đơn"
+      },
+      {
+        "name": "DNH_NgayNhap",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày nhập kho thực tế",
+        "vnName": "Ngày nhập kho thực tế"
+      },
+      {
+        "name": "DNH_TrangThai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Trạng thái đơn nhập (Đang chờ, Đã nhập kho)",
+        "vnName": "Trạng thái đơn hàng"
+      },
+      {
+        "name": "DNH_NguoiLap",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Nhân viên dược phụ trách lập phiếu",
+        "vnName": "Nhân viên lập phiếu"
+      },
+      {
+        "name": "NCC_MaNCC_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "NhaCungCap",
+        "desc": "Nhà cung cấp cung ứng đơn hàng (Khóa ngoại tham chiếu NhaCungCap)",
+        "vnName": "Mã nhà cung cấp"
+      }
+    ],
+    "pos": {
+      "x": 1650,
+      "y": 400
+    }
+  },
+  {
+    "id": "thuoc",
+    "name": "Thuoc",
+    "vnName": "Thuốc",
+    "subsystem": 5,
+    "subsystemName": "Dược & Vật tư y tế",
+    "description": "Danh mục các loại thuốc, biệt dược lưu hành trong tủ thuốc bệnh viện.",
+    "mappingExplain": "Được chuyển đổi từ thực thể mạnh THUỐC. Khóa chính là TH_MaThuoc.",
+    "columns": [
+      {
+        "name": "TH_MaThuoc",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã thuốc biệt dược (Khóa chính)",
+        "vnName": "Mã thuốc biệt dược"
+      },
+      {
+        "name": "TH_TenThuongMai",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên thương mại của biệt dược",
+        "vnName": "Tên thương mại biệt dược"
+      },
+      {
+        "name": "TH_HoatChat",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên hoạt chất chính / tên gốc",
+        "vnName": "Hoạt chất chính"
+      },
+      {
+        "name": "TH_KhoiLuong",
+        "type": "VARCHAR(30)",
+        "key": "",
+        "ref": null,
+        "desc": "Hàm lượng và đơn vị (Ví dụ: 500mg, 10ml)",
+        "vnName": "Hàm lượng đóng gói"
+      },
+      {
+        "name": "TH_NhaSanXuat",
+        "type": "VARCHAR(100)",
+        "key": "",
+        "ref": null,
+        "desc": "Hãng/Nước sản xuất dược phẩm",
+        "vnName": "Cơ sở sản xuất"
+      },
+      {
+        "name": "TH_DangBaoBi",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Quy cách (Hộp 3 vỉ x 10 viên...)",
+        "vnName": "Quy cách đóng gói"
+      },
+      {
+        "name": "TH_DangBaoChe",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Dạng bào chế (Viên nén, tiêm dịch...)",
+        "vnName": "Dạng bào chế"
+      },
+      {
+        "name": "TH_HanSuDung",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Hạn sử dụng tốt nhất của lô thuốc",
+        "vnName": "Hạn sử dụng"
+      }
+    ],
+    "pos": {
+      "x": 1650,
+      "y": 678
+    }
+  },
+  {
+    "id": "vattuyte",
+    "name": "VatTuYTe",
+    "vnName": "Vật Tư Y Tế",
+    "subsystem": 5,
+    "subsystemName": "Dược & Vật tư y tế",
+    "description": "Danh mục các loại vật tư y tế tiêu hao, dụng cụ phẫu thuật, găng tay, bông băng.",
+    "mappingExplain": "Được chuyển đổi từ thực thể mạnh VẬT TƯ Y TẾ. Khóa chính là VT_MaVatTu.",
+    "columns": [
+      {
+        "name": "VT_MaVatTu",
+        "type": "VARCHAR(50)",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã vật tư y tế tiêu hao (Khóa chính)",
+        "vnName": "Mã vật tư tiêu hao"
+      },
+      {
+        "name": "VT_TenVatTu",
+        "type": "VARCHAR(150)",
+        "key": "",
+        "ref": null,
+        "desc": "Tên vật tư y tế",
+        "vnName": "Tên vật tư y tế"
+      },
+      {
+        "name": "VT_DonViTinh",
+        "type": "VARCHAR(30)",
+        "key": "",
+        "ref": null,
+        "desc": "Đơn vị tính cấp phát (Cái, Cuộn, Bộ)",
+        "vnName": "Đơn vị tính"
+      },
+      {
+        "name": "VT_ChatLieu",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Chất liệu (Cao su, Nhựa y tế, Inox)",
+        "vnName": "Chất liệu cấu thành"
+      },
+      {
+        "name": "VT_CongDung",
+        "type": "VARCHAR(255)",
+        "key": "",
+        "ref": null,
+        "desc": "Chỉ định công dụng chính",
+        "vnName": "Chỉ định công dụng"
+      }
+    ],
+    "pos": {
+      "x": 1650,
+      "y": 1012
+    }
+  },
+  {
+    "id": "phieuxuatkho",
+    "name": "PhieuXuatKho",
+    "vnName": "Phiếu Xuất Kho",
+    "subsystem": 5,
+    "subsystemName": "Dược & Vật tư y tế",
+    "description": "Chứng từ xuất nhập kho chi tiết của Thuốc và Vật tư y tế liên kết với đơn nhập hàng.",
+    "mappingExplain": "Được ánh xạ từ thực thể yếu PHIẾU XUẤT KHO (hoặc Chi tiết nhập) trong ERD. Nó liên kết đa mối quan hệ: N:1 với ĐƠN NHẬP HÀNG (ChiTietNhap), N:1 với THUỐC (GomThuoc), N:1 với VẬT TƯ (GomVatTu). Chứa 3 khóa ngoại tương ứng làm cột.",
+    "columns": [
+      {
+        "name": "PXK_MaPhieu",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã chi tiết xuất nhập kho (Khóa chính)",
+        "vnName": "Mã phiếu xuất nhập"
+      },
+      {
+        "name": "PXK_SoLo",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Số lô sản xuất của thuốc/vật tư y tế",
+        "vnName": "Số lô sản xuất"
+      },
+      {
+        "name": "PXK_HSD",
+        "type": "DATE",
+        "key": "",
+        "ref": null,
+        "desc": "Hạn sử dụng ghi trên lô hàng",
+        "vnName": "Hạn sử dụng lô"
+      },
+      {
+        "name": "PXK_SL",
+        "type": "INT",
+        "key": "",
+        "ref": null,
+        "desc": "Số lượng xuất nhập kho thực tế",
+        "vnName": "Số lượng thực xuất"
+      },
+      {
+        "name": "PXK_DonGia",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Đơn giá xuất/nhập",
+        "vnName": "Đơn giá xuất kho"
+      },
+      {
+        "name": "PXK_ThanhTien",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Thành tiền (Số lượng x Đơn giá)",
+        "vnName": "Thành tiền viện phí"
+      },
+      {
+        "name": "DNH_MaDon_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "DonNhapHang",
+        "desc": "Đơn hàng nhập liên đới (Khóa ngoại tham chiếu DonNhapHang)",
+        "vnName": "Mã đơn nhập kho"
+      },
+      {
+        "name": "TH_MaThuoc_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "Thuoc",
+        "desc": "Thuốc được nhập/xuất (Khóa ngoại tham chiếu Thuoc, cho phép NULL)",
+        "vnName": "Mã thuốc biệt dược"
+      },
+      {
+        "name": "VT_MaVatTu_FK",
+        "type": "VARCHAR(50)",
+        "key": "FK",
+        "ref": "VatTuYTe",
+        "desc": "Vật tư được nhập/xuất (Khóa ngoại tham chiếu VatTuYTe, cho phép NULL)",
+        "vnName": "Mã vật tư tiêu hao"
+      }
+    ],
+    "pos": {
+      "x": 1650,
+      "y": 1262
+    }
+  },
+  {
+    "id": "hoadon",
+    "name": "HoaDon",
+    "vnName": "Hóa Đơn",
+    "subsystem": 6,
+    "subsystemName": "Tài chính & Viện phí",
+    "description": "Hóa đơn tổng hợp toàn bộ chi phí khám chữa bệnh, dịch vụ và thuốc của bệnh nhân phát sinh trong đợt điều trị.",
+    "mappingExplain": "Được chuyển đổi từ thực thể HÓA ĐƠN. Liên kết 1:1 với HỒ SƠ NHẬP VIỆN qua quan hệ PhatSinhHD (đưa HS_AdmissionID_FK làm khóa ngoại UNIQUE) và 1:N với BỆNH NHÂN qua quan hệ ThanhToanHD (đưa HD_MaBN làm khóa ngoại).",
+    "columns": [
+      {
+        "name": "HD_MaHD",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã hóa đơn viện phí (Khóa chính)",
+        "vnName": "Mã hóa đơn viện phí"
+      },
+      {
+        "name": "HD_TongChiPhi",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Tổng tiền dịch vụ và dược phát sinh",
+        "vnName": "Tổng chi phí viện phí"
+      },
+      {
+        "name": "HD_TienBảo hiểm y tế",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Số tiền được quỹ Bảo hiểm y tế chi trả khấu trừ",
+        "vnName": "Số tiền Bảo hiểm y tế hỗ trợ"
+      },
+      {
+        "name": "HD_TienBN",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Số tiền thực tế bệnh nhân phải tự chi trả",
+        "vnName": "Số tiền bệnh nhân tự chi trả"
+      },
+      {
+        "name": "HD_MaBN",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BenhNhan",
+        "desc": "Mã bệnh nhân thanh toán hóa đơn (Khóa ngoại tham chiếu BenhNhan)",
+        "vnName": "Mã bệnh nhân"
+      },
+      {
+        "name": "HS_AdmissionID_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "HoSoNhapVien",
+        "desc": "Mã hồ sơ nhập viện phát sinh hóa đơn (Khóa ngoại tham chiếu HoSoNhapVien, UNIQUE)",
+        "vnName": "Mã hồ sơ nhập viện"
+      }
+    ],
+    "pos": {
+      "x": 2050,
+      "y": 150
+    }
+  },
+  {
+    "id": "chitietdichvu",
+    "name": "ChiTietDichVu",
+    "vnName": "Chi Tiết Dịch Vụ",
+    "subsystem": 6,
+    "subsystemName": "Tài chính & Viện phí",
+    "description": "Bảng trung gian ghi nhận các dịch vụ y tế được tính phí chi tiết trong hóa đơn viện phí.",
+    "mappingExplain": "Bảng trung gian chuyển đổi từ mối quan hệ nhiều-nhiều (M:N) ChiTietDichVu giữa DỊCH VỤ Y TẾ (M) và HÓA ĐƠN (N). Khóa chính bao gồm 2 khóa ngoại HD_MaHD_FK và DV_MaDichVu_FK kết hợp lại.",
+    "columns": [
+      {
+        "name": "HD_MaHD_FK",
+        "type": "INT",
+        "key": "PK, FK",
+        "ref": "HoaDon",
+        "desc": "Hóa đơn viện phí liên kết (Khóa ngoại tham chiếu HoaDon)",
+        "vnName": "Mã hóa đơn viện phí"
+      },
+      {
+        "name": "DV_MaDichVu_FK",
+        "type": "VARCHAR(50)",
+        "key": "PK, FK",
+        "ref": "DichVuYTe",
+        "desc": "Dịch vụ y tế đã sử dụng (Khóa ngoại tham chiếu DichVuYTe)",
+        "vnName": "Mã dịch vụ y tế"
+      },
+      {
+        "name": "SoLuong",
+        "type": "INT",
+        "key": "",
+        "ref": null,
+        "desc": "Số lượng chỉ định sử dụng dịch vụ",
+        "vnName": "Số lượng sử dụng"
+      },
+      {
+        "name": "DonGia",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Đơn giá dịch vụ tại thời điểm thanh toán",
+        "vnName": "Đơn giá dịch vụ"
+      },
+      {
+        "name": "ThanhTien",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Thành tiền dịch vụ (Số lượng x Đơn giá)",
+        "vnName": "Thành tiền"
+      }
+    ],
+    "pos": {
+      "x": 2050,
+      "y": 428
+    }
+  },
+  {
+    "id": "thanhtoan",
+    "name": "ThanhToan",
+    "vnName": "Thanh Toán",
+    "subsystem": 6,
+    "subsystemName": "Tài chính & Viện phí",
+    "description": "Biên lai thu nhận tiền thanh toán (tạm ứng hoặc quyết toán) từ bệnh nhân.",
+    "mappingExplain": "Được chuyển đổi từ thực thể THANH TOÁN. Có quan hệ CoThanhToan (1:N) với HÓA ĐƠN và quan hệ ThuTien (1:N) với NHÂN VIÊN. Hai khóa ngoại tương ứng là HD_MaHD_FK và TT_MaNV_FK được đưa vào bảng.",
+    "columns": [
+      {
+        "name": "TT_MaTT",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã biên lai thanh toán viện phí (Khóa chính)",
+        "vnName": "Mã biên lai thanh toán"
+      },
+      {
+        "name": "TT_Loai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Phân loại (Tạm ứng viện phí / Quyết toán ra viện)",
+        "vnName": "Phân loại thanh toán"
+      },
+      {
+        "name": "TT_SoTien",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Số tiền thu thực tế trên biên lai",
+        "vnName": "Số tiền thực tế trên biên lai"
+      },
+      {
+        "name": "TT_PhuongThuc",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Phương thức thanh toán (Tiền mặt, Chuyển khoản, Thẻ)",
+        "vnName": "Phương thức thanh toán"
+      },
+      {
+        "name": "TT_MaNV",
+        "type": "INT",
+        "key": "FK",
+        "ref": "NhanVien",
+        "desc": "Nhân viên y tế thu ngân (Khóa ngoại tham chiếu NhanVien)",
+        "vnName": "Mã nhân viên thu ngân"
+      },
+      {
+        "name": "HD_MaHD_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "HoaDon",
+        "desc": "Hóa đơn viện phí liên kết thanh toán (Khóa ngoại tham chiếu HoaDon)",
+        "vnName": "Mã hóa đơn viện phí"
+      }
+    ],
+    "pos": {
+      "x": 2050,
+      "y": 678
+    }
+  },
+  {
+    "id": "boithuongbhyt",
+    "name": "BoiThuongBảo hiểm y tế",
+    "vnName": "Bồi Thường Bảo Hiểm Y Tế",
+    "subsystem": 6,
+    "subsystemName": "Tài chính & Viện phí",
+    "description": "Hồ sơ quyết toán đòi bồi thường viện phí gửi cơ quan Bảo hiểm xã hội.",
+    "mappingExplain": "Được chuyển đổi từ thực thể BỒI THƯỜNG Bảo hiểm y tế. Có quan hệ ApDungBảo hiểm y tế (1:1) với HÓA ĐƠN. Đưa HD_MaHD_FK làm khóa ngoại UNIQUE sang bảng này.",
+    "columns": [
+      {
+        "name": "BT_MaQuyetToan",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã quyết toán đòi bồi thường (Khóa chính)",
+        "vnName": "Mã quyết toán bảo hiểm"
+      },
+      {
+        "name": "BT_SoTheBảo hiểm y tế",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Số thẻ Bảo hiểm y tế áp dụng thanh toán",
+        "vnName": "Số thẻ Bảo hiểm y tế"
+      },
+      {
+        "name": "BT_MaBenh",
+        "type": "VARCHAR(30)",
+        "key": "",
+        "ref": null,
+        "desc": "Mã chẩn đoán bệnh chính hưởng bảo hiểm (ICD-10)",
+        "vnName": "Mã chẩn đoán bệnh chính"
+      },
+      {
+        "name": "BT_TiLe",
+        "type": "DECIMAL(5,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Tỉ lệ phần trăm bảo hiểm chi trả (Ví dụ: 80.00)",
+        "vnName": "Tỷ lệ bảo hiểm chi trả"
+      },
+      {
+        "name": "BT_TrangThai",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Trạng thái (Chờ thanh toán, Đã quyết toán)",
+        "vnName": "Trạng thái phê duyệt bồi thường"
+      },
+      {
+        "name": "HD_MaHD_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "HoaDon",
+        "desc": "Mã hóa đơn y tế áp dụng (Khóa ngoại tham chiếu HoaDon, UNIQUE)",
+        "vnName": "Mã hóa đơn viện phí"
+      }
+    ],
+    "pos": {
+      "x": 2050,
+      "y": 956
+    }
+  },
+  {
+    "id": "giaodich",
+    "name": "GiaoDich",
+    "vnName": "Giao Dịch",
+    "subsystem": 6,
+    "subsystemName": "Tài chính & Viện phí",
+    "description": "Bảng ghi sổ cái giao dịch tài chính tổng hợp của quỹ bệnh viện.",
+    "mappingExplain": "Được chuyển đổi từ thực thể GIAO DỊCH. Phản ánh giao dịch phát sinh từ dòng tiền viện phí (PhatSinhGD_TT) hoặc bồi thường bảo hiểm (PhatSinhGD_BT). Các khóa ngoại tương ứng là TT_MaTT_FK và BT_MaQuyetToan_FK.",
+    "columns": [
+      {
+        "name": "GD_MaGD",
+        "type": "INT",
+        "key": "PK",
+        "ref": null,
+        "desc": "Mã giao dịch kế toán (Khóa chính)",
+        "vnName": "Mã giao dịch kế toán"
+      },
+      {
+        "name": "GD_MaThamChieu",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Mã giao dịch ngân hàng / Đối tác",
+        "vnName": "Mã giao dịch tham chiếu"
+      },
+      {
+        "name": "GD_NguonTien",
+        "type": "VARCHAR(50)",
+        "key": "",
+        "ref": null,
+        "desc": "Phân loại nguồn thu (Viện phí bệnh nhân / Quỹ Bảo hiểm y tế chi trả)",
+        "vnName": "Nguồn tiền thu nhập"
+      },
+      {
+        "name": "GD_SoTienGD",
+        "type": "DECIMAL(15,2)",
+        "key": "",
+        "ref": null,
+        "desc": "Tổng số tiền thực hiện giao dịch",
+        "vnName": "Số tiền thực hiện giao dịch"
+      },
+      {
+        "name": "GD_ThoiGian",
+        "type": "DATETIME",
+        "key": "",
+        "ref": null,
+        "desc": "Ngày giờ giao dịch hoàn tất",
+        "vnName": "Thời gian giao dịch"
+      },
+      {
+        "name": "TT_MaTT_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "ThanhToan",
+        "desc": "Biên lai thanh toán của bệnh nhân (Khóa ngoại tham chiếu ThanhToan, cho phép NULL)",
+        "vnName": "Mã biên lai thanh toán"
+      },
+      {
+        "name": "BT_MaQuyetToan_FK",
+        "type": "INT",
+        "key": "FK",
+        "ref": "BoiThuongBảo hiểm y tế",
+        "desc": "Quyết toán Bảo hiểm y tế tương ứng (Khóa ngoại tham chiếu BoiThuongBảo hiểm y tế, cho phép NULL)",
+        "vnName": "Mã quyết toán bảo hiểm"
+      }
+    ],
+    "pos": {
+      "x": 2050,
+      "y": 1234
+    }
+  }
+];
+
+    // ==========================================================================
+    // DDL SQL CODE SCRIPT GENERATOR
+    // ==========================================================================
+    function generateSQLDDL() {
+      let sql = `-- ==========================================================================\n`;
+      sql += `-- SCRIPT TẠO CƠ SỞ DỮ LIỆU VẬT LÝ (SQL DDL)\n`;
+      sql += `-- Ánh xạ từ mô hình khái niệm ERD Quản lý Bệnh viện - Nhóm 3 MoewZ\n`;
+      sql += `-- ==========================================================================\n\n`;
+
+      // Helper to generate a single table DDL
+      function getSingleTableDDL(table) {
+        let tSql = `-- Phân hệ: ${table.subsystemName}\n`;
+        tSql += `-- ${table.description}\n`;
+        tSql += `CREATE TABLE ${table.name} (\n`;
+        
+        const cols = [];
+        const fks = [];
+        
+        table.columns.forEach(col => {
+          let line = `    ${col.name} ${col.type}`;
+          
+          if (col.key.includes("PK")) {
+            if (col.type.includes("INT") && !col.key.includes("FK")) {
+              line += " PRIMARY KEY AUTO_INCREMENT";
+            } else if (!col.key.includes("FK")) {
+              line += " PRIMARY KEY";
+            }
+          }
+          
+          if (col.name.endsWith("_FK") || col.name === "BN_PatientID" || col.name === "BS_MaBS" || col.name === "DD_MaDD") {
+            if (col.name === "BN_PatientID" && table.name === "BaoHiemYT") {
+              line += " UNIQUE";
+            } else if (col.name === "HS_AdmissionID_FK" && table.name === "HoaDon") {
+              line += " UNIQUE";
+            } else if (col.name === "HD_MaHD_FK" && table.name === "BoiThuongBảo hiểm y tế") {
+              line += " UNIQUE";
+            }
+          }
+          
+          if (col.name.includes("HoTen") || col.name.includes("Ten") || col.name.includes("MaSoBảo hiểm y tế")) {
+            line += " NOT NULL";
+          }
+          
+          cols.push(line);
+          
+          // Collect FK constraints
+          if (col.key.includes("FK") && col.ref) {
+            let refCol = "";
+            if (col.ref === "BenhNhan") refCol = "BN_PatientID";
+            else if (col.ref === "HoSoNhapVien") refCol = "HS_AdmissionID";
+            else if (col.ref === "BenhAn") refCol = "BA_RecordID";
+            else if (col.ref === "ChanDoan") refCol = "CD_MaChanDoan";
+            else if (col.ref === "DonThuoc") refCol = "DT_MaDonThuoc";
+            else if (col.ref === "Thuoc") refCol = "TH_MaThuoc";
+            else if (col.ref === "VatTuYTe") refCol = "VT_MaVatTu";
+            else if (col.ref === "PhacDoDieuTri") refCol = "PD_MaPhacDo";
+            else if (col.ref === "DichVuYTe") refCol = "DV_MaDichVu";
+            else if (col.ref === "DanhMucXetNghiem") refCol = "DM_TestID";
+            else if (col.ref === "MauBenhPham") refCol = "BP_SampleID";
+            else if (col.ref === "ThietBiYTe") refCol = "TB_DeviceID";
+            else if (col.ref === "NhanVien") refCol = "NV_MaNV";
+            else if (col.ref === "BacSi") refCol = "BS_MaBS";
+            else if (col.ref === "Khoa") refCol = "KH_MaKhoa";
+            else if (col.ref === "NhaCungCap") refCol = "NCC_MaNCC";
+            else if (col.ref === "DonNhapHang") refCol = "DNH_MaDon";
+            else if (col.ref === "HoaDon") refCol = "HD_MaHD";
+            else if (col.ref === "ThanhToan") refCol = "TT_MaTT";
+            else if (col.ref === "BoiThuongBảo hiểm y tế") refCol = "BT_MaQuyetToan";
+
+            let fkConstraint = `    FOREIGN KEY (${col.name}) REFERENCES ${col.ref}(${refCol})`;
+            if (table.name === "BacSi" || table.name === "DieuDuong") {
+              fkConstraint += " ON DELETE CASCADE";
+            }
+            fks.push(fkConstraint);
+          }
+        });
+        
+        // Composite Primary Keys (Junction Tables)
+        const pkFkCols = table.columns.filter(c => c.key === "PK, FK");
+        if (pkFkCols.length > 1) {
+          const pkNames = pkFkCols.map(c => c.name).join(", ");
+          cols.push(`    PRIMARY KEY (${pkNames})`);
+        }
+        
+        let ddl = cols.join(",\n");
+        if (fks.length > 0) {
+          ddl += ",\n" + fks.join(",\n");
+        }
+        
+        tSql += ddl + "\n);\n\n";
+        return tSql;
+      }
+
+      // Group tables by subsystem and generate
+      for (let s = 1; s <= 6; s++) {
+        const subTables = dbSchema.filter(t => t.subsystem === s);
+        subTables.forEach(table => {
+          sql += getSingleTableDDL(table);
+        });
+      }
+      
+      return sql;
+    }
+
+    // ==========================================================================
+    // CONTROLLER & UI INTERACTIONS
+    // ==========================================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      const tablesContainer = document.getElementById("tables-container");
+      const searchInput = document.getElementById("table-search");
+      const filterItems = document.querySelectorAll(".subsystem-item");
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const tabPanels = document.querySelectorAll(".tab-panel");
+      const detailDrawer = document.getElementById("detail-drawer");
+      const drawerEmptyMsg = document.getElementById("drawer-empty-msg");
+      const drawerContent = document.getElementById("drawer-content");
+      const sqlCodeDisplay = document.getElementById("sql-code-display");
+      const copySqlBtn = document.getElementById("copy-sql-btn");
+      const toast = document.getElementById("copy-toast");
+
+      let activeSubsystem = "all";
+      let searchFilterQuery = "";
+      
+      // 1. Initial counts of tables per subsystem
+      document.getElementById("count-all").textContent = dbSchema.length;
+      for (let s = 1; s <= 6; s++) {
+        document.getElementById(`count-${s}`).textContent = dbSchema.filter(t => t.subsystem === s).length;
+      }
+
+      // 2. Render DDL Script inside the SQL tab
+      const fullSql = generateSQLDDL();
+      // Format SQL script for coloring
+      sqlCodeDisplay.innerHTML = highlightSQL(fullSql);
+
+      // 3. Render Table Cards in Grid
+      renderTableCards();
+
+      // 4. Set up Tab Navigation
+      tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          tabButtons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          
+          const targetTab = btn.getAttribute("data-tab");
+          tabPanels.forEach(panel => {
+            panel.classList.remove("active");
+            if (panel.id === `panel-${targetTab}`) {
+              panel.classList.add("active");
+            }
+          });
+        });
+      });
+
+      // 5. Sidebar Subsystem Filtering
+      filterItems.forEach(item => {
+        item.addEventListener("click", () => {
+          filterItems.forEach(i => i.classList.remove("active"));
+          item.classList.add("active");
+          
+          activeSubsystem = item.getAttribute("data-sys");
+          renderTableCards();
+        });
+      });
+
+      // 6. Search Bar Filtering
+      searchInput.addEventListener("input", (e) => {
+        searchFilterQuery = e.target.value.toLowerCase();
+        renderTableCards();
+      });
+
+      // 7. Copy SQL DDL Script Button
+      copySqlBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(fullSql).then(() => {
+          toast.classList.add("show");
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 2500);
+        });
+      });
+
+      // ==========================================================================
+      // FUNCTIONS
+      // ==========================================================================
+      
+      // Syntax highlight SQL text
+      function highlightSQL(sql) {
+        return sql
+          .replace(/(--.*)/g, '<span class="code-comment">$1</span>')
+          .replace(/\b(CREATE TABLE|FOREIGN KEY|PRIMARY KEY|REFERENCES|UNIQUE|NOT NULL|AUTO_INCREMENT|ON DELETE CASCADE)\b/g, '<span class="code-keyword">$1</span>')
+          .replace(/\b(INT|VARCHAR|DATE|TIME|DATETIME|DECIMAL)\b/g, '<span class="code-type">$1</span>')
+          .replace(/(CREATE TABLE )(\w+)/g, '$1<span class="code-table">$2</span>')
+          .replace(/\((.*?)\)/g, function(match, inner) {
+            return '(' + inner.replace(/\b(PK|FK)\b/g, '<span class="code-key">$1</span>') + ')';
+          });
+      }
+
+      // Render Table Cards dynamically
+      function renderTableCards() {
+        tablesContainer.innerHTML = "";
+        
+        const filteredTables = dbSchema.filter(table => {
+          // Subsystem check
+          const matchesSys = (activeSubsystem === "all" || table.subsystem.toString() === activeSubsystem);
+          
+          // Search string check
+          const matchesSearch = !searchFilterQuery || 
+            table.name.toLowerCase().includes(searchFilterQuery) || 
+            table.description.toLowerCase().includes(searchFilterQuery) ||
+            table.columns.some(col => col.name.toLowerCase().includes(searchFilterQuery));
+            
+          return matchesSys && matchesSearch;
+        });
+
+        if (filteredTables.length === 0) {
+          tablesContainer.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">Không tìm thấy bảng dữ liệu nào tương ứng.</div>`;
+          return;
+        }
+
+        filteredTables.forEach(table => {
+          const card = document.createElement("div");
+          card.className = "table-card";
+          card.id = `card-${table.name.toLowerCase()}`;
+          card.style.setProperty("--accent-color", `var(--color-sys${table.subsystem})`);
+          
+          let columnsHtml = "";
+          table.columns.forEach(col => {
+            let badgeHtml = "";
+            let columnClass = "";
+            
+            if (col.key === "PK") {
+              badgeHtml = `<span class="key-badge key-pk">PK</span>`;
+              columnClass = "pk-col";
+            } else if (col.key === "FK") {
+              badgeHtml = `<span class="key-badge key-fk">FK</span>`;
+              columnClass = "fk-col";
+            } else if (col.key === "PK, FK") {
+              badgeHtml = `<span class="key-badge key-pk">PK</span><span class="key-badge key-fk" style="margin-left: 4px;">FK</span>`;
+              columnClass = "pk-fk-col";
+            }
+            
+            // Build FK tooltips
+            let tooltipHtml = "";
+            if (col.ref) {
+              tooltipHtml = `
+                <div class="ref-tooltip">
+                  <div class="ref-tooltip-title">Liên kết khóa ngoại</div>
+                  <div class="ref-tooltip-content">➔ ${col.ref}</div>
+                </div>
+              `;
+            }
+
+            columnsHtml += `
+              <div class="column-row" data-colname="${col.name}" data-ref="${col.ref || ''}">
+                <div class="column-name-group">
+                  ${badgeHtml}
+                  <span class="column-name ${columnClass}">${col.name}</span>
+                </div>
+                <span class="column-type">${col.type}</span>
+                ${tooltipHtml}
+              </div>
+            `;
+          });
+
+          card.innerHTML = `
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-title">${table.vnName.toUpperCase()}</span>
+                <span class="card-subtitle">${table.subsystemName} (${table.name})</span>
+              </div>
+              <span style="width: 10px; height: 10px; border-radius: 50%; background-color: var(--color-sys${table.subsystem})"></span>
+            </div>
+            <div class="card-body">
+              ${columnsHtml}
+            </div>
+          `;
+
+          // Hover events on rows to trigger relationship highlighting
+          const rows = card.querySelectorAll(".column-row");
+          rows.forEach(row => {
+            row.addEventListener("mouseenter", () => {
+              const ref = row.getAttribute("data-ref");
+              const colname = row.getAttribute("data-colname");
+              
+              if (ref) {
+                // Highlight target table
+                const targetCard = document.getElementById(`card-${ref.toLowerCase()}`);
+                if (targetCard) targetCard.classList.add("highlighted-ref");
+              } else if (colname.endsWith("ID") || colname.includes("MaBS") || colname.includes("MaDD") || colname.includes("MaNV")) {
+                // Highlight other tables holding this column as an FK
+                const cleanColName = colname.replace("_FK", "");
+                dbSchema.forEach(t => {
+                  t.columns.forEach(c => {
+                    if (c.key.includes("FK") && c.ref === table.name) {
+                      const fkCard = document.getElementById(`card-${t.id}`);
+                      if (fkCard) fkCard.classList.add("highlighted-ref");
+                    }
+                  });
+                });
+              }
+            });
+
+            row.addEventListener("mouseleave", () => {
+              document.querySelectorAll(".table-card").forEach(c => c.classList.remove("highlighted-ref"));
+            });
+          });
+
+          // Click on table card to open Details Drawer
+          card.addEventListener("click", () => {
+            document.querySelectorAll(".table-card").forEach(c => c.classList.remove("focused"));
+            card.classList.add("focused");
+            openDetailDrawer(table);
+          });
+
+          tablesContainer.appendChild(card);
+        });
+      }
+
+      // Drawer panel display details
+      function openDetailDrawer(table) {
+        drawerEmptyMsg.style.display = "none";
+        drawerContent.style.display = "block";
+        
+        const sysTag = document.getElementById("drawer-sys-tag");
+        sysTag.textContent = table.subsystemName;
+        sysTag.style.color = `var(--color-sys${table.subsystem})`;
+        
+        document.getElementById("drawer-table-name").textContent = `${table.vnName.toUpperCase()} (${table.name})`;
+        document.getElementById("drawer-table-desc").textContent = table.description;
+        document.getElementById("drawer-mapping-explain").textContent = table.mappingExplain;
+        
+        const colsList = document.getElementById("drawer-cols-list");
+        colsList.innerHTML = "";
+        
+        table.columns.forEach(col => {
+          const colItem = document.createElement("div");
+          colItem.className = "drawer-col-item";
+          
+          let pkClass = col.key.includes("PK") ? "pk" : "";
+          let fkIndicator = col.ref ? `<div class="drawer-col-ref">🔗 Tham chiếu đến ${col.ref}</div>` : "";
+          
+          colItem.innerHTML = `
+            <div class="drawer-col-header">
+              <span class="drawer-col-name ${pkClass}">${col.vnName} (${col.name}) ${col.key ? `(${col.key.replace("PK", "Khóa chính").replace("FK", "Khóa ngoại")})` : ""}</span>
+              <span class="drawer-col-type">${col.type}</span>
+            </div>
+            <div class="drawer-col-desc">${col.desc}</div>
+            ${fkIndicator}
+          `;
+          colsList.appendChild(colItem);
+        });
+      }
+
+      // ==========================================================================
+      // ZOOM AND PAN ENGINE FOR ORIGINAL ERD (SVG)
+      // ==========================================================================
+      const viewport = document.getElementById("erd-viewport");
+      const canvas = document.getElementById("erd-canvas");
+      const zoomInBtn = document.getElementById("erd-zoom-in");
+      const zoomOutBtn = document.getElementById("erd-zoom-out");
+      const zoomResetBtn = document.getElementById("erd-zoom-reset");
+
+      let scale = 0.15; // Set tiny initial scale to fit the massive 5700pt x 11700pt SVG
+      let posX = 50;
+      let posY = 50;
+      let isDragging = false;
+      let startX, startY;
+
+      // Initial transform coordinates
+      updateTransform();
+
+      // Pan mechanics
+      viewport.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX - posX;
+        startY = e.clientY - posY;
+      });
+
+      window.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+
+      viewport.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        posX = e.clientX - startX;
+        posY = e.clientY - startY;
+        updateTransform();
+      });
+
+      // Zoom mechanics
+      viewport.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        const zoomIntensity = 0.08;
+        
+        // Zoom relative to current mouse position
+        const mouseX = e.clientX - viewport.getBoundingClientRect().left;
+        const mouseY = e.clientY - viewport.getBoundingClientRect().top;
+        
+        const wheel = e.deltaY < 0 ? 1 : -1;
+        const zoomFactor = Math.exp(wheel * zoomIntensity);
+        
+        posX -= (mouseX - posX) * (zoomFactor - 1);
+        posY -= (mouseY - posY) * (zoomFactor - 1);
+        scale *= zoomFactor;
+        
+        // Clamp scale zoom
+        scale = Math.min(Math.max(scale, 0.05), 3);
+        
+        updateTransform();
+      });
+
+      zoomInBtn.addEventListener("click", () => {
+        scale *= 1.25;
+        scale = Math.min(scale, 3);
+        updateTransform();
+      });
+
+      zoomOutBtn.addEventListener("click", () => {
+        scale *= 0.8;
+        scale = Math.max(scale, 0.05);
+        updateTransform();
+      });
+
+      zoomResetBtn.addEventListener("click", () => {
+        scale = 0.15;
+        posX = 50;
+        posY = 50;
+        updateTransform();
+      });
+
+      function updateTransform() {
+        canvas.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+      }
+
+    });
+  </script>
+</body>
+</html>

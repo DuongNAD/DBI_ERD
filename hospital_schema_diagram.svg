@@ -1,0 +1,1107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2480 1950" width="2480" height="1950">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap');
+    
+    .bg { fill: #05070c; }
+    .grid-pattern { fill: none; stroke: rgba(255, 255, 255, 0.008); stroke-width: 1; }
+    
+    /* Table cards */
+    .table-card { cursor: pointer; transition: opacity 0.3s ease; }
+    .table-card.dimmed { opacity: 0.12; }
+    .table-card.focused .card-bg { stroke: var(--accent-color); stroke-width: 1.5px; filter: drop-shadow(0 0 6px var(--accent-color)); }
+    .card-bg { fill: #151b2a; stroke: rgba(255, 255, 255, 0.06); stroke-width: 1; rx: 12px; ry: 12px; transition: stroke 0.3s ease, filter 0.3s ease; }
+    .card-header-line { stroke-width: 3; }
+    .card-header-bg { fill: rgba(255, 255, 255, 0.015); rx: 12px; ry: 12px; clip-path: inset(0 0 auto 0); }
+    
+    /* Text styling */
+    .card-title { font-family: 'Outfit', 'Inter', sans-serif; font-size: 14px; font-weight: 700; fill: #f8fafc; }
+    .card-subtitle { font-family: 'Outfit', 'Inter', sans-serif; font-size: 9px; font-weight: 600; }
+    .col-name { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #e2e8f0; }
+    .col-name.pk-col { fill: #fbbf24; font-weight: 600; }
+    .col-type { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #475569; text-anchor: end; }
+    
+    /* Key badges */
+    .badge-bg-pk { fill: rgba(234, 179, 8, 0.1); stroke: rgba(234, 179, 8, 0.2); stroke-width: 1; rx: 4px; ry: 4px; }
+    .badge-text-pk { font-family: 'Outfit', sans-serif; font-size: 8px; font-weight: 800; fill: #fbbf24; text-anchor: middle; }
+    .badge-bg-fk { fill: rgba(59, 130, 246, 0.1); stroke: rgba(59, 130, 246, 0.2); stroke-width: 1; rx: 4px; ry: 4px; }
+    .badge-text-fk { font-family: 'Outfit', sans-serif; font-size: 8px; font-weight: 800; fill: #60a5fa; text-anchor: middle; }
+    
+    /* Connection lines */
+    .relation-path { fill: none; stroke-width: 1.5px; opacity: 0; pointer-events: none; transition: stroke-width 0.3s ease, opacity 0.3s ease, stroke 0.3s ease; }
+    .relation-path:hover, .relation-path.highlighted { stroke-width: 3.5px; opacity: 0.95; pointer-events: auto; filter: drop-shadow(0 0 4px var(--accent-color)); }
+    .relation-path.dimmed { opacity: 0 !important; pointer-events: none; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" class="bg" />
+  
+  <!-- Technical Grid Background -->
+  <g>
+    <line x1="0" y1="0" x2="0" y2="1950" class="grid-pattern" />
+    <line x1="60" y1="0" x2="60" y2="1950" class="grid-pattern" />
+    <line x1="120" y1="0" x2="120" y2="1950" class="grid-pattern" />
+    <line x1="180" y1="0" x2="180" y2="1950" class="grid-pattern" />
+    <line x1="240" y1="0" x2="240" y2="1950" class="grid-pattern" />
+    <line x1="300" y1="0" x2="300" y2="1950" class="grid-pattern" />
+    <line x1="360" y1="0" x2="360" y2="1950" class="grid-pattern" />
+    <line x1="420" y1="0" x2="420" y2="1950" class="grid-pattern" />
+    <line x1="480" y1="0" x2="480" y2="1950" class="grid-pattern" />
+    <line x1="540" y1="0" x2="540" y2="1950" class="grid-pattern" />
+    <line x1="600" y1="0" x2="600" y2="1950" class="grid-pattern" />
+    <line x1="660" y1="0" x2="660" y2="1950" class="grid-pattern" />
+    <line x1="720" y1="0" x2="720" y2="1950" class="grid-pattern" />
+    <line x1="780" y1="0" x2="780" y2="1950" class="grid-pattern" />
+    <line x1="840" y1="0" x2="840" y2="1950" class="grid-pattern" />
+    <line x1="900" y1="0" x2="900" y2="1950" class="grid-pattern" />
+    <line x1="960" y1="0" x2="960" y2="1950" class="grid-pattern" />
+    <line x1="1020" y1="0" x2="1020" y2="1950" class="grid-pattern" />
+    <line x1="1080" y1="0" x2="1080" y2="1950" class="grid-pattern" />
+    <line x1="1140" y1="0" x2="1140" y2="1950" class="grid-pattern" />
+    <line x1="1200" y1="0" x2="1200" y2="1950" class="grid-pattern" />
+    <line x1="1260" y1="0" x2="1260" y2="1950" class="grid-pattern" />
+    <line x1="1320" y1="0" x2="1320" y2="1950" class="grid-pattern" />
+    <line x1="1380" y1="0" x2="1380" y2="1950" class="grid-pattern" />
+    <line x1="1440" y1="0" x2="1440" y2="1950" class="grid-pattern" />
+    <line x1="1500" y1="0" x2="1500" y2="1950" class="grid-pattern" />
+    <line x1="1560" y1="0" x2="1560" y2="1950" class="grid-pattern" />
+    <line x1="1620" y1="0" x2="1620" y2="1950" class="grid-pattern" />
+    <line x1="1680" y1="0" x2="1680" y2="1950" class="grid-pattern" />
+    <line x1="1740" y1="0" x2="1740" y2="1950" class="grid-pattern" />
+    <line x1="1800" y1="0" x2="1800" y2="1950" class="grid-pattern" />
+    <line x1="1860" y1="0" x2="1860" y2="1950" class="grid-pattern" />
+    <line x1="1920" y1="0" x2="1920" y2="1950" class="grid-pattern" />
+    <line x1="1980" y1="0" x2="1980" y2="1950" class="grid-pattern" />
+    <line x1="2040" y1="0" x2="2040" y2="1950" class="grid-pattern" />
+    <line x1="2100" y1="0" x2="2100" y2="1950" class="grid-pattern" />
+    <line x1="2160" y1="0" x2="2160" y2="1950" class="grid-pattern" />
+    <line x1="2220" y1="0" x2="2220" y2="1950" class="grid-pattern" />
+    <line x1="2280" y1="0" x2="2280" y2="1950" class="grid-pattern" />
+    <line x1="2340" y1="0" x2="2340" y2="1950" class="grid-pattern" />
+    <line x1="2400" y1="0" x2="2400" y2="1950" class="grid-pattern" />
+    <line x1="2460" y1="0" x2="2460" y2="1950" class="grid-pattern" />
+    <line x1="0" y1="0" x2="2480" y2="0" class="grid-pattern" />
+    <line x1="0" y1="60" x2="2480" y2="60" class="grid-pattern" />
+    <line x1="0" y1="120" x2="2480" y2="120" class="grid-pattern" />
+    <line x1="0" y1="180" x2="2480" y2="180" class="grid-pattern" />
+    <line x1="0" y1="240" x2="2480" y2="240" class="grid-pattern" />
+    <line x1="0" y1="300" x2="2480" y2="300" class="grid-pattern" />
+    <line x1="0" y1="360" x2="2480" y2="360" class="grid-pattern" />
+    <line x1="0" y1="420" x2="2480" y2="420" class="grid-pattern" />
+    <line x1="0" y1="480" x2="2480" y2="480" class="grid-pattern" />
+    <line x1="0" y1="540" x2="2480" y2="540" class="grid-pattern" />
+    <line x1="0" y1="600" x2="2480" y2="600" class="grid-pattern" />
+    <line x1="0" y1="660" x2="2480" y2="660" class="grid-pattern" />
+    <line x1="0" y1="720" x2="2480" y2="720" class="grid-pattern" />
+    <line x1="0" y1="780" x2="2480" y2="780" class="grid-pattern" />
+    <line x1="0" y1="840" x2="2480" y2="840" class="grid-pattern" />
+    <line x1="0" y1="900" x2="2480" y2="900" class="grid-pattern" />
+    <line x1="0" y1="960" x2="2480" y2="960" class="grid-pattern" />
+    <line x1="0" y1="1020" x2="2480" y2="1020" class="grid-pattern" />
+    <line x1="0" y1="1080" x2="2480" y2="1080" class="grid-pattern" />
+    <line x1="0" y1="1140" x2="2480" y2="1140" class="grid-pattern" />
+    <line x1="0" y1="1200" x2="2480" y2="1200" class="grid-pattern" />
+    <line x1="0" y1="1260" x2="2480" y2="1260" class="grid-pattern" />
+    <line x1="0" y1="1320" x2="2480" y2="1320" class="grid-pattern" />
+    <line x1="0" y1="1380" x2="2480" y2="1380" class="grid-pattern" />
+    <line x1="0" y1="1440" x2="2480" y2="1440" class="grid-pattern" />
+    <line x1="0" y1="1500" x2="2480" y2="1500" class="grid-pattern" />
+    <line x1="0" y1="1560" x2="2480" y2="1560" class="grid-pattern" />
+    <line x1="0" y1="1620" x2="2480" y2="1620" class="grid-pattern" />
+    <line x1="0" y1="1680" x2="2480" y2="1680" class="grid-pattern" />
+    <line x1="0" y1="1740" x2="2480" y2="1740" class="grid-pattern" />
+    <line x1="0" y1="1800" x2="2480" y2="1800" class="grid-pattern" />
+    <line x1="0" y1="1860" x2="2480" y2="1860" class="grid-pattern" />
+    <line x1="0" y1="1920" x2="2480" y2="1920" class="grid-pattern" />
+  </g>
+
+  <!-- Relationship Connections (drawn behind cards) -->
+  <g>
+    <path d="M 390 665 C 440 665, 440 219, 390 219" class="relation-path" data-source="baohiemyt" data-target="benhnhan" stroke="#38bdf8" style="--accent-color: #38bdf8;" />
+    <path d="M 390 943 C 440 943, 440 219, 390 219" class="relation-path" data-source="lichhen" data-target="benhnhan" stroke="#38bdf8" style="--accent-color: #38bdf8;" />
+    <path d="M 390 1249 C 440 1249, 440 219, 390 219" class="relation-path" data-source="hosonhapvien" data-target="benhnhan" stroke="#38bdf8" style="--accent-color: #38bdf8;" />
+    <path d="M 450 359 C 423 359, 417 219, 390 219" class="relation-path" data-source="benhan" data-target="benhnhan" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 450 387 C 423 387, 417 1081, 390 1081" class="relation-path" data-source="benhan" data-target="hosonhapvien" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 637 C 840 637, 840 219, 790 219" class="relation-path" data-source="chandoan" data-target="benhan" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 665 C 997 665, 1043 1109, 1250 1109" class="relation-path" data-source="chandoan" data-target="bacsi" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 887 C 840 887, 840 525, 790 525" class="relation-path" data-source="donthuoc" data-target="chandoan" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 915 C 997 915, 1043 1109, 1250 1109" class="relation-path" data-source="donthuoc" data-target="bacsi" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 1165 C 840 1165, 840 803, 790 803" class="relation-path" data-source="chitietdonthuoc" data-target="donthuoc" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 1193 C 1177 1193, 1263 747, 1650 747" class="relation-path" data-source="chitietdonthuoc" data-target="thuoc" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 1443 C 840 1443, 840 525, 790 525" class="relation-path" data-source="phacdodieutri" data-target="chandoan" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 1581 C 840 1581, 840 1331, 790 1331" class="relation-path" data-source="sudung" data-target="phacdodieutri" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 790 1609 C 817 1609, 823 219, 850 219" class="relation-path" data-source="sudung" data-target="dichvuyte" stroke="#2dd4bf" style="--accent-color: #2dd4bf;" />
+    <path d="M 850 915 C 823 915, 817 219, 790 219" class="relation-path" data-source="ketquaxetnghiem" data-target="benhan" stroke="#a78bfa" style="--accent-color: #a78bfa;" />
+    <path d="M 1190 943 C 1240 943, 1240 469, 1190 469" class="relation-path" data-source="ketquaxetnghiem" data-target="danhmucxetnghiem" stroke="#a78bfa" style="--accent-color: #a78bfa;" />
+    <path d="M 1190 971 C 1240 971, 1240 1721, 1190 1721" class="relation-path" data-source="ketquaxetnghiem" data-target="maubenhpham" stroke="#a78bfa" style="--accent-color: #a78bfa;" />
+    <path d="M 850 1555 C 823 1555, 817 219, 790 219" class="relation-path" data-source="chandoanhinhanh" data-target="benhan" stroke="#a78bfa" style="--accent-color: #a78bfa;" />
+    <path d="M 1190 1583 C 1240 1583, 1240 1109, 1190 1109" class="relation-path" data-source="chandoanhinhanh" data-target="thietbiyte" stroke="#a78bfa" style="--accent-color: #a78bfa;" />
+    <path d="M 850 1861 C 643 1861, 597 219, 390 219" class="relation-path" data-source="maubenhpham" data-target="benhnhan" stroke="#a78bfa" style="--accent-color: #a78bfa;" />
+    <path d="M 1590 359 C 1640 359, 1640 1109, 1590 1109" class="relation-path" data-source="khoa" data-target="bacsi" stroke="#fb923c" style="--accent-color: #fb923c;" />
+    <path d="M 1590 637 C 1640 637, 1640 219, 1590 219" class="relation-path" data-source="phongbenh" data-target="khoa" stroke="#fb923c" style="--accent-color: #fb923c;" />
+    <path d="M 1590 971 C 1640 971, 1640 219, 1590 219" class="relation-path" data-source="nhanvien" data-target="khoa" stroke="#fb923c" style="--accent-color: #fb923c;" />
+    <path d="M 1590 1109 C 1640 1109, 1640 775, 1590 775" class="relation-path" data-source="bacsi" data-target="nhanvien" stroke="#fb923c" style="--accent-color: #fb923c;" />
+    <path d="M 1590 1387 C 1640 1387, 1640 775, 1590 775" class="relation-path" data-source="dieuduong" data-target="nhanvien" stroke="#fb923c" style="--accent-color: #fb923c;" />
+    <path d="M 1590 1777 C 1640 1777, 1640 775, 1590 775" class="relation-path" data-source="lichtruc" data-target="nhanvien" stroke="#fb923c" style="--accent-color: #fb923c;" />
+    <path d="M 1590 1805 C 1640 1805, 1640 219, 1590 219" class="relation-path" data-source="lichtruc" data-target="khoa" stroke="#fb923c" style="--accent-color: #fb923c;" />
+    <path d="M 1990 609 C 2040 609, 2040 219, 1990 219" class="relation-path" data-source="donnhaphang" data-target="nhacungcap" stroke="#f43f5e" style="--accent-color: #f43f5e;" />
+    <path d="M 1990 1499 C 2040 1499, 2040 469, 1990 469" class="relation-path" data-source="phieuxuatkho" data-target="donnhaphang" stroke="#f43f5e" style="--accent-color: #f43f5e;" />
+    <path d="M 1990 1527 C 2040 1527, 2040 747, 1990 747" class="relation-path" data-source="phieuxuatkho" data-target="thuoc" stroke="#f43f5e" style="--accent-color: #f43f5e;" />
+    <path d="M 1990 1555 C 2040 1555, 2040 1081, 1990 1081" class="relation-path" data-source="phieuxuatkho" data-target="vattuyte" stroke="#f43f5e" style="--accent-color: #f43f5e;" />
+    <path d="M 2050 331 C 1303 331, 1137 219, 390 219" class="relation-path" data-source="hoadon" data-target="benhnhan" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2050 359 C 1303 359, 1137 1081, 390 1081" class="relation-path" data-source="hoadon" data-target="hosonhapvien" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2390 497 C 2440 497, 2440 219, 2390 219" class="relation-path" data-source="chitietdichvu" data-target="hoadon" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2050 525 C 1663 525, 1577 219, 1190 219" class="relation-path" data-source="chitietdichvu" data-target="dichvuyte" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2050 859 C 1843 859, 1797 775, 1590 775" class="relation-path" data-source="thanhtoan" data-target="nhanvien" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2390 887 C 2440 887, 2440 219, 2390 219" class="relation-path" data-source="thanhtoan" data-target="hoadon" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2390 1165 C 2440 1165, 2440 219, 2390 219" class="relation-path" data-source="boithuongbhyt" data-target="hoadon" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2390 1443 C 2440 1443, 2440 747, 2390 747" class="relation-path" data-source="giaodich" data-target="thanhtoan" stroke="#6366f1" style="--accent-color: #6366f1;" />
+    <path d="M 2390 1471 C 2440 1471, 2440 1025, 2390 1025" class="relation-path" data-source="giaodich" data-target="boithuongbhyt" stroke="#6366f1" style="--accent-color: #6366f1;" />
+  </g>
+
+  <!-- Table Cards -->
+  <g id="card-benhnhan" class="table-card" style="--accent-color: #38bdf8;" data-table-id="benhnhan">
+    <rect x="50" y="150" width="340" height="261" class="card-bg" />
+    <path d="M 62 150 L 378 150 Q 390 150 390 162 L 390 205 L 50 205 L 50 162 Q 50 150 62 150 Z" class="card-header-bg" />
+    <line x1="62" y1="150" x2="378" y2="150" stroke="#38bdf8" class="card-header-line" stroke-linecap="round" />
+    <text x="66" y="174" class="card-title">BỆNH NHÂN</text>
+    <text x="66" y="190" class="card-subtitle" fill="#38bdf8">Bệnh nhân &amp; Tiếp đón (BenhNhan)</text>
+    <circle cx="370" cy="176" r="4" fill="#38bdf8" />
+    <rect x="66" y="211" width="24" height="15" class="badge-bg-pk" />
+    <text x="78" y="222" class="badge-text-pk">PK</text>
+    <text x="98" y="223" class="col-name pk-col">BN_PatientID</text>
+    <text x="374" y="223" class="col-type">INT</text>
+    <text x="66" y="251" class="col-name">BN_HoTen</text>
+    <text x="374" y="251" class="col-type">VARCHAR</text>
+    <text x="66" y="279" class="col-name">BN_NgaySinh</text>
+    <text x="374" y="279" class="col-type">DATE</text>
+    <text x="66" y="307" class="col-name">BN_GioiTinh</text>
+    <text x="374" y="307" class="col-type">VARCHAR</text>
+    <text x="66" y="335" class="col-name">BN_SoDienThoai</text>
+    <text x="374" y="335" class="col-type">VARCHAR</text>
+    <text x="66" y="363" class="col-name">BN_DiaChi</text>
+    <text x="374" y="363" class="col-type">VARCHAR</text>
+    <text x="66" y="391" class="col-name">BN_Email</text>
+    <text x="374" y="391" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-baohiemyt" class="table-card" style="--accent-color: #38bdf8;" data-table-id="baohiemyt">
+    <rect x="50" y="456" width="340" height="233" class="card-bg" />
+    <path d="M 62 456 L 378 456 Q 390 456 390 468 L 390 511 L 50 511 L 50 468 Q 50 456 62 456 Z" class="card-header-bg" />
+    <line x1="62" y1="456" x2="378" y2="456" stroke="#38bdf8" class="card-header-line" stroke-linecap="round" />
+    <text x="66" y="480" class="card-title">BẢO HIỂM Y TẾ</text>
+    <text x="66" y="496" class="card-subtitle" fill="#38bdf8">Bệnh nhân &amp; Tiếp đón (BaoHiemYT)</text>
+    <circle cx="370" cy="482" r="4" fill="#38bdf8" />
+    <rect x="66" y="517" width="24" height="15" class="badge-bg-pk" />
+    <text x="78" y="528" class="badge-text-pk">PK</text>
+    <text x="98" y="529" class="col-name pk-col">BH_InsuranceID</text>
+    <text x="374" y="529" class="col-type">VARCHAR</text>
+    <text x="66" y="557" class="col-name">BH_MaSoBảo hiểm y tế</text>
+    <text x="374" y="557" class="col-type">VARCHAR</text>
+    <text x="66" y="585" class="col-name">BH_NhaCungCap</text>
+    <text x="374" y="585" class="col-type">VARCHAR</text>
+    <text x="66" y="613" class="col-name">BH_NgayHieuLuc</text>
+    <text x="374" y="613" class="col-type">DATE</text>
+    <text x="66" y="641" class="col-name">BH_NgayHetHan</text>
+    <text x="374" y="641" class="col-type">DATE</text>
+    <rect x="66" y="657" width="24" height="15" class="badge-bg-fk" />
+    <text x="78" y="668" class="badge-text-fk">FK</text>
+    <text x="98" y="669" class="col-name">BN_PatientID</text>
+    <text x="374" y="669" class="col-type">INT</text>
+  </g>
+
+  <g id="card-lichhen" class="table-card" style="--accent-color: #38bdf8;" data-table-id="lichhen">
+    <rect x="50" y="734" width="340" height="233" class="card-bg" />
+    <path d="M 62 734 L 378 734 Q 390 734 390 746 L 390 789 L 50 789 L 50 746 Q 50 734 62 734 Z" class="card-header-bg" />
+    <line x1="62" y1="734" x2="378" y2="734" stroke="#38bdf8" class="card-header-line" stroke-linecap="round" />
+    <text x="66" y="758" class="card-title">LỊCH HẸN</text>
+    <text x="66" y="774" class="card-subtitle" fill="#38bdf8">Bệnh nhân &amp; Tiếp đón (LichHen)</text>
+    <circle cx="370" cy="760" r="4" fill="#38bdf8" />
+    <rect x="66" y="795" width="24" height="15" class="badge-bg-pk" />
+    <text x="78" y="806" class="badge-text-pk">PK</text>
+    <text x="98" y="807" class="col-name pk-col">LH_AppointmentID</text>
+    <text x="374" y="807" class="col-type">INT</text>
+    <text x="66" y="835" class="col-name">LH_NgayHen</text>
+    <text x="374" y="835" class="col-type">DATE</text>
+    <text x="66" y="863" class="col-name">LH_GioHen</text>
+    <text x="374" y="863" class="col-type">TIME</text>
+    <text x="66" y="891" class="col-name">LH_TrangThai</text>
+    <text x="374" y="891" class="col-type">VARCHAR</text>
+    <text x="66" y="919" class="col-name">LH_LyDoKham</text>
+    <text x="374" y="919" class="col-type">VARCHAR</text>
+    <rect x="66" y="935" width="24" height="15" class="badge-bg-fk" />
+    <text x="78" y="946" class="badge-text-fk">FK</text>
+    <text x="98" y="947" class="col-name">LH_PatientID_FK</text>
+    <text x="374" y="947" class="col-type">INT</text>
+  </g>
+
+  <g id="card-hosonhapvien" class="table-card" style="--accent-color: #38bdf8;" data-table-id="hosonhapvien">
+    <rect x="50" y="1012" width="340" height="261" class="card-bg" />
+    <path d="M 62 1012 L 378 1012 Q 390 1012 390 1024 L 390 1067 L 50 1067 L 50 1024 Q 50 1012 62 1012 Z" class="card-header-bg" />
+    <line x1="62" y1="1012" x2="378" y2="1012" stroke="#38bdf8" class="card-header-line" stroke-linecap="round" />
+    <text x="66" y="1036" class="card-title">HỒ SƠ NHẬP VIỆN</text>
+    <text x="66" y="1052" class="card-subtitle" fill="#38bdf8">Bệnh nhân &amp; Tiếp đón (HoSoNhapVien)</text>
+    <circle cx="370" cy="1038" r="4" fill="#38bdf8" />
+    <rect x="66" y="1073" width="24" height="15" class="badge-bg-pk" />
+    <text x="78" y="1084" class="badge-text-pk">PK</text>
+    <text x="98" y="1085" class="col-name pk-col">HS_AdmissionID</text>
+    <text x="374" y="1085" class="col-type">INT</text>
+    <text x="66" y="1113" class="col-name">HS_NgayNhapVien</text>
+    <text x="374" y="1113" class="col-type">DATETIME</text>
+    <text x="66" y="1141" class="col-name">HS_NgayRaVien</text>
+    <text x="374" y="1141" class="col-type">DATETIME</text>
+    <text x="66" y="1169" class="col-name">HS_LyDoNhapVien</text>
+    <text x="374" y="1169" class="col-type">VARCHAR</text>
+    <text x="66" y="1197" class="col-name">HS_KhoaDieuTri</text>
+    <text x="374" y="1197" class="col-type">VARCHAR</text>
+    <text x="66" y="1225" class="col-name">HS_TrangThai</text>
+    <text x="374" y="1225" class="col-type">VARCHAR</text>
+    <rect x="66" y="1241" width="24" height="15" class="badge-bg-fk" />
+    <text x="78" y="1252" class="badge-text-fk">FK</text>
+    <text x="98" y="1253" class="col-name">HS_PatientID_FK</text>
+    <text x="374" y="1253" class="col-type">INT</text>
+  </g>
+
+  <g id="card-benhan" class="table-card" style="--accent-color: #2dd4bf;" data-table-id="benhan">
+    <rect x="450" y="150" width="340" height="261" class="card-bg" />
+    <path d="M 462 150 L 778 150 Q 790 150 790 162 L 790 205 L 450 205 L 450 162 Q 450 150 462 150 Z" class="card-header-bg" />
+    <line x1="462" y1="150" x2="778" y2="150" stroke="#2dd4bf" class="card-header-line" stroke-linecap="round" />
+    <text x="466" y="174" class="card-title">BỆNH ÁN</text>
+    <text x="466" y="190" class="card-subtitle" fill="#2dd4bf">Chẩn đoán &amp; Điều trị (BenhAn)</text>
+    <circle cx="770" cy="176" r="4" fill="#2dd4bf" />
+    <rect x="466" y="211" width="24" height="15" class="badge-bg-pk" />
+    <text x="478" y="222" class="badge-text-pk">PK</text>
+    <text x="498" y="223" class="col-name pk-col">BA_RecordID</text>
+    <text x="774" y="223" class="col-type">INT</text>
+    <text x="466" y="251" class="col-name">BA_NgayTao</text>
+    <text x="774" y="251" class="col-type">DATETIME</text>
+    <text x="466" y="279" class="col-name">BA_ChanDoan</text>
+    <text x="774" y="279" class="col-type">VARCHAR</text>
+    <text x="466" y="307" class="col-name">BA_DieuTri</text>
+    <text x="774" y="307" class="col-type">VARCHAR</text>
+    <text x="466" y="335" class="col-name">BA_GhiChu</text>
+    <text x="774" y="335" class="col-type">VARCHAR</text>
+    <rect x="466" y="351" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="362" class="badge-text-fk">FK</text>
+    <text x="498" y="363" class="col-name">BA_PatientID_FK</text>
+    <text x="774" y="363" class="col-type">INT</text>
+    <rect x="466" y="379" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="390" class="badge-text-fk">FK</text>
+    <text x="498" y="391" class="col-name">BA_AdmissionID_FK</text>
+    <text x="774" y="391" class="col-type">INT</text>
+  </g>
+
+  <g id="card-chandoan" class="table-card" style="--accent-color: #2dd4bf;" data-table-id="chandoan">
+    <rect x="450" y="456" width="340" height="233" class="card-bg" />
+    <path d="M 462 456 L 778 456 Q 790 456 790 468 L 790 511 L 450 511 L 450 468 Q 450 456 462 456 Z" class="card-header-bg" />
+    <line x1="462" y1="456" x2="778" y2="456" stroke="#2dd4bf" class="card-header-line" stroke-linecap="round" />
+    <text x="466" y="480" class="card-title">CHẨN ĐOÁN</text>
+    <text x="466" y="496" class="card-subtitle" fill="#2dd4bf">Chẩn đoán &amp; Điều trị (ChanDoan)</text>
+    <circle cx="770" cy="482" r="4" fill="#2dd4bf" />
+    <rect x="466" y="517" width="24" height="15" class="badge-bg-pk" />
+    <text x="478" y="528" class="badge-text-pk">PK</text>
+    <text x="498" y="529" class="col-name pk-col">CD_MaChanDoan</text>
+    <text x="774" y="529" class="col-type">INT</text>
+    <text x="466" y="557" class="col-name">CD_TenChanDoan</text>
+    <text x="774" y="557" class="col-type">VARCHAR</text>
+    <text x="466" y="585" class="col-name">CD_MoTa</text>
+    <text x="774" y="585" class="col-type">VARCHAR</text>
+    <text x="466" y="613" class="col-name">CD_NgayChanDoan</text>
+    <text x="774" y="613" class="col-type">DATETIME</text>
+    <rect x="466" y="629" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="640" class="badge-text-fk">FK</text>
+    <text x="498" y="641" class="col-name">BA_RecordID_FK</text>
+    <text x="774" y="641" class="col-type">INT</text>
+    <rect x="466" y="657" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="668" class="badge-text-fk">FK</text>
+    <text x="498" y="669" class="col-name">BS_MaBS_FK</text>
+    <text x="774" y="669" class="col-type">INT</text>
+  </g>
+
+  <g id="card-donthuoc" class="table-card" style="--accent-color: #2dd4bf;" data-table-id="donthuoc">
+    <rect x="450" y="734" width="340" height="205" class="card-bg" />
+    <path d="M 462 734 L 778 734 Q 790 734 790 746 L 790 789 L 450 789 L 450 746 Q 450 734 462 734 Z" class="card-header-bg" />
+    <line x1="462" y1="734" x2="778" y2="734" stroke="#2dd4bf" class="card-header-line" stroke-linecap="round" />
+    <text x="466" y="758" class="card-title">ĐƠN THUỐC</text>
+    <text x="466" y="774" class="card-subtitle" fill="#2dd4bf">Chẩn đoán &amp; Điều trị (DonThuoc)</text>
+    <circle cx="770" cy="760" r="4" fill="#2dd4bf" />
+    <rect x="466" y="795" width="24" height="15" class="badge-bg-pk" />
+    <text x="478" y="806" class="badge-text-pk">PK</text>
+    <text x="498" y="807" class="col-name pk-col">DT_MaDonThuoc</text>
+    <text x="774" y="807" class="col-type">INT</text>
+    <text x="466" y="835" class="col-name">DT_NgayKeDon</text>
+    <text x="774" y="835" class="col-type">DATETIME</text>
+    <text x="466" y="863" class="col-name">DT_GhiChu</text>
+    <text x="774" y="863" class="col-type">VARCHAR</text>
+    <rect x="466" y="879" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="890" class="badge-text-fk">FK</text>
+    <text x="498" y="891" class="col-name">CD_MaChanDoan_FK</text>
+    <text x="774" y="891" class="col-type">INT</text>
+    <rect x="466" y="907" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="918" class="badge-text-fk">FK</text>
+    <text x="498" y="919" class="col-name">BS_MaBS_FK</text>
+    <text x="774" y="919" class="col-type">INT</text>
+  </g>
+
+  <g id="card-chitietdonthuoc" class="table-card" style="--accent-color: #2dd4bf;" data-table-id="chitietdonthuoc">
+    <rect x="450" y="984" width="340" height="233" class="card-bg" />
+    <path d="M 462 984 L 778 984 Q 790 984 790 996 L 790 1039 L 450 1039 L 450 996 Q 450 984 462 984 Z" class="card-header-bg" />
+    <line x1="462" y1="984" x2="778" y2="984" stroke="#2dd4bf" class="card-header-line" stroke-linecap="round" />
+    <text x="466" y="1008" class="card-title">CHI TIẾT ĐƠN THUỐC</text>
+    <text x="466" y="1024" class="card-subtitle" fill="#2dd4bf">Chẩn đoán &amp; Điều trị (ChiTietDonThuoc)</text>
+    <circle cx="770" cy="1010" r="4" fill="#2dd4bf" />
+    <rect x="466" y="1045" width="24" height="15" class="badge-bg-pk" />
+    <text x="478" y="1056" class="badge-text-pk">PK</text>
+    <text x="498" y="1057" class="col-name pk-col">CT_MaChiTiet</text>
+    <text x="774" y="1057" class="col-type">INT</text>
+    <text x="466" y="1085" class="col-name">CT_SoLuong</text>
+    <text x="774" y="1085" class="col-type">INT</text>
+    <text x="466" y="1113" class="col-name">CT_LieuDung</text>
+    <text x="774" y="1113" class="col-type">VARCHAR</text>
+    <text x="466" y="1141" class="col-name">CT_ThoiGianSuDung</text>
+    <text x="774" y="1141" class="col-type">VARCHAR</text>
+    <rect x="466" y="1157" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="1168" class="badge-text-fk">FK</text>
+    <text x="498" y="1169" class="col-name">DT_MaDonThuoc_FK</text>
+    <text x="774" y="1169" class="col-type">INT</text>
+    <rect x="466" y="1185" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="1196" class="badge-text-fk">FK</text>
+    <text x="498" y="1197" class="col-name">TH_MaThuoc_FK</text>
+    <text x="774" y="1197" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-phacdodieutri" class="table-card" style="--accent-color: #2dd4bf;" data-table-id="phacdodieutri">
+    <rect x="450" y="1262" width="340" height="205" class="card-bg" />
+    <path d="M 462 1262 L 778 1262 Q 790 1262 790 1274 L 790 1317 L 450 1317 L 450 1274 Q 450 1262 462 1262 Z" class="card-header-bg" />
+    <line x1="462" y1="1262" x2="778" y2="1262" stroke="#2dd4bf" class="card-header-line" stroke-linecap="round" />
+    <text x="466" y="1286" class="card-title">PHÁC ĐỒ ĐIỀU TRỊ</text>
+    <text x="466" y="1302" class="card-subtitle" fill="#2dd4bf">Chẩn đoán &amp; Điều trị (PhacDoDieuTri)</text>
+    <circle cx="770" cy="1288" r="4" fill="#2dd4bf" />
+    <rect x="466" y="1323" width="24" height="15" class="badge-bg-pk" />
+    <text x="478" y="1334" class="badge-text-pk">PK</text>
+    <text x="498" y="1335" class="col-name pk-col">PD_MaPhacDo</text>
+    <text x="774" y="1335" class="col-type">INT</text>
+    <text x="466" y="1363" class="col-name">PD_TenPhacDo</text>
+    <text x="774" y="1363" class="col-type">VARCHAR</text>
+    <text x="466" y="1391" class="col-name">PD_MoTa</text>
+    <text x="774" y="1391" class="col-type">VARCHAR</text>
+    <text x="466" y="1419" class="col-name">PD_ThoiGianDieuTri</text>
+    <text x="774" y="1419" class="col-type">VARCHAR</text>
+    <rect x="466" y="1435" width="24" height="15" class="badge-bg-fk" />
+    <text x="478" y="1446" class="badge-text-fk">FK</text>
+    <text x="498" y="1447" class="col-name">CD_MaChanDoan_FK</text>
+    <text x="774" y="1447" class="col-type">INT</text>
+  </g>
+
+  <g id="card-sudung" class="table-card" style="--accent-color: #2dd4bf;" data-table-id="sudung">
+    <rect x="450" y="1512" width="340" height="149" class="card-bg" />
+    <path d="M 462 1512 L 778 1512 Q 790 1512 790 1524 L 790 1567 L 450 1567 L 450 1524 Q 450 1512 462 1512 Z" class="card-header-bg" />
+    <line x1="462" y1="1512" x2="778" y2="1512" stroke="#2dd4bf" class="card-header-line" stroke-linecap="round" />
+    <text x="466" y="1536" class="card-title">SỬ DỤNG</text>
+    <text x="466" y="1552" class="card-subtitle" fill="#2dd4bf">Chẩn đoán &amp; Điều trị (SuDung)</text>
+    <circle cx="770" cy="1538" r="4" fill="#2dd4bf" />
+    <rect x="466" y="1573" width="24" height="15" class="badge-bg-pk" />
+    <text x="478" y="1584" class="badge-text-pk">PK</text>
+    <rect x="496" y="1573" width="24" height="15" class="badge-bg-fk" />
+    <text x="508" y="1584" class="badge-text-fk">FK</text>
+    <text x="528" y="1585" class="col-name pk-col">PD_MaPhacDo_FK</text>
+    <text x="774" y="1585" class="col-type">INT</text>
+    <rect x="466" y="1601" width="24" height="15" class="badge-bg-pk" />
+    <text x="478" y="1612" class="badge-text-pk">PK</text>
+    <rect x="496" y="1601" width="24" height="15" class="badge-bg-fk" />
+    <text x="508" y="1612" class="badge-text-fk">FK</text>
+    <text x="528" y="1613" class="col-name pk-col">DV_MaDichVu_FK</text>
+    <text x="774" y="1613" class="col-type">VARCHAR</text>
+    <text x="466" y="1641" class="col-name">NgaySuDung</text>
+    <text x="774" y="1641" class="col-type">DATE</text>
+  </g>
+
+  <g id="card-dichvuyte" class="table-card" style="--accent-color: #a78bfa;" data-table-id="dichvuyte">
+    <rect x="850" y="150" width="340" height="205" class="card-bg" />
+    <path d="M 862 150 L 1178 150 Q 1190 150 1190 162 L 1190 205 L 850 205 L 850 162 Q 850 150 862 150 Z" class="card-header-bg" />
+    <line x1="862" y1="150" x2="1178" y2="150" stroke="#a78bfa" class="card-header-line" stroke-linecap="round" />
+    <text x="866" y="174" class="card-title">DỊCH VỤ Y TẾ</text>
+    <text x="866" y="190" class="card-subtitle" fill="#a78bfa">Xét nghiệm &amp; Chẩn đoán hình ảnh (DichVuYTe)</text>
+    <circle cx="1170" cy="176" r="4" fill="#a78bfa" />
+    <rect x="866" y="211" width="24" height="15" class="badge-bg-pk" />
+    <text x="878" y="222" class="badge-text-pk">PK</text>
+    <text x="898" y="223" class="col-name pk-col">DV_MaDichVu</text>
+    <text x="1174" y="223" class="col-type">VARCHAR</text>
+    <text x="866" y="251" class="col-name">DV_TenDichVu</text>
+    <text x="1174" y="251" class="col-type">VARCHAR</text>
+    <text x="866" y="279" class="col-name">DV_GiaDichVu</text>
+    <text x="1174" y="279" class="col-type">DECIMAL</text>
+    <text x="866" y="307" class="col-name">DV_MoTa</text>
+    <text x="1174" y="307" class="col-type">VARCHAR</text>
+    <text x="866" y="335" class="col-name">DV_LoaiDichVu</text>
+    <text x="1174" y="335" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-danhmucxetnghiem" class="table-card" style="--accent-color: #a78bfa;" data-table-id="danhmucxetnghiem">
+    <rect x="850" y="400" width="340" height="233" class="card-bg" />
+    <path d="M 862 400 L 1178 400 Q 1190 400 1190 412 L 1190 455 L 850 455 L 850 412 Q 850 400 862 400 Z" class="card-header-bg" />
+    <line x1="862" y1="400" x2="1178" y2="400" stroke="#a78bfa" class="card-header-line" stroke-linecap="round" />
+    <text x="866" y="424" class="card-title">DANH MỤC XÉT NGHIỆM</text>
+    <text x="866" y="440" class="card-subtitle" fill="#a78bfa">Xét nghiệm &amp; Chẩn đoán hình ảnh (DanhMucXetNghiem)</text>
+    <circle cx="1170" cy="426" r="4" fill="#a78bfa" />
+    <rect x="866" y="461" width="24" height="15" class="badge-bg-pk" />
+    <text x="878" y="472" class="badge-text-pk">PK</text>
+    <text x="898" y="473" class="col-name pk-col">DM_TestID</text>
+    <text x="1174" y="473" class="col-type">VARCHAR</text>
+    <text x="866" y="501" class="col-name">DM_TenXetNghiem</text>
+    <text x="1174" y="501" class="col-type">VARCHAR</text>
+    <text x="866" y="529" class="col-name">DM_LoaiXetNghiem</text>
+    <text x="1174" y="529" class="col-type">VARCHAR</text>
+    <text x="866" y="557" class="col-name">DM_MoTa</text>
+    <text x="1174" y="557" class="col-type">VARCHAR</text>
+    <text x="866" y="585" class="col-name">DM_DonViTinh</text>
+    <text x="1174" y="585" class="col-type">VARCHAR</text>
+    <text x="866" y="613" class="col-name">DM_GiaTien</text>
+    <text x="1174" y="613" class="col-type">DECIMAL</text>
+  </g>
+
+  <g id="card-ketquaxetnghiem" class="table-card" style="--accent-color: #a78bfa;" data-table-id="ketquaxetnghiem">
+    <rect x="850" y="678" width="340" height="317" class="card-bg" />
+    <path d="M 862 678 L 1178 678 Q 1190 678 1190 690 L 1190 733 L 850 733 L 850 690 Q 850 678 862 678 Z" class="card-header-bg" />
+    <line x1="862" y1="678" x2="1178" y2="678" stroke="#a78bfa" class="card-header-line" stroke-linecap="round" />
+    <text x="866" y="702" class="card-title">KẾT QUẢ XÉT NGHIỆM</text>
+    <text x="866" y="718" class="card-subtitle" fill="#a78bfa">Xét nghiệm &amp; Chẩn đoán hình ảnh (KetQuaXetNghiem)</text>
+    <circle cx="1170" cy="704" r="4" fill="#a78bfa" />
+    <rect x="866" y="739" width="24" height="15" class="badge-bg-pk" />
+    <text x="878" y="750" class="badge-text-pk">PK</text>
+    <text x="898" y="751" class="col-name pk-col">KQ_ResultID</text>
+    <text x="1174" y="751" class="col-type">INT</text>
+    <text x="866" y="779" class="col-name">KQ_NgayThucHien</text>
+    <text x="1174" y="779" class="col-type">DATETIME</text>
+    <text x="866" y="807" class="col-name">KQ_KetQua</text>
+    <text x="1174" y="807" class="col-type">VARCHAR</text>
+    <text x="866" y="835" class="col-name">KQ_ChiSoDo</text>
+    <text x="1174" y="835" class="col-type">VARCHAR</text>
+    <text x="866" y="863" class="col-name">KQ_GiaTriThamChieu</text>
+    <text x="1174" y="863" class="col-type">VARCHAR</text>
+    <text x="866" y="891" class="col-name">KQ_KetLuan</text>
+    <text x="1174" y="891" class="col-type">VARCHAR</text>
+    <rect x="866" y="907" width="24" height="15" class="badge-bg-fk" />
+    <text x="878" y="918" class="badge-text-fk">FK</text>
+    <text x="898" y="919" class="col-name">KQ_RecordID_FK</text>
+    <text x="1174" y="919" class="col-type">INT</text>
+    <rect x="866" y="935" width="24" height="15" class="badge-bg-fk" />
+    <text x="878" y="946" class="badge-text-fk">FK</text>
+    <text x="898" y="947" class="col-name">KQ_TestID_FK</text>
+    <text x="1174" y="947" class="col-type">VARCHAR</text>
+    <rect x="866" y="963" width="24" height="15" class="badge-bg-fk" />
+    <text x="878" y="974" class="badge-text-fk">FK</text>
+    <text x="898" y="975" class="col-name">KQ_SampleID_FK</text>
+    <text x="1174" y="975" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-thietbiyte" class="table-card" style="--accent-color: #a78bfa;" data-table-id="thietbiyte">
+    <rect x="850" y="1040" width="340" height="233" class="card-bg" />
+    <path d="M 862 1040 L 1178 1040 Q 1190 1040 1190 1052 L 1190 1095 L 850 1095 L 850 1052 Q 850 1040 862 1040 Z" class="card-header-bg" />
+    <line x1="862" y1="1040" x2="1178" y2="1040" stroke="#a78bfa" class="card-header-line" stroke-linecap="round" />
+    <text x="866" y="1064" class="card-title">THIẾT BỊ Y TẾ</text>
+    <text x="866" y="1080" class="card-subtitle" fill="#a78bfa">Xét nghiệm &amp; Chẩn đoán hình ảnh (ThietBiYTe)</text>
+    <circle cx="1170" cy="1066" r="4" fill="#a78bfa" />
+    <rect x="866" y="1101" width="24" height="15" class="badge-bg-pk" />
+    <text x="878" y="1112" class="badge-text-pk">PK</text>
+    <text x="898" y="1113" class="col-name pk-col">TB_DeviceID</text>
+    <text x="1174" y="1113" class="col-type">VARCHAR</text>
+    <text x="866" y="1141" class="col-name">TB_TenThietBi</text>
+    <text x="1174" y="1141" class="col-type">VARCHAR</text>
+    <text x="866" y="1169" class="col-name">TB_LoaiThietBi</text>
+    <text x="1174" y="1169" class="col-type">VARCHAR</text>
+    <text x="866" y="1197" class="col-name">TB_HangSanXuat</text>
+    <text x="1174" y="1197" class="col-type">VARCHAR</text>
+    <text x="866" y="1225" class="col-name">TB_NgayBaoTri</text>
+    <text x="1174" y="1225" class="col-type">DATE</text>
+    <text x="866" y="1253" class="col-name">TB_TrangThai</text>
+    <text x="1174" y="1253" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-chandoanhinhanh" class="table-card" style="--accent-color: #a78bfa;" data-table-id="chandoanhinhanh">
+    <rect x="850" y="1318" width="340" height="289" class="card-bg" />
+    <path d="M 862 1318 L 1178 1318 Q 1190 1318 1190 1330 L 1190 1373 L 850 1373 L 850 1330 Q 850 1318 862 1318 Z" class="card-header-bg" />
+    <line x1="862" y1="1318" x2="1178" y2="1318" stroke="#a78bfa" class="card-header-line" stroke-linecap="round" />
+    <text x="866" y="1342" class="card-title">CHẨN ĐOÁN HÌNH ẢNH</text>
+    <text x="866" y="1358" class="card-subtitle" fill="#a78bfa">Xét nghiệm &amp; Chẩn đoán hình ảnh (ChanDoanHinhAnh)</text>
+    <circle cx="1170" cy="1344" r="4" fill="#a78bfa" />
+    <rect x="866" y="1379" width="24" height="15" class="badge-bg-pk" />
+    <text x="878" y="1390" class="badge-text-pk">PK</text>
+    <text x="898" y="1391" class="col-name pk-col">HA_ImagingID</text>
+    <text x="1174" y="1391" class="col-type">INT</text>
+    <text x="866" y="1419" class="col-name">HA_LoaiChanDoan</text>
+    <text x="1174" y="1419" class="col-type">VARCHAR</text>
+    <text x="866" y="1447" class="col-name">HA_NgayThucHien</text>
+    <text x="1174" y="1447" class="col-type">DATETIME</text>
+    <text x="866" y="1475" class="col-name">HA_KetQua</text>
+    <text x="1174" y="1475" class="col-type">VARCHAR</text>
+    <text x="866" y="1503" class="col-name">HA_HinhAnh</text>
+    <text x="1174" y="1503" class="col-type">VARCHAR</text>
+    <text x="866" y="1531" class="col-name">HA_KetLuan</text>
+    <text x="1174" y="1531" class="col-type">VARCHAR</text>
+    <rect x="866" y="1547" width="24" height="15" class="badge-bg-fk" />
+    <text x="878" y="1558" class="badge-text-fk">FK</text>
+    <text x="898" y="1559" class="col-name">HA_RecordID_FK</text>
+    <text x="1174" y="1559" class="col-type">INT</text>
+    <rect x="866" y="1575" width="24" height="15" class="badge-bg-fk" />
+    <text x="878" y="1586" class="badge-text-fk">FK</text>
+    <text x="898" y="1587" class="col-name">HA_DeviceID_FK</text>
+    <text x="1174" y="1587" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-maubenhpham" class="table-card" style="--accent-color: #a78bfa;" data-table-id="maubenhpham">
+    <rect x="850" y="1652" width="340" height="233" class="card-bg" />
+    <path d="M 862 1652 L 1178 1652 Q 1190 1652 1190 1664 L 1190 1707 L 850 1707 L 850 1664 Q 850 1652 862 1652 Z" class="card-header-bg" />
+    <line x1="862" y1="1652" x2="1178" y2="1652" stroke="#a78bfa" class="card-header-line" stroke-linecap="round" />
+    <text x="866" y="1676" class="card-title">MẪU BỆNH PHẨM</text>
+    <text x="866" y="1692" class="card-subtitle" fill="#a78bfa">Xét nghiệm &amp; Chẩn đoán hình ảnh (MauBenhPham)</text>
+    <circle cx="1170" cy="1678" r="4" fill="#a78bfa" />
+    <rect x="866" y="1713" width="24" height="15" class="badge-bg-pk" />
+    <text x="878" y="1724" class="badge-text-pk">PK</text>
+    <text x="898" y="1725" class="col-name pk-col">BP_SampleID</text>
+    <text x="1174" y="1725" class="col-type">VARCHAR</text>
+    <text x="866" y="1753" class="col-name">BP_LoaiMau</text>
+    <text x="1174" y="1753" class="col-type">VARCHAR</text>
+    <text x="866" y="1781" class="col-name">BP_NgayLayMau</text>
+    <text x="1174" y="1781" class="col-type">DATE</text>
+    <text x="866" y="1809" class="col-name">BP_GioLayMau</text>
+    <text x="1174" y="1809" class="col-type">TIME</text>
+    <text x="866" y="1837" class="col-name">BP_TinhTrangMau</text>
+    <text x="1174" y="1837" class="col-type">VARCHAR</text>
+    <rect x="866" y="1853" width="24" height="15" class="badge-bg-fk" />
+    <text x="878" y="1864" class="badge-text-fk">FK</text>
+    <text x="898" y="1865" class="col-name">BP_PatientID_FK</text>
+    <text x="1174" y="1865" class="col-type">INT</text>
+  </g>
+
+  <g id="card-khoa" class="table-card" style="--accent-color: #fb923c;" data-table-id="khoa">
+    <rect x="1250" y="150" width="340" height="233" class="card-bg" />
+    <path d="M 1262 150 L 1578 150 Q 1590 150 1590 162 L 1590 205 L 1250 205 L 1250 162 Q 1250 150 1262 150 Z" class="card-header-bg" />
+    <line x1="1262" y1="150" x2="1578" y2="150" stroke="#fb923c" class="card-header-line" stroke-linecap="round" />
+    <text x="1266" y="174" class="card-title">KHOA</text>
+    <text x="1266" y="190" class="card-subtitle" fill="#fb923c">Nhân sự &amp; Khoa phòng (Khoa)</text>
+    <circle cx="1570" cy="176" r="4" fill="#fb923c" />
+    <rect x="1266" y="211" width="24" height="15" class="badge-bg-pk" />
+    <text x="1278" y="222" class="badge-text-pk">PK</text>
+    <text x="1298" y="223" class="col-name pk-col">KH_MaKhoa</text>
+    <text x="1574" y="223" class="col-type">VARCHAR</text>
+    <text x="1266" y="251" class="col-name">KH_TenKhoa</text>
+    <text x="1574" y="251" class="col-type">VARCHAR</text>
+    <text x="1266" y="279" class="col-name">KH_MoTa</text>
+    <text x="1574" y="279" class="col-type">VARCHAR</text>
+    <text x="1266" y="307" class="col-name">KH_SoDienThoai</text>
+    <text x="1574" y="307" class="col-type">VARCHAR</text>
+    <text x="1266" y="335" class="col-name">KH_ViTri</text>
+    <text x="1574" y="335" class="col-type">VARCHAR</text>
+    <rect x="1266" y="351" width="24" height="15" class="badge-bg-fk" />
+    <text x="1278" y="362" class="badge-text-fk">FK</text>
+    <text x="1298" y="363" class="col-name">KH_TruongKhoa_FK</text>
+    <text x="1574" y="363" class="col-type">INT</text>
+  </g>
+
+  <g id="card-phongbenh" class="table-card" style="--accent-color: #fb923c;" data-table-id="phongbenh">
+    <rect x="1250" y="428" width="340" height="233" class="card-bg" />
+    <path d="M 1262 428 L 1578 428 Q 1590 428 1590 440 L 1590 483 L 1250 483 L 1250 440 Q 1250 428 1262 428 Z" class="card-header-bg" />
+    <line x1="1262" y1="428" x2="1578" y2="428" stroke="#fb923c" class="card-header-line" stroke-linecap="round" />
+    <text x="1266" y="452" class="card-title">PHÒNG BỆNH</text>
+    <text x="1266" y="468" class="card-subtitle" fill="#fb923c">Nhân sự &amp; Khoa phòng (PhongBenh)</text>
+    <circle cx="1570" cy="454" r="4" fill="#fb923c" />
+    <rect x="1266" y="489" width="24" height="15" class="badge-bg-pk" />
+    <text x="1278" y="500" class="badge-text-pk">PK</text>
+    <text x="1298" y="501" class="col-name pk-col">PB_MaPhong</text>
+    <text x="1574" y="501" class="col-type">VARCHAR</text>
+    <text x="1266" y="529" class="col-name">PB_SoPhong</text>
+    <text x="1574" y="529" class="col-type">VARCHAR</text>
+    <text x="1266" y="557" class="col-name">PB_LoaiPhong</text>
+    <text x="1574" y="557" class="col-type">VARCHAR</text>
+    <text x="1266" y="585" class="col-name">PB_SucChua</text>
+    <text x="1574" y="585" class="col-type">INT</text>
+    <text x="1266" y="613" class="col-name">PB_TrangThai</text>
+    <text x="1574" y="613" class="col-type">VARCHAR</text>
+    <rect x="1266" y="629" width="24" height="15" class="badge-bg-fk" />
+    <text x="1278" y="640" class="badge-text-fk">FK</text>
+    <text x="1298" y="641" class="col-name">KH_MaKhoa_FK</text>
+    <text x="1574" y="641" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-nhanvien" class="table-card" style="--accent-color: #fb923c;" data-table-id="nhanvien">
+    <rect x="1250" y="706" width="340" height="289" class="card-bg" />
+    <path d="M 1262 706 L 1578 706 Q 1590 706 1590 718 L 1590 761 L 1250 761 L 1250 718 Q 1250 706 1262 706 Z" class="card-header-bg" />
+    <line x1="1262" y1="706" x2="1578" y2="706" stroke="#fb923c" class="card-header-line" stroke-linecap="round" />
+    <text x="1266" y="730" class="card-title">NHÂN VIÊN</text>
+    <text x="1266" y="746" class="card-subtitle" fill="#fb923c">Nhân sự &amp; Khoa phòng (NhanVien)</text>
+    <circle cx="1570" cy="732" r="4" fill="#fb923c" />
+    <rect x="1266" y="767" width="24" height="15" class="badge-bg-pk" />
+    <text x="1278" y="778" class="badge-text-pk">PK</text>
+    <text x="1298" y="779" class="col-name pk-col">NV_MaNV</text>
+    <text x="1574" y="779" class="col-type">INT</text>
+    <text x="1266" y="807" class="col-name">NV_Ten</text>
+    <text x="1574" y="807" class="col-type">VARCHAR</text>
+    <text x="1266" y="835" class="col-name">NV_NgaySinh</text>
+    <text x="1574" y="835" class="col-type">DATE</text>
+    <text x="1266" y="863" class="col-name">NV_GioiTinh</text>
+    <text x="1574" y="863" class="col-type">VARCHAR</text>
+    <text x="1266" y="891" class="col-name">NV_SDT</text>
+    <text x="1574" y="891" class="col-type">VARCHAR</text>
+    <text x="1266" y="919" class="col-name">NV_CCCD</text>
+    <text x="1574" y="919" class="col-type">VARCHAR</text>
+    <text x="1266" y="947" class="col-name">NV_VaiTro</text>
+    <text x="1574" y="947" class="col-type">VARCHAR</text>
+    <rect x="1266" y="963" width="24" height="15" class="badge-bg-fk" />
+    <text x="1278" y="974" class="badge-text-fk">FK</text>
+    <text x="1298" y="975" class="col-name">KH_MaKhoa_FK</text>
+    <text x="1574" y="975" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-bacsi" class="table-card" style="--accent-color: #fb923c;" data-table-id="bacsi">
+    <rect x="1250" y="1040" width="340" height="233" class="card-bg" />
+    <path d="M 1262 1040 L 1578 1040 Q 1590 1040 1590 1052 L 1590 1095 L 1250 1095 L 1250 1052 Q 1250 1040 1262 1040 Z" class="card-header-bg" />
+    <line x1="1262" y1="1040" x2="1578" y2="1040" stroke="#fb923c" class="card-header-line" stroke-linecap="round" />
+    <text x="1266" y="1064" class="card-title">BÁC SĨ</text>
+    <text x="1266" y="1080" class="card-subtitle" fill="#fb923c">Nhân sự &amp; Khoa phòng (BacSi)</text>
+    <circle cx="1570" cy="1066" r="4" fill="#fb923c" />
+    <rect x="1266" y="1101" width="24" height="15" class="badge-bg-pk" />
+    <text x="1278" y="1112" class="badge-text-pk">PK</text>
+    <rect x="1296" y="1101" width="24" height="15" class="badge-bg-fk" />
+    <text x="1308" y="1112" class="badge-text-fk">FK</text>
+    <text x="1328" y="1113" class="col-name pk-col">BS_MaBS</text>
+    <text x="1574" y="1113" class="col-type">INT</text>
+    <text x="1266" y="1141" class="col-name">BS_ChuyenKhoa</text>
+    <text x="1574" y="1141" class="col-type">VARCHAR</text>
+    <text x="1266" y="1169" class="col-name">BS_CapBac</text>
+    <text x="1574" y="1169" class="col-type">VARCHAR</text>
+    <text x="1266" y="1197" class="col-name">BS_HocVi</text>
+    <text x="1574" y="1197" class="col-type">VARCHAR</text>
+    <text x="1266" y="1225" class="col-name">BS_CCHN</text>
+    <text x="1574" y="1225" class="col-type">VARCHAR</text>
+    <text x="1266" y="1253" class="col-name">BS_NamKN</text>
+    <text x="1574" y="1253" class="col-type">INT</text>
+  </g>
+
+  <g id="card-dieuduong" class="table-card" style="--accent-color: #fb923c;" data-table-id="dieuduong">
+    <rect x="1250" y="1318" width="340" height="149" class="card-bg" />
+    <path d="M 1262 1318 L 1578 1318 Q 1590 1318 1590 1330 L 1590 1373 L 1250 1373 L 1250 1330 Q 1250 1318 1262 1318 Z" class="card-header-bg" />
+    <line x1="1262" y1="1318" x2="1578" y2="1318" stroke="#fb923c" class="card-header-line" stroke-linecap="round" />
+    <text x="1266" y="1342" class="card-title">ĐIỀU DƯỠNG</text>
+    <text x="1266" y="1358" class="card-subtitle" fill="#fb923c">Nhân sự &amp; Khoa phòng (DieuDuong)</text>
+    <circle cx="1570" cy="1344" r="4" fill="#fb923c" />
+    <rect x="1266" y="1379" width="24" height="15" class="badge-bg-pk" />
+    <text x="1278" y="1390" class="badge-text-pk">PK</text>
+    <rect x="1296" y="1379" width="24" height="15" class="badge-bg-fk" />
+    <text x="1308" y="1390" class="badge-text-fk">FK</text>
+    <text x="1328" y="1391" class="col-name pk-col">DD_MaDD</text>
+    <text x="1574" y="1391" class="col-type">INT</text>
+    <text x="1266" y="1419" class="col-name">DD_CapBac</text>
+    <text x="1574" y="1419" class="col-type">VARCHAR</text>
+    <text x="1266" y="1447" class="col-name">DD_CCHN</text>
+    <text x="1574" y="1447" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-lichtruc" class="table-card" style="--accent-color: #fb923c;" data-table-id="lichtruc">
+    <rect x="1250" y="1512" width="340" height="317" class="card-bg" />
+    <path d="M 1262 1512 L 1578 1512 Q 1590 1512 1590 1524 L 1590 1567 L 1250 1567 L 1250 1524 Q 1250 1512 1262 1512 Z" class="card-header-bg" />
+    <line x1="1262" y1="1512" x2="1578" y2="1512" stroke="#fb923c" class="card-header-line" stroke-linecap="round" />
+    <text x="1266" y="1536" class="card-title">LỊCH TRỰC</text>
+    <text x="1266" y="1552" class="card-subtitle" fill="#fb923c">Nhân sự &amp; Khoa phòng (LichTruc)</text>
+    <circle cx="1570" cy="1538" r="4" fill="#fb923c" />
+    <rect x="1266" y="1573" width="24" height="15" class="badge-bg-pk" />
+    <text x="1278" y="1584" class="badge-text-pk">PK</text>
+    <text x="1298" y="1585" class="col-name pk-col">LT_MaLT</text>
+    <text x="1574" y="1585" class="col-type">INT</text>
+    <text x="1266" y="1613" class="col-name">LT_Ngay</text>
+    <text x="1574" y="1613" class="col-type">DATE</text>
+    <text x="1266" y="1641" class="col-name">LT_Ca</text>
+    <text x="1574" y="1641" class="col-type">VARCHAR</text>
+    <text x="1266" y="1669" class="col-name">LT_TrangThai</text>
+    <text x="1574" y="1669" class="col-type">VARCHAR</text>
+    <text x="1266" y="1697" class="col-name">LT_GhiChu</text>
+    <text x="1574" y="1697" class="col-type">VARCHAR</text>
+    <text x="1266" y="1725" class="col-name">LT_TGBD</text>
+    <text x="1574" y="1725" class="col-type">TIME</text>
+    <text x="1266" y="1753" class="col-name">LT_TGKT</text>
+    <text x="1574" y="1753" class="col-type">TIME</text>
+    <rect x="1266" y="1769" width="24" height="15" class="badge-bg-fk" />
+    <text x="1278" y="1780" class="badge-text-fk">FK</text>
+    <text x="1298" y="1781" class="col-name">NV_MaNV_FK</text>
+    <text x="1574" y="1781" class="col-type">INT</text>
+    <rect x="1266" y="1797" width="24" height="15" class="badge-bg-fk" />
+    <text x="1278" y="1808" class="badge-text-fk">FK</text>
+    <text x="1298" y="1809" class="col-name">KH_MaKhoa_FK</text>
+    <text x="1574" y="1809" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-nhacungcap" class="table-card" style="--accent-color: #f43f5e;" data-table-id="nhacungcap">
+    <rect x="1650" y="150" width="340" height="205" class="card-bg" />
+    <path d="M 1662 150 L 1978 150 Q 1990 150 1990 162 L 1990 205 L 1650 205 L 1650 162 Q 1650 150 1662 150 Z" class="card-header-bg" />
+    <line x1="1662" y1="150" x2="1978" y2="150" stroke="#f43f5e" class="card-header-line" stroke-linecap="round" />
+    <text x="1666" y="174" class="card-title">NHÀ CUNG CẤP</text>
+    <text x="1666" y="190" class="card-subtitle" fill="#f43f5e">Dược &amp; Vật tư y tế (NhaCungCap)</text>
+    <circle cx="1970" cy="176" r="4" fill="#f43f5e" />
+    <rect x="1666" y="211" width="24" height="15" class="badge-bg-pk" />
+    <text x="1678" y="222" class="badge-text-pk">PK</text>
+    <text x="1698" y="223" class="col-name pk-col">NCC_MaNCC</text>
+    <text x="1974" y="223" class="col-type">VARCHAR</text>
+    <text x="1666" y="251" class="col-name">NCC_TenNCC</text>
+    <text x="1974" y="251" class="col-type">VARCHAR</text>
+    <text x="1666" y="279" class="col-name">NCC_SDT</text>
+    <text x="1974" y="279" class="col-type">VARCHAR</text>
+    <text x="1666" y="307" class="col-name">NCC_DiaChi</text>
+    <text x="1974" y="307" class="col-type">VARCHAR</text>
+    <text x="1666" y="335" class="col-name">NCC_MST</text>
+    <text x="1974" y="335" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-donnhaphang" class="table-card" style="--accent-color: #f43f5e;" data-table-id="donnhaphang">
+    <rect x="1650" y="400" width="340" height="233" class="card-bg" />
+    <path d="M 1662 400 L 1978 400 Q 1990 400 1990 412 L 1990 455 L 1650 455 L 1650 412 Q 1650 400 1662 400 Z" class="card-header-bg" />
+    <line x1="1662" y1="400" x2="1978" y2="400" stroke="#f43f5e" class="card-header-line" stroke-linecap="round" />
+    <text x="1666" y="424" class="card-title">ĐƠN NHẬP HÀNG</text>
+    <text x="1666" y="440" class="card-subtitle" fill="#f43f5e">Dược &amp; Vật tư y tế (DonNhapHang)</text>
+    <circle cx="1970" cy="426" r="4" fill="#f43f5e" />
+    <rect x="1666" y="461" width="24" height="15" class="badge-bg-pk" />
+    <text x="1678" y="472" class="badge-text-pk">PK</text>
+    <text x="1698" y="473" class="col-name pk-col">DNH_MaDon</text>
+    <text x="1974" y="473" class="col-type">INT</text>
+    <text x="1666" y="501" class="col-name">DNH_NgayLap</text>
+    <text x="1974" y="501" class="col-type">DATETIME</text>
+    <text x="1666" y="529" class="col-name">DNH_NgayNhap</text>
+    <text x="1974" y="529" class="col-type">DATETIME</text>
+    <text x="1666" y="557" class="col-name">DNH_TrangThai</text>
+    <text x="1974" y="557" class="col-type">VARCHAR</text>
+    <text x="1666" y="585" class="col-name">DNH_NguoiLap</text>
+    <text x="1974" y="585" class="col-type">VARCHAR</text>
+    <rect x="1666" y="601" width="24" height="15" class="badge-bg-fk" />
+    <text x="1678" y="612" class="badge-text-fk">FK</text>
+    <text x="1698" y="613" class="col-name">NCC_MaNCC_FK</text>
+    <text x="1974" y="613" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-thuoc" class="table-card" style="--accent-color: #f43f5e;" data-table-id="thuoc">
+    <rect x="1650" y="678" width="340" height="289" class="card-bg" />
+    <path d="M 1662 678 L 1978 678 Q 1990 678 1990 690 L 1990 733 L 1650 733 L 1650 690 Q 1650 678 1662 678 Z" class="card-header-bg" />
+    <line x1="1662" y1="678" x2="1978" y2="678" stroke="#f43f5e" class="card-header-line" stroke-linecap="round" />
+    <text x="1666" y="702" class="card-title">THUỐC</text>
+    <text x="1666" y="718" class="card-subtitle" fill="#f43f5e">Dược &amp; Vật tư y tế (Thuoc)</text>
+    <circle cx="1970" cy="704" r="4" fill="#f43f5e" />
+    <rect x="1666" y="739" width="24" height="15" class="badge-bg-pk" />
+    <text x="1678" y="750" class="badge-text-pk">PK</text>
+    <text x="1698" y="751" class="col-name pk-col">TH_MaThuoc</text>
+    <text x="1974" y="751" class="col-type">VARCHAR</text>
+    <text x="1666" y="779" class="col-name">TH_TenThuongMai</text>
+    <text x="1974" y="779" class="col-type">VARCHAR</text>
+    <text x="1666" y="807" class="col-name">TH_HoatChat</text>
+    <text x="1974" y="807" class="col-type">VARCHAR</text>
+    <text x="1666" y="835" class="col-name">TH_KhoiLuong</text>
+    <text x="1974" y="835" class="col-type">VARCHAR</text>
+    <text x="1666" y="863" class="col-name">TH_NhaSanXuat</text>
+    <text x="1974" y="863" class="col-type">VARCHAR</text>
+    <text x="1666" y="891" class="col-name">TH_DangBaoBi</text>
+    <text x="1974" y="891" class="col-type">VARCHAR</text>
+    <text x="1666" y="919" class="col-name">TH_DangBaoChe</text>
+    <text x="1974" y="919" class="col-type">VARCHAR</text>
+    <text x="1666" y="947" class="col-name">TH_HanSuDung</text>
+    <text x="1974" y="947" class="col-type">DATE</text>
+  </g>
+
+  <g id="card-vattuyte" class="table-card" style="--accent-color: #f43f5e;" data-table-id="vattuyte">
+    <rect x="1650" y="1012" width="340" height="205" class="card-bg" />
+    <path d="M 1662 1012 L 1978 1012 Q 1990 1012 1990 1024 L 1990 1067 L 1650 1067 L 1650 1024 Q 1650 1012 1662 1012 Z" class="card-header-bg" />
+    <line x1="1662" y1="1012" x2="1978" y2="1012" stroke="#f43f5e" class="card-header-line" stroke-linecap="round" />
+    <text x="1666" y="1036" class="card-title">VẬT TƯ Y TẾ</text>
+    <text x="1666" y="1052" class="card-subtitle" fill="#f43f5e">Dược &amp; Vật tư y tế (VatTuYTe)</text>
+    <circle cx="1970" cy="1038" r="4" fill="#f43f5e" />
+    <rect x="1666" y="1073" width="24" height="15" class="badge-bg-pk" />
+    <text x="1678" y="1084" class="badge-text-pk">PK</text>
+    <text x="1698" y="1085" class="col-name pk-col">VT_MaVatTu</text>
+    <text x="1974" y="1085" class="col-type">VARCHAR</text>
+    <text x="1666" y="1113" class="col-name">VT_TenVatTu</text>
+    <text x="1974" y="1113" class="col-type">VARCHAR</text>
+    <text x="1666" y="1141" class="col-name">VT_DonViTinh</text>
+    <text x="1974" y="1141" class="col-type">VARCHAR</text>
+    <text x="1666" y="1169" class="col-name">VT_ChatLieu</text>
+    <text x="1974" y="1169" class="col-type">VARCHAR</text>
+    <text x="1666" y="1197" class="col-name">VT_CongDung</text>
+    <text x="1974" y="1197" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-phieuxuatkho" class="table-card" style="--accent-color: #f43f5e;" data-table-id="phieuxuatkho">
+    <rect x="1650" y="1262" width="340" height="317" class="card-bg" />
+    <path d="M 1662 1262 L 1978 1262 Q 1990 1262 1990 1274 L 1990 1317 L 1650 1317 L 1650 1274 Q 1650 1262 1662 1262 Z" class="card-header-bg" />
+    <line x1="1662" y1="1262" x2="1978" y2="1262" stroke="#f43f5e" class="card-header-line" stroke-linecap="round" />
+    <text x="1666" y="1286" class="card-title">PHIẾU XUẤT KHO</text>
+    <text x="1666" y="1302" class="card-subtitle" fill="#f43f5e">Dược &amp; Vật tư y tế (PhieuXuatKho)</text>
+    <circle cx="1970" cy="1288" r="4" fill="#f43f5e" />
+    <rect x="1666" y="1323" width="24" height="15" class="badge-bg-pk" />
+    <text x="1678" y="1334" class="badge-text-pk">PK</text>
+    <text x="1698" y="1335" class="col-name pk-col">PXK_MaPhieu</text>
+    <text x="1974" y="1335" class="col-type">INT</text>
+    <text x="1666" y="1363" class="col-name">PXK_SoLo</text>
+    <text x="1974" y="1363" class="col-type">VARCHAR</text>
+    <text x="1666" y="1391" class="col-name">PXK_HSD</text>
+    <text x="1974" y="1391" class="col-type">DATE</text>
+    <text x="1666" y="1419" class="col-name">PXK_SL</text>
+    <text x="1974" y="1419" class="col-type">INT</text>
+    <text x="1666" y="1447" class="col-name">PXK_DonGia</text>
+    <text x="1974" y="1447" class="col-type">DECIMAL</text>
+    <text x="1666" y="1475" class="col-name">PXK_ThanhTien</text>
+    <text x="1974" y="1475" class="col-type">DECIMAL</text>
+    <rect x="1666" y="1491" width="24" height="15" class="badge-bg-fk" />
+    <text x="1678" y="1502" class="badge-text-fk">FK</text>
+    <text x="1698" y="1503" class="col-name">DNH_MaDon_FK</text>
+    <text x="1974" y="1503" class="col-type">INT</text>
+    <rect x="1666" y="1519" width="24" height="15" class="badge-bg-fk" />
+    <text x="1678" y="1530" class="badge-text-fk">FK</text>
+    <text x="1698" y="1531" class="col-name">TH_MaThuoc_FK</text>
+    <text x="1974" y="1531" class="col-type">VARCHAR</text>
+    <rect x="1666" y="1547" width="24" height="15" class="badge-bg-fk" />
+    <text x="1678" y="1558" class="badge-text-fk">FK</text>
+    <text x="1698" y="1559" class="col-name">VT_MaVatTu_FK</text>
+    <text x="1974" y="1559" class="col-type">VARCHAR</text>
+  </g>
+
+  <g id="card-hoadon" class="table-card" style="--accent-color: #6366f1;" data-table-id="hoadon">
+    <rect x="2050" y="150" width="340" height="233" class="card-bg" />
+    <path d="M 2062 150 L 2378 150 Q 2390 150 2390 162 L 2390 205 L 2050 205 L 2050 162 Q 2050 150 2062 150 Z" class="card-header-bg" />
+    <line x1="2062" y1="150" x2="2378" y2="150" stroke="#6366f1" class="card-header-line" stroke-linecap="round" />
+    <text x="2066" y="174" class="card-title">HÓA ĐƠN</text>
+    <text x="2066" y="190" class="card-subtitle" fill="#6366f1">Tài chính &amp; Viện phí (HoaDon)</text>
+    <circle cx="2370" cy="176" r="4" fill="#6366f1" />
+    <rect x="2066" y="211" width="24" height="15" class="badge-bg-pk" />
+    <text x="2078" y="222" class="badge-text-pk">PK</text>
+    <text x="2098" y="223" class="col-name pk-col">HD_MaHD</text>
+    <text x="2374" y="223" class="col-type">INT</text>
+    <text x="2066" y="251" class="col-name">HD_TongChiPhi</text>
+    <text x="2374" y="251" class="col-type">DECIMAL</text>
+    <text x="2066" y="279" class="col-name">HD_TienBảo hiểm y tế</text>
+    <text x="2374" y="279" class="col-type">DECIMAL</text>
+    <text x="2066" y="307" class="col-name">HD_TienBN</text>
+    <text x="2374" y="307" class="col-type">DECIMAL</text>
+    <rect x="2066" y="323" width="24" height="15" class="badge-bg-fk" />
+    <text x="2078" y="334" class="badge-text-fk">FK</text>
+    <text x="2098" y="335" class="col-name">HD_MaBN</text>
+    <text x="2374" y="335" class="col-type">INT</text>
+    <rect x="2066" y="351" width="24" height="15" class="badge-bg-fk" />
+    <text x="2078" y="362" class="badge-text-fk">FK</text>
+    <text x="2098" y="363" class="col-name">HS_AdmissionID_FK</text>
+    <text x="2374" y="363" class="col-type">INT</text>
+  </g>
+
+  <g id="card-chitietdichvu" class="table-card" style="--accent-color: #6366f1;" data-table-id="chitietdichvu">
+    <rect x="2050" y="428" width="340" height="205" class="card-bg" />
+    <path d="M 2062 428 L 2378 428 Q 2390 428 2390 440 L 2390 483 L 2050 483 L 2050 440 Q 2050 428 2062 428 Z" class="card-header-bg" />
+    <line x1="2062" y1="428" x2="2378" y2="428" stroke="#6366f1" class="card-header-line" stroke-linecap="round" />
+    <text x="2066" y="452" class="card-title">CHI TIẾT DỊCH VỤ</text>
+    <text x="2066" y="468" class="card-subtitle" fill="#6366f1">Tài chính &amp; Viện phí (ChiTietDichVu)</text>
+    <circle cx="2370" cy="454" r="4" fill="#6366f1" />
+    <rect x="2066" y="489" width="24" height="15" class="badge-bg-pk" />
+    <text x="2078" y="500" class="badge-text-pk">PK</text>
+    <rect x="2096" y="489" width="24" height="15" class="badge-bg-fk" />
+    <text x="2108" y="500" class="badge-text-fk">FK</text>
+    <text x="2128" y="501" class="col-name pk-col">HD_MaHD_FK</text>
+    <text x="2374" y="501" class="col-type">INT</text>
+    <rect x="2066" y="517" width="24" height="15" class="badge-bg-pk" />
+    <text x="2078" y="528" class="badge-text-pk">PK</text>
+    <rect x="2096" y="517" width="24" height="15" class="badge-bg-fk" />
+    <text x="2108" y="528" class="badge-text-fk">FK</text>
+    <text x="2128" y="529" class="col-name pk-col">DV_MaDichVu_FK</text>
+    <text x="2374" y="529" class="col-type">VARCHAR</text>
+    <text x="2066" y="557" class="col-name">SoLuong</text>
+    <text x="2374" y="557" class="col-type">INT</text>
+    <text x="2066" y="585" class="col-name">DonGia</text>
+    <text x="2374" y="585" class="col-type">DECIMAL</text>
+    <text x="2066" y="613" class="col-name">ThanhTien</text>
+    <text x="2374" y="613" class="col-type">DECIMAL</text>
+  </g>
+
+  <g id="card-thanhtoan" class="table-card" style="--accent-color: #6366f1;" data-table-id="thanhtoan">
+    <rect x="2050" y="678" width="340" height="233" class="card-bg" />
+    <path d="M 2062 678 L 2378 678 Q 2390 678 2390 690 L 2390 733 L 2050 733 L 2050 690 Q 2050 678 2062 678 Z" class="card-header-bg" />
+    <line x1="2062" y1="678" x2="2378" y2="678" stroke="#6366f1" class="card-header-line" stroke-linecap="round" />
+    <text x="2066" y="702" class="card-title">THANH TOÁN</text>
+    <text x="2066" y="718" class="card-subtitle" fill="#6366f1">Tài chính &amp; Viện phí (ThanhToan)</text>
+    <circle cx="2370" cy="704" r="4" fill="#6366f1" />
+    <rect x="2066" y="739" width="24" height="15" class="badge-bg-pk" />
+    <text x="2078" y="750" class="badge-text-pk">PK</text>
+    <text x="2098" y="751" class="col-name pk-col">TT_MaTT</text>
+    <text x="2374" y="751" class="col-type">INT</text>
+    <text x="2066" y="779" class="col-name">TT_Loai</text>
+    <text x="2374" y="779" class="col-type">VARCHAR</text>
+    <text x="2066" y="807" class="col-name">TT_SoTien</text>
+    <text x="2374" y="807" class="col-type">DECIMAL</text>
+    <text x="2066" y="835" class="col-name">TT_PhuongThuc</text>
+    <text x="2374" y="835" class="col-type">VARCHAR</text>
+    <rect x="2066" y="851" width="24" height="15" class="badge-bg-fk" />
+    <text x="2078" y="862" class="badge-text-fk">FK</text>
+    <text x="2098" y="863" class="col-name">TT_MaNV</text>
+    <text x="2374" y="863" class="col-type">INT</text>
+    <rect x="2066" y="879" width="24" height="15" class="badge-bg-fk" />
+    <text x="2078" y="890" class="badge-text-fk">FK</text>
+    <text x="2098" y="891" class="col-name">HD_MaHD_FK</text>
+    <text x="2374" y="891" class="col-type">INT</text>
+  </g>
+
+  <g id="card-boithuongbhyt" class="table-card" style="--accent-color: #6366f1;" data-table-id="boithuongbhyt">
+    <rect x="2050" y="956" width="340" height="233" class="card-bg" />
+    <path d="M 2062 956 L 2378 956 Q 2390 956 2390 968 L 2390 1011 L 2050 1011 L 2050 968 Q 2050 956 2062 956 Z" class="card-header-bg" />
+    <line x1="2062" y1="956" x2="2378" y2="956" stroke="#6366f1" class="card-header-line" stroke-linecap="round" />
+    <text x="2066" y="980" class="card-title">BỒI THƯỜNG BẢO HIỂM Y TẾ</text>
+    <text x="2066" y="996" class="card-subtitle" fill="#6366f1">Tài chính &amp; Viện phí (BoiThuongBảo hiểm y tế)</text>
+    <circle cx="2370" cy="982" r="4" fill="#6366f1" />
+    <rect x="2066" y="1017" width="24" height="15" class="badge-bg-pk" />
+    <text x="2078" y="1028" class="badge-text-pk">PK</text>
+    <text x="2098" y="1029" class="col-name pk-col">BT_MaQuyetToan</text>
+    <text x="2374" y="1029" class="col-type">INT</text>
+    <text x="2066" y="1057" class="col-name">BT_SoTheBảo hiểm y tế</text>
+    <text x="2374" y="1057" class="col-type">VARCHAR</text>
+    <text x="2066" y="1085" class="col-name">BT_MaBenh</text>
+    <text x="2374" y="1085" class="col-type">VARCHAR</text>
+    <text x="2066" y="1113" class="col-name">BT_TiLe</text>
+    <text x="2374" y="1113" class="col-type">DECIMAL</text>
+    <text x="2066" y="1141" class="col-name">BT_TrangThai</text>
+    <text x="2374" y="1141" class="col-type">VARCHAR</text>
+    <rect x="2066" y="1157" width="24" height="15" class="badge-bg-fk" />
+    <text x="2078" y="1168" class="badge-text-fk">FK</text>
+    <text x="2098" y="1169" class="col-name">HD_MaHD_FK</text>
+    <text x="2374" y="1169" class="col-type">INT</text>
+  </g>
+
+  <g id="card-giaodich" class="table-card" style="--accent-color: #6366f1;" data-table-id="giaodich">
+    <rect x="2050" y="1234" width="340" height="261" class="card-bg" />
+    <path d="M 2062 1234 L 2378 1234 Q 2390 1234 2390 1246 L 2390 1289 L 2050 1289 L 2050 1246 Q 2050 1234 2062 1234 Z" class="card-header-bg" />
+    <line x1="2062" y1="1234" x2="2378" y2="1234" stroke="#6366f1" class="card-header-line" stroke-linecap="round" />
+    <text x="2066" y="1258" class="card-title">GIAO DỊCH</text>
+    <text x="2066" y="1274" class="card-subtitle" fill="#6366f1">Tài chính &amp; Viện phí (GiaoDich)</text>
+    <circle cx="2370" cy="1260" r="4" fill="#6366f1" />
+    <rect x="2066" y="1295" width="24" height="15" class="badge-bg-pk" />
+    <text x="2078" y="1306" class="badge-text-pk">PK</text>
+    <text x="2098" y="1307" class="col-name pk-col">GD_MaGD</text>
+    <text x="2374" y="1307" class="col-type">INT</text>
+    <text x="2066" y="1335" class="col-name">GD_MaThamChieu</text>
+    <text x="2374" y="1335" class="col-type">VARCHAR</text>
+    <text x="2066" y="1363" class="col-name">GD_NguonTien</text>
+    <text x="2374" y="1363" class="col-type">VARCHAR</text>
+    <text x="2066" y="1391" class="col-name">GD_SoTienGD</text>
+    <text x="2374" y="1391" class="col-type">DECIMAL</text>
+    <text x="2066" y="1419" class="col-name">GD_ThoiGian</text>
+    <text x="2374" y="1419" class="col-type">DATETIME</text>
+    <rect x="2066" y="1435" width="24" height="15" class="badge-bg-fk" />
+    <text x="2078" y="1446" class="badge-text-fk">FK</text>
+    <text x="2098" y="1447" class="col-name">TT_MaTT_FK</text>
+    <text x="2374" y="1447" class="col-type">INT</text>
+    <rect x="2066" y="1463" width="24" height="15" class="badge-bg-fk" />
+    <text x="2078" y="1474" class="badge-text-fk">FK</text>
+    <text x="2098" y="1475" class="col-name">BT_MaQuyetToan_FK</text>
+    <text x="2374" y="1475" class="col-type">INT</text>
+  </g>
+
+
+  <script type="text/javascript">
+    <![CDATA[
+    (function() {
+      const cards = document.querySelectorAll('.table-card');
+      const paths = document.querySelectorAll('.relation-path');
+      let selectedId = null;
+
+      // Build relationship map
+      const relations = {}; // tableId -> Set of related tableIds
+      cards.forEach(card => {
+        const id = card.getAttribute('data-table-id');
+        relations[id] = new Set([id]);
+      });
+
+      paths.forEach(path => {
+        const source = path.getAttribute('data-source');
+        const target = path.getAttribute('data-target');
+        if (relations[source]) {
+          relations[source].add(target);
+        }
+        if (relations[target]) {
+          relations[target].add(source);
+        }
+      });
+
+      function applyHighlight(tableId) {
+        if (!tableId) {
+          cards.forEach(c => {
+            c.classList.remove('dimmed');
+            c.classList.remove('focused');
+          });
+          paths.forEach(p => {
+            p.classList.remove('dimmed');
+            p.classList.remove('highlighted');
+          });
+          return;
+        }
+
+        const related = relations[tableId] || new Set([tableId]);
+        cards.forEach(c => {
+          const id = c.getAttribute('data-table-id');
+          if (related.has(id)) {
+            c.classList.remove('dimmed');
+            if (id === tableId) {
+              c.classList.add('focused');
+            } else {
+              c.classList.remove('focused');
+            }
+          } else {
+            c.classList.add('dimmed');
+            c.classList.remove('focused');
+          }
+        });
+
+        paths.forEach(p => {
+          const source = p.getAttribute('data-source');
+          const target = p.getAttribute('data-target');
+          if (source === tableId || target === tableId) {
+            p.classList.add('highlighted');
+            p.classList.remove('dimmed');
+          } else {
+            p.classList.remove('highlighted');
+            p.classList.add('dimmed');
+          }
+        });
+      }
+
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = card.getAttribute('data-table-id');
+          if (selectedId === id) {
+            selectedId = null;
+          } else {
+            selectedId = id;
+          }
+          applyHighlight(selectedId);
+        });
+
+        card.addEventListener('mouseenter', () => {
+          if (selectedId !== null) return;
+          const id = card.getAttribute('data-table-id');
+          applyHighlight(id);
+        });
+
+        card.addEventListener('mouseleave', () => {
+          if (selectedId !== null) return;
+          applyHighlight(null);
+        });
+      });
+
+      // SVG background click resets selection
+      document.addEventListener('click', (e) => {
+        let clickedCard = false;
+        let element = e.target;
+        while (element) {
+          if (element.classList && element.classList.contains('table-card')) {
+            clickedCard = true;
+            break;
+          }
+          element = element.parentNode;
+        }
+        if (!clickedCard) {
+          selectedId = null;
+          applyHighlight(null);
+        }
+      });
+    })();
+    ]]>
+  </script>
+</svg>
