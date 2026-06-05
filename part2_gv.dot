@@ -1,0 +1,110 @@
+graph ERD2 {
+    layout=neato;
+    overlap=false;
+    splines=true;
+    sep="+15";
+    esep="+8";
+
+    // Global settings
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=12, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.2, labelangle=-35];
+
+    // === ENTITIES ===
+    node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#EBF8FF", color="#2B6CB0", fontcolor="#1A365D", fontsize=14, style="filled,bold"];
+    ChanDoan [label="CHẨN ĐOÁN"];
+    DonThuoc [label="ĐƠN THUỐC"];
+    ChiTietDonThuoc [label="CHI TIẾT ĐƠN THUỐC"];
+    PhacDoDieuTri [label="PHÁC ĐỒ ĐIỀU TRỊ"];
+    DichVuYTe [label="DỊCH VỤ Y TẾ"];
+
+    // === KEY ATTRIBUTES ===
+    node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=11, style="filled,bold"];
+    CD_MaChanDoan [label=<<u>Mã chẩn đoán</u>>];
+    DT_MaDonThuoc [label=<<u>Mã đơn thuốc</u>>];
+    CT_MaChiTiet [label=<<u>Mã chi tiết</u>>];
+    PD_MaPhacDo [label=<<u>Mã phác đồ</u>>];
+    DV_MaDichVu [label=<<u>Mã dịch vụ</u>>];
+
+    // === NORMAL ATTRIBUTES ===
+    node [shape=ellipse, peripheries=1, penwidth=1.2, fillcolor="#F7FAFC", color="#718096", fontcolor="#2D3748", fontsize=11, style=filled];
+    // Chẩn đoán Attributes
+    CD_TenChanDoan [label="Tên chẩn đoán"];
+    CD_MoTa [label="Mô tả"];
+    CD_NgayChanDoan [label="Ngày chẩn đoán"];
+
+    // Đơn thuốc Attributes
+    DT_NgayKeDon [label="Ngày kê đơn"];
+    DT_GhiChu [label="Ghi chú"];
+
+    // Chi tiết đơn thuốc Attributes
+    CT_SoLuong [label="Số lượng"];
+    CT_LieuDung [label="Liều dùng"];
+    CT_ThoiGianSuDung [label="Thời gian sử dụng"];
+
+    // Phác đồ điều trị Attributes
+    PD_TenPhacDo [label="Tên phác đồ"];
+    PD_MoTa [label="Mô tả"];
+    PD_ThoiGianDieuTri [label="Thời gian điều trị"];
+
+    // Dịch vụ y tế Attributes
+    DV_TenDichVu [label="Tên dịch vụ"];
+    DV_GiaDichVu [label="Giá dịch vụ"];
+    DV_MoTa [label="Mô tả"];
+
+    // === RELATIONSHIPS ===
+    node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=12, style="filled,bold"];
+    CoDonThuoc [label="CÓ\nĐƠN THUỐC"];
+    CoChiTiet [label="CÓ\nCHI TIẾT"];
+    CoPhacDo [label="CÓ\nPHÁC ĐỒ ĐIỀU TRỊ"];
+    SuDung [label="SỬ DỤNG"];
+
+    // === CONNECTIONS ===
+
+    // Chẩn đoán Attributes Connection
+    ChanDoan -- CD_MaChanDoan;
+    ChanDoan -- CD_TenChanDoan;
+    ChanDoan -- CD_MoTa;
+    ChanDoan -- CD_NgayChanDoan;
+
+    // Đơn thuốc Attributes Connection
+    DonThuoc -- DT_MaDonThuoc;
+    DonThuoc -- DT_NgayKeDon;
+    DonThuoc -- DT_GhiChu;
+
+    // Chi tiết đơn thuốc Attributes Connection
+    ChiTietDonThuoc -- CT_MaChiTiet;
+    ChiTietDonThuoc -- CT_SoLuong;
+    ChiTietDonThuoc -- CT_LieuDung;
+    ChiTietDonThuoc -- CT_ThoiGianSuDung;
+
+    // Phác đồ điều trị Attributes Connection
+    PhacDoDieuTri -- PD_MaPhacDo;
+    PhacDoDieuTri -- PD_TenPhacDo;
+    PhacDoDieuTri -- PD_MoTa;
+    PhacDoDieuTri -- PD_ThoiGianDieuTri;
+
+    // Dịch vụ y tế Attributes Connection
+    DichVuYTe -- DV_MaDichVu;
+    DichVuYTe -- DV_TenDichVu;
+    DichVuYTe -- DV_GiaDichVu;
+    DichVuYTe -- DV_MoTa;
+
+    // === Relationships Connections ===
+
+    // Chẩn đoán 1--N Đơn thuốc
+    ChanDoan -- CoDonThuoc [taillabel="1"];
+    CoDonThuoc -- DonThuoc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Đơn thuốc 1--N Chi tiết đơn thuốc
+    DonThuoc -- CoChiTiet [taillabel="1"];
+    CoChiTiet -- ChiTietDonThuoc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Chẩn đoán 1--N Phác đồ điều trị
+    ChanDoan -- CoPhacDo [taillabel="1"];
+    CoPhacDo -- PhacDoDieuTri [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Phác đồ điều trị M--N Dịch vụ y tế
+    PhacDoDieuTri -- SuDung [taillabel="M"];
+    SuDung -- DichVuYTe [headlabel="N"];
+}

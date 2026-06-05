@@ -1,0 +1,131 @@
+graph ERD {
+    layout=fdp;
+    K=2.2;
+    overlap=false;
+    splines=true;
+    sep="+35";
+    esep="+25";
+
+    // Global settings
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=11, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.0];
+
+    subgraph cluster_Part4 {
+        label="Phân hệ Nhân sự & Khoa phòng";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#DD6B20";
+        style="filled,dashed";
+        fillcolor="#FFFAF0";
+        color="#DD6B20";
+        penwidth=2.0;
+
+        // Entities
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FFFAF0", color="#DD6B20", fontcolor="#7B341E", fontsize=13, style="filled,bold"];
+        Khoa [label="KHOA"];
+        PhongBenh [label="PHÒNG BỆNH"];
+        NhanVien [label="NHÂN VIÊN"];
+        BacSi [label="BÁC SĨ"];
+        DieuDuong [label="ĐIỀU DƯỠNG"];
+        LichTruc [label="LỊCH TRỰC"];
+
+        // Key Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        K_MaKhoa [label=<<u>Mã khoa</u>>];
+        PB_MaPhong [label=<<u>Mã phòng</u>>];
+        NV_MaNV [label=<<u>Mã nhân viên</u>>];
+        BS_MaBS [label=<<u>Mã bác sĩ</u>>];
+        DD_MaDD [label=<<u>Mã điều dưỡng</u>>];
+        LT_MaLT [label=<<u>Mã lịch trực</u>>];
+
+        // Normal Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#FFFBEB", color="#FDE047", fontcolor="#78350F", fontsize=9, style=filled];
+        K_TenKhoa [label="Tên khoa"];
+        K_SoDien [label="Số điện thoại khoa"];
+        K_ViTri [label="Vị trí"];
+        PB_SoPhong [label="Số phòng"];
+        PB_LoaiPhong [label="Loại phòng"];
+        PB_SucChua [label="Sức chứa"];
+        PB_TrangThai [label="Trạng thái"];
+        NV_Ten [label="Tên nhân viên"];
+        NV_NgaySinh [label="Ngày sinh"];
+        NV_GioiTinh [label="Giới tính"];
+        NV_SDT [label="Số điện thoại"];
+        NV_CCCD [label="Căn cước công dân"];
+        NV_VaiTro [label="Vai trò"];
+        BS_ChuyenKhoa [label="Chuyên khoa"];
+        BS_CapBac [label="Cấp bậc"];
+        BS_HocVi [label="Học vị"];
+        BS_CCHN [label="Chứng chỉ hành nghề"];
+        BS_NamKN [label="Năm kinh nghiệm"];
+        DD_CapBac [label="Cấp bậc"];
+        DD_CCHN [label="Chứng chỉ hành nghề"];
+        LT_Ngay [label="Ngày trực"];
+        LT_Ca [label="Ca làm việc"];
+        LT_TrangThai [label="Trạng thái"];
+        LT_GhiChu [label="Ghi chú"];
+        LT_TGBD [label="Thời gian bắt đầu"];
+        LT_TGKT [label="Thời gian kết thúc"];
+
+        // Relationships
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        BaoGom [label="BAO GỒM"];
+        ThuocKhoa [label="THUỘC KHOA"];
+        ISA1 [label="IS-A"];
+        TruongKhoa [label="TRƯỞNG KHOA"];
+        ISA2 [label="IS-A"];
+        PhanCong [label="PHÂN CÔNG"];
+        QuanLyLich [label="QUẢN LÝ LỊCH"];
+
+        // Attribute Connections
+        Khoa -- K_MaKhoa;
+        Khoa -- K_TenKhoa;
+        Khoa -- K_SoDien;
+        Khoa -- K_ViTri;
+        PhongBenh -- PB_MaPhong;
+        PhongBenh -- PB_SoPhong;
+        PhongBenh -- PB_LoaiPhong;
+        PhongBenh -- PB_SucChua;
+        PhongBenh -- PB_TrangThai;
+        NhanVien -- NV_MaNV;
+        NhanVien -- NV_Ten;
+        NhanVien -- NV_NgaySinh;
+        NhanVien -- NV_GioiTinh;
+        NhanVien -- NV_SDT;
+        NhanVien -- NV_CCCD;
+        NhanVien -- NV_VaiTro;
+        BacSi -- BS_MaBS;
+        BacSi -- BS_ChuyenKhoa;
+        BacSi -- BS_CapBac;
+        BacSi -- BS_HocVi;
+        BacSi -- BS_CCHN;
+        BacSi -- BS_NamKN;
+        DieuDuong -- DD_MaDD;
+        DieuDuong -- DD_CapBac;
+        DieuDuong -- DD_CCHN;
+        LichTruc -- LT_MaLT;
+        LichTruc -- LT_Ngay;
+        LichTruc -- LT_Ca;
+        LichTruc -- LT_TrangThai;
+        LichTruc -- LT_GhiChu;
+        LichTruc -- LT_TGBD;
+        LichTruc -- LT_TGKT;
+
+        // Relationship Connections
+        Khoa -- BaoGom [taillabel="1"];
+        BaoGom -- PhongBenh [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        Khoa -- ThuocKhoa [taillabel="1"];
+        ThuocKhoa -- NhanVien [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        NhanVien -- ISA1 [taillabel="1"];
+        ISA1 -- BacSi [headlabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        Khoa -- TruongKhoa [taillabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        TruongKhoa -- BacSi [headlabel="1"];
+        NhanVien -- ISA2 [taillabel="1"];
+        ISA2 -- DieuDuong [headlabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        NhanVien -- PhanCong [taillabel="1"];
+        PhanCong -- LichTruc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        Khoa -- QuanLyLich [taillabel="1"];
+        QuanLyLich -- LichTruc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+    }
+}

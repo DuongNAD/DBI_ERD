@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Bệnh viện - Sơ đồ ERD Chuẩn Chen</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #38bdf8;
+            --accent-secondary: #a78bfa;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --active-glow: rgba(56, 189, 248, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1400px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Tabs Container */
+        .tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            padding: 0.35rem;
+            border-radius: 9999px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #0284c7 0%, #7c3aed 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+        }
+
+        /* Main Dashboard Layout */
+        .dashboard {
+            width: 100%;
+            max-width: 1400px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card styles */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+
+        /* Diagram Viewer Card */
+        .viewer-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 650px;
+        }
+
+        .viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--card-border);
+            background: rgba(15, 23, 42, 0.2);
+        }
+
+        .viewer-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .toggle-group {
+            display: flex;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 0.2rem;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent-primary);
+            color: #0f172a;
+        }
+
+        /* Interactive viewport */
+        .viewport {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-color: #ffffff; /* White background to make diagram colors contrast perfectly */
+            overflow: auto;
+            position: relative;
+            min-height: 550px;
+            max-height: 750px;
+        }
+
+        .viewport img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center center;
+        }
+
+        .viewport.scrollable {
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .viewport.scrollable img {
+            max-width: none;
+            max-height: none;
+        }
+
+        /* Control Panel bar inside viewport */
+        .viewport-controls {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 0.3rem;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-weight: bold;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Sidebar Info Card */
+        .info-card {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-primary);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            border-left: 3px solid var(--accent-primary);
+            padding-left: 0.5rem;
+        }
+
+        .legend-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-shape {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .shape-entity {
+            background: #e0f2fe;
+            border: 1.5px solid #0284c7;
+            color: #1e3a8a;
+            border-radius: 2px;
+        }
+
+        .shape-weak-entity {
+            background: #e0f2fe;
+            border: 3px double #0284c7;
+            color: #1e3a8a;
+            border-radius: 2px;
+        }
+
+        .shape-attr {
+            background: #f8fafc;
+            border: 1px solid #94a3b8;
+            color: #334155;
+            border-radius: 50%;
+            width: 24px;
+            height: 16px;
+        }
+
+        .shape-key-attr {
+            background: #fef3c7;
+            border: 1.5px solid #d97706;
+            color: #78350f;
+            border-radius: 50%;
+            width: 24px;
+            height: 16px;
+            text-decoration: underline;
+        }
+
+        .shape-rel {
+            background: #f3e8ff;
+            border: 1.5px solid #7c3aed;
+            color: #5b21b6;
+            transform: rotate(45deg);
+            width: 16px;
+            height: 16px;
+        }
+
+        .shape-ident-rel {
+            background: #f3e8ff;
+            border: 3px double #7c3aed;
+            color: #5b21b6;
+            transform: rotate(45deg);
+            width: 16px;
+            height: 16px;
+        }
+
+        .shape-total-line {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            width: 24px;
+        }
+        .shape-total-line span {
+            display: block;
+            height: 2px;
+            background: #475569;
+        }
+
+        .shape-partial-line {
+            width: 24px;
+            height: 2px;
+            background: #475569;
+        }
+
+        .diagram-details h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .diagram-details p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .diagram-details ul {
+            padding-left: 1.25rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 3rem 0 1rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        /* Tab content visibility */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mô hình ERD Quản lý Bệnh viện</h1>
+        <p class="subtitle">Sơ đồ thiết kế chuẩn hóa Chen (Elmasri & Navathe Style) với giao diện nâng cao</p>
+        
+        <!-- Tab navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">
+                📂 Phần 1: Bệnh nhân & Tiếp đón
+            </button>
+            <button class="tab-btn" onclick="switchTab(1)">
+                📦 Phần 2: Chẩn đoán & Phác đồ
+            </button>
+            <button class="tab-btn" onclick="switchTab(2)">
+                💳 Phần 3: Xét nghiệm & CĐHA
+            </button>
+            <button class="tab-btn" onclick="switchTab(3)">
+                🗺️ Toàn cảnh: ERD Hoàn chỉnh
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <!-- Left: Interactive Diagram Card -->
+        <div class="card viewer-card">
+            <div class="viewer-header">
+                <span class="viewer-title" id="current-title">Phần 1: Quản lý Bệnh nhân & Tiếp đón</span>
+                
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <!-- Format Toggle (SVG / PNG) -->
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="btn-svg" onclick="setFormat('svg')">SVG (Vector)</button>
+                        <button class="toggle-btn" id="btn-png" onclick="setFormat('png')">PNG (Raster)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Viewport displaying the image -->
+            <div class="viewport" id="viewport">
+                <img id="diagram-img" src="BenhNhan_TiepDon_Academic.svg" alt="Sơ đồ ERD">
+                
+                <!-- Viewport Control Buttons -->
+                <div class="viewport-controls">
+                    <button class="control-btn" title="Phóng to" onclick="zoom(0.15)">＋</button>
+                    <button class="control-btn" title="Thu nhỏ" onclick="zoom(-0.15)">－</button>
+                    <button class="control-btn" title="Đặt lại kích thước" onclick="resetZoom()">⚡</button>
+                    <button class="control-btn" title="Cuộn ngang/dọc" id="scroll-toggle" onclick="toggleScroll()">↔</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Information & Legend Sidebar -->
+        <div class="card info-card">
+            <!-- Legend Section -->
+            <div>
+                <div class="section-title">Ký hiệu chuẩn Chen</div>
+                <ul class="legend-list">
+                    <li class="legend-item">
+                        <span class="legend-shape shape-entity"></span>
+                        <span>Thực thể (Entity)</span>
+                    </li>
+                    <li class="legend-item">
+                        <span class="legend-shape shape-weak-entity"></span>
+                        <span>Thực thể yếu (Weak Entity)</span>
+                    </li>
+                    <li class="legend-item">
+                        <span class="legend-shape shape-attr"></span>
+                        <span>Thuộc tính (Attribute)</span>
+                    </li>
+                    <li class="legend-item">
+                        <span class="legend-shape shape-key-attr"></span>
+                        <span>Thuộc tính khóa chính (PK)</span>
+                    </li>
+                    <li class="legend-item">
+                        <span class="legend-shape shape-rel"></span>
+                        <span>Mối quan hệ (Relationship)</span>
+                    </li>
+                    <li class="legend-item">
+                        <span class="legend-shape shape-ident-rel"></span>
+                        <span>Mối quan hệ xác định (Identifying)</span>
+                    </li>
+                    <li class="legend-item">
+                        <span class="legend-shape shape-total-line">
+                            <span></span><span></span>
+                        </span>
+                        <span>Ràng buộc toàn phần (Total - Song song)</span>
+                    </li>
+                    <li class="legend-item">
+                        <span class="legend-shape shape-partial-line"></span>
+                        <span>Ràng buộc một phần (Partial - Đơn)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Details Section based on Active Tab -->
+            <div class="diagram-details">
+                <div class="section-title">Chi tiết thành phần</div>
+                
+                <!-- Tab 1 Info -->
+                <div id="details-0" class="tab-content active">
+                    <h3>Bệnh nhân & Tiếp đón</h3>
+                    <p>Sơ đồ bao quát quy trình quản lý thông tin bệnh nhân, đặt lịch hẹn và làm thủ tục nhập viện.</p>
+                    <ul>
+                        <li><strong>BỆNH NHÂN:</strong> Thực thể trung tâm lưu trữ hồ sơ cá nhân và thông tin liên lạc.</li>
+                        <li><strong>BẢO HIỂM Y TẾ:</strong> Liên kết hồ sơ bảo hiểm của từng Bệnh nhân (Quan hệ 1-1).</li>
+                        <li><strong>LỊCH HẸN:</strong> Ghi nhận thông tin lịch đặt khám và trạng thái lịch hẹn.</li>
+                        <li><strong>HỒ SƠ NHẬP VIỆN:</strong> Quản lý các đợt điều trị nội trú của Bệnh nhân tại các khoa chuyên môn.</li>
+                        <li><strong>BỆNH ÁN:</strong> Bệnh án lưu thông tin điều trị lịch sử của Bệnh nhân.</li>
+                    </ul>
+                </div>
+
+                <!-- Tab 2 Info -->
+                <div id="details-1" class="tab-content">
+                    <h3>Chẩn đoán & Phác đồ</h3>
+                    <p>Quy trình khám bệnh, chẩn đoán, kê đơn thuốc và áp dụng phác đồ điều trị.</p>
+                    <ul>
+                        <li><strong>CHẨN ĐOÁN:</strong> Kết quả chẩn đoán bệnh từ bác sĩ điều trị.</li>
+                        <li><strong>ĐƠN THUỐC:</strong> Đơn thuốc đi kèm với Chẩn đoán bệnh tương ứng.</li>
+                        <li><strong>CHI TIẾT ĐƠN THUỐC:</strong> Chi tiết số lượng, liều dùng của từng loại thuốc trong đơn.</li>
+                        <li><strong>PHÁC ĐỒ ĐIỀU TRỊ:</strong> Các phác đồ điều trị chuyên môn được chỉ định cho Bệnh nhân.</li>
+                        <li><strong>DỊCH VỤ Y TẾ:</strong> Danh mục các dịch vụ kỹ thuật y tế được sử dụng trong phác đồ điều trị (Quan hệ M-N).</li>
+                    </ul>
+                </div>
+
+                <!-- Tab 3 Info -->
+                <div id="details-2" class="tab-content">
+                    <h3>Xét nghiệm & CĐHA</h3>
+                    <p>Hệ thống quản lý các chỉ định cận lâm sàng bao gồm xét nghiệm mẫu bệnh phẩm và chẩn đoán hình ảnh.</p>
+                    <ul>
+                        <li><strong>DANH MỤC XÉT NGHIỆM:</strong> Danh mục các loại xét nghiệm y khoa được cung cấp.</li>
+                        <li><strong>KẾT QUẢ XÉT NGHIỆM:</strong> Kết quả đo đạc chỉ số sinh hóa/huyết học dựa trên mẫu bệnh phẩm.</li>
+                        <li><strong>MẪU BỆNH PHẨM:</strong> Mẫu máu, nước tiểu... được lấy từ Bệnh nhân để phục vụ xét nghiệm.</li>
+                        <li><strong>CHẨN ĐOÁN HÌNH ẢNH:</strong> Phim chụp X-quang, MRI, siêu âm cùng kết luận hình ảnh học.</li>
+                        <li><strong>THIẾT BỊ Y TẾ:</strong> Các thiết bị chuyên dụng phục vụ quy trình chẩn đoán hình ảnh.</li>
+                    </ul>
+                </div>
+
+                <!-- Tab 4 Info -->
+                <div id="details-3" class="tab-content">
+                    <h3>Sơ đồ ERD hoàn chỉnh</h3>
+                    <p>Mô hình hợp nhất toàn diện 6 phân hệ (Nhân sự, Dược, Viện phí, Bệnh nhân, Điều trị, Xét nghiệm) với 30 thực thể:</p>
+                    <ul>
+                        <li><strong>Liên thông trung tâm:</strong> Kết nối thông qua thực thể BỆNH NHÂN và BỆNH ÁN.</li>
+                        <li><strong>Khớp nối Nhân sự:</strong> Bác sĩ thực hiện chẩn đoán, kê đơn. Khoa & Phòng bệnh điều trị cho bệnh nhân nội trú. Nhân viên thực hiện thu tiền thanh toán.</li>
+                        <li><strong>Khớp nối Dược:</strong> Thuốc liên kết trực tiếp với chi tiết đơn thuốc kê cho bệnh nhân.</li>
+                        <li><strong>Khớp nối Viện phí:</strong> Hợp nhất danh mục dịch vụ y tế, liên kết hóa đơn với hồ sơ nhập viện và phác đồ điều trị.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Hệ thống Thông tin Bệnh viện. Thiết kế Sơ đồ Cơ sở Dữ liệu chuẩn Chen.</p>
+    </footer>
+
+    <script>
+        // State variables
+        let currentTab = 0;
+        let currentFormat = 'svg';
+        let zoomLevel = 1.0;
+        let isScrollMode = false;
+
+        // Data arrays
+        const fileNames = [
+            'BenhNhan_TiepDon_Academic',
+            'ChanDoan_PhacDo_Academic',
+            'XetNghiem_CDHA_Academic',
+            'complete_erd'
+        ];
+
+        const tabTitles = [
+            'Phần 1: Quản lý Bệnh nhân & Tiếp đón',
+            'Phần 2: Chẩn đoán & Phác đồ điều trị',
+            'Phần 3: Xét nghiệm & Chẩn đoán hình ảnh',
+            'Toàn cảnh: Sơ đồ ERD bệnh viện hoàn chỉnh'
+        ];
+
+        const imgEl = document.getElementById('diagram-img');
+        const titleEl = document.getElementById('current-title');
+        const viewportEl = document.getElementById('viewport');
+
+        function switchTab(index) {
+            currentTab = index;
+            
+            // Update active class on tab buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            // Update details contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+
+            // Update title
+            titleEl.textContent = tabTitles[index];
+
+            // Update image source
+            updateImageSrc();
+            resetZoom();
+        }
+
+        function setFormat(format) {
+            currentFormat = format;
+            
+            // Toggle active classes
+            document.getElementById('btn-svg').classList.toggle('active', format === 'svg');
+            document.getElementById('btn-png').classList.toggle('active', format === 'png');
+
+            updateImageSrc();
+        }
+
+        function updateImageSrc() {
+            const baseName = fileNames[currentTab];
+            imgEl.src = `${baseName}.${currentFormat}`;
+        }
+
+        // Zooming functions
+        function zoom(amount) {
+            if (isScrollMode) return; // Disable zoom scaling in scroll mode for natural sizing
+            zoomLevel += amount;
+            if (zoomLevel < 0.3) zoomLevel = 0.3;
+            if (zoomLevel > 3.0) zoomLevel = 3.0;
+            imgEl.style.transform = `scale(${zoomLevel})`;
+        }
+
+        function resetZoom() {
+            zoomLevel = 1.0;
+            imgEl.style.transform = `scale(1.0)`;
+        }
+
+        function toggleScroll() {
+            isScrollMode = !isScrollMode;
+            const btn = document.getElementById('scroll-toggle');
+            
+            if (isScrollMode) {
+                viewportEl.classList.add('scrollable');
+                btn.style.background = 'var(--accent-primary)';
+                btn.style.color = '#0f172a';
+                imgEl.style.transform = 'none';
+            } else {
+                viewportEl.classList.remove('scrollable');
+                btn.style.background = 'transparent';
+                btn.style.color = 'var(--text-main)';
+                resetZoom();
+            }
+        }
+    </script>
+</body>
+</html>

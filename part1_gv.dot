@@ -1,0 +1,141 @@
+graph ERD1 {
+    layout=neato;
+    overlap=false;
+    splines=true;
+    sep="+15";
+    esep="+8";
+
+    // Global settings
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=12, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.2, labelangle=-35];
+
+    // === ENTITIES ===
+    node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#EBF8FF", color="#2B6CB0", fontcolor="#1A365D", fontsize=14, style="filled,bold"];
+    BaoHiemYT [label="BẢO HIỂM Y TẾ"];
+    BenhNhan [label="BỆNH NHÂN"];
+    LichHen [label="LỊCH HẸN"];
+    HoSoNhapVien [label="HỒ SƠ NHẬP VIỆN"];
+    BenhAn [label="BỆNH ÁN"];
+
+    // === KEY ATTRIBUTES ===
+    node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=11, style="filled,bold"];
+    BH_InsuranceID [label=<<u>Mã bảo hiểm y tế</u>>];
+    BN_PatientID [label=<<u>Mã bệnh nhân</u>>];
+    LH_AppointmentID [label=<<u>Mã lịch hẹn</u>>];
+    HS_AdmissionID [label=<<u>Mã hồ sơ nhập viện</u>>];
+    BA_RecordID [label=<<u>Mã bệnh án</u>>];
+
+    // === NORMAL ATTRIBUTES ===
+    node [shape=ellipse, peripheries=1, penwidth=1.2, fillcolor="#F7FAFC", color="#718096", fontcolor="#2D3748", fontsize=11, style=filled];
+    // Bảo hiểm y tế Attributes
+    BH_MaSoBHYT [label="Mã số Bảo hiểm y tế"];
+    BH_NhaCungCap [label="Nhà cung cấp"];
+    BH_NgayHieuLuc [label="Ngày hiệu lực"];
+    BH_NgayHetHan [label="Ngày hết hạn"];
+
+    // Bệnh nhân Attributes
+    BN_HoTen [label="Họ và tên"];
+    BN_NgaySinh [label="Ngày sinh"];
+    BN_GioiTinh [label="Giới tính"];
+    BN_SoDienThoai [label="Số điện thoại"];
+    BN_DiaChi [label="Địa chỉ"];
+    BN_Email [label="Email"];
+
+    // Lịch hẹn Attributes
+    LH_NgayHen [label="Ngày hẹn"];
+    LH_GioHen [label="Giờ hẹn"];
+    LH_TrangThai [label="Trạng thái"];
+    LH_LyDoKham [label="Lý do khám"];
+    LH_PatientID_FK [label="Mã bệnh nhân (FK)"];
+
+    // Hồ sơ nhập viện Attributes
+    HS_NgayNhapVien [label="Ngày nhập viện"];
+    HS_NgayRaVien [label="Ngày ra viện"];
+    HS_LyDoNhapVien [label="Lý do nhập viện"];
+    HS_KhoaDieuTri [label="Khoa điều trị"];
+    HS_TrangThai [label="Trạng thái"];
+    HS_PatientID_FK [label="Mã bệnh nhân (FK)"];
+
+    // Bệnh án Attributes
+    BA_NgayTao [label="Ngày tạo"];
+    BA_ChanDoan [label="Chẩn đoán"];
+    BA_DieuTri [label="Điều trị"];
+    BA_GhiChu [label="Ghi chú"];
+    BA_PatientID_FK [label="Mã bệnh nhân (FK)"];
+    BA_AdmissionID_FK [label="Mã hồ sơ nhập viện (FK)"];
+
+    // === RELATIONSHIPS ===
+    node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=12, style="filled,bold"];
+    CoInsurance [label="CÓ"];
+    DatAppointment [label="ĐẶT"];
+    NhapVien [label="NHẬP VIỆN"];
+    CoRecord [label="CÓ"];
+    TaoTu [label="TẠO TỪ"];
+
+    // === CONNECTIONS ===
+
+    // Bảo hiểm y tế Attributes Connection
+    BaoHiemYT -- BH_InsuranceID;
+    BaoHiemYT -- BH_MaSoBHYT;
+    BaoHiemYT -- BH_NhaCungCap;
+    BaoHiemYT -- BH_NgayHieuLuc;
+    BaoHiemYT -- BH_NgayHetHan;
+
+    // Bệnh nhân Attributes Connection
+    BenhNhan -- BN_PatientID;
+    BenhNhan -- BN_HoTen;
+    BenhNhan -- BN_NgaySinh;
+    BenhNhan -- BN_GioiTinh;
+    BenhNhan -- BN_SoDienThoai;
+    BenhNhan -- BN_DiaChi;
+    BenhNhan -- BN_Email;
+
+    // Lịch hẹn Attributes Connection
+    LichHen -- LH_AppointmentID;
+    LichHen -- LH_NgayHen;
+    LichHen -- LH_GioHen;
+    LichHen -- LH_TrangThai;
+    LichHen -- LH_LyDoKham;
+    LichHen -- LH_PatientID_FK;
+
+    // Hồ sơ nhập viện Attributes Connection
+    HoSoNhapVien -- HS_AdmissionID;
+    HoSoNhapVien -- HS_NgayNhapVien;
+    HoSoNhapVien -- HS_NgayRaVien;
+    HoSoNhapVien -- HS_LyDoNhapVien;
+    HoSoNhapVien -- HS_KhoaDieuTri;
+    HoSoNhapVien -- HS_TrangThai;
+    HoSoNhapVien -- HS_PatientID_FK;
+
+    // Bệnh án Attributes Connection
+    BenhAn -- BA_RecordID;
+    BenhAn -- BA_NgayTao;
+    BenhAn -- BA_ChanDoan;
+    BenhAn -- BA_DieuTri;
+    BenhAn -- BA_GhiChu;
+    BenhAn -- BA_PatientID_FK;
+    BenhAn -- BA_AdmissionID_FK;
+
+    // === Relationships Connections ===
+
+    // Bảo hiểm y tế 1--1 Bệnh nhân (total participation on BHYT side)
+    BaoHiemYT -- CoInsurance [taillabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+    CoInsurance -- BenhNhan [headlabel="1"];
+
+    // Bệnh nhân 1--N Lịch hẹn
+    BenhNhan -- DatAppointment [taillabel="1"];
+    DatAppointment -- LichHen [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Bệnh nhân 1--N Hồ sơ nhập viện
+    BenhNhan -- NhapVien [taillabel="1"];
+    NhapVien -- HoSoNhapVien [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Bệnh nhân 1--N Bệnh án
+    BenhNhan -- CoRecord [taillabel="1"];
+    CoRecord -- BenhAn [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Bệnh án N--1 Hồ sơ nhập viện
+    BenhAn -- TaoTu [taillabel="N"];
+    TaoTu -- HoSoNhapVien [headlabel="1"];
+}

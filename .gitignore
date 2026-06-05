@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Other projects in this directory
+MAS_Rent_Analysis/
+temp_clone/

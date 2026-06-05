@@ -1,0 +1,195 @@
+graph ERD3 {
+    layout=neato;
+    overlap=false;
+    splines=true;
+    sep="+15";
+    esep="+8";
+
+    // Global settings
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=12, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.2, labelangle=-35];
+
+    // === ENTITIES ===
+    node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#EBF8FF", color="#2B6CB0", fontcolor="#1A365D", fontsize=14, style="filled,bold"];
+    BenhNhan [label="BỆNH NHÂN"];
+    BenhAn [label="BỆNH ÁN"];
+    ThietBiYTe [label="THIẾT BỊ Y TẾ"];
+    DanhMucXetNghiem [label="DANH MỤC XÉT NGHIỆM"];
+    KetQuaXetNghiem [label="KẾT QUẢ XÉT NGHIỆM"];
+    ChanDoanHinhAnh [label="CHẨN ĐOÁN HÌNH ẢNH"];
+    MauBenhPham [label="MẪU BỆNH PHẨM"];
+
+    // === KEY ATTRIBUTES ===
+    node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=11, style="filled,bold"];
+    BN_PatientID [label=<<u>Mã bệnh nhân</u>>];
+    BA_RecordID [label=<<u>Mã bệnh án</u>>];
+    TB_DeviceID [label=<<u>Mã thiết bị</u>>];
+    DM_TestID [label=<<u>Mã xét nghiệm</u>>];
+    KQ_ResultID [label=<<u>Mã kết quả xét nghiệm</u>>];
+    HA_ImagingID [label=<<u>Mã hình ảnh</u>>];
+    BP_SampleID [label=<<u>Mã mẫu bệnh phẩm</u>>];
+
+    // === NORMAL ATTRIBUTES ===
+    node [shape=ellipse, peripheries=1, penwidth=1.2, fillcolor="#F7FAFC", color="#718096", fontcolor="#2D3748", fontsize=11, style=filled];
+    // Bệnh nhân Attributes
+    BN_HoTen [label="Họ và tên"];
+    BN_NgaySinh [label="Ngày sinh"];
+    BN_GioiTinh [label="Giới tính"];
+    BN_SoDienThoai [label="Số điện thoại"];
+    BN_DiaChi [label="Địa chỉ"];
+    BN_Email [label="Email"];
+
+    // Bệnh án Attributes
+    BA_NgayTao [label="Ngày tạo"];
+    BA_ChanDoan [label="Chẩn đoán"];
+    BA_DieuTri [label="Điều trị"];
+    BA_GhiChu [label="Ghi chú"];
+    BA_PatientID_FK [label="Mã bệnh nhân (FK)"];
+    BA_AdmissionID_FK [label="Mã hồ sơ nhập viện (FK)"];
+
+    // Thiết bị y tế Attributes
+    TB_TenThietBi [label="Tên thiết bị"];
+    TB_LoaiThietBi [label="Loại thiết bị"];
+    TB_HangSanXuat [label="Hãng sản xuất"];
+    TB_NgayBaoTri [label="Ngày bảo trì"];
+    TB_TrangThai [label="Trạng thái"];
+
+    // Danh mục xét nghiệm Attributes
+    DM_TenXetNghiem [label="Tên xét nghiệm"];
+    DM_LoaiXetNghiem [label="Loại xét nghiệm"];
+    DM_MoTa [label="Mô tả"];
+    DM_DonViTinh [label="Đơn vị tính"];
+    DM_GiaTien [label="Giá tiền"];
+
+    // Kết quả xét nghiệm Attributes
+    KQ_NgayThucHien [label="Ngày thực hiện"];
+    KQ_KetQua [label="Kết quả"];
+    KQ_ChiSoDo [label="Chỉ số đo"];
+    KQ_GiaTriThamChieu [label="Giá trị tham chiếu"];
+    KQ_KetLuan [label="Kết luận"];
+    KQ_RecordID_FK [label="Mã bệnh án (FK)"];
+    KQ_TestID_FK [label="Mã xét nghiệm (FK)"];
+    KQ_SampleID_FK [label="Mã mẫu bệnh phẩm (FK)"];
+
+    // Chẩn đoán hình ảnh Attributes
+    HA_LoaiChanDoan [label="Loại chẩn đoán"];
+    HA_NgayThucHien [label="Ngày thực hiện"];
+    HA_KetQua [label="Kết quả"];
+    HA_HinhAnh [label="Hình ảnh"];
+    HA_KetLuan [label="Kết luận"];
+    HA_RecordID_FK [label="Mã bệnh án (FK)"];
+    HA_DeviceID_FK [label="Mã thiết bị (FK)"];
+
+    // Mẫu bệnh phẩm Attributes
+    BP_LoaiMau [label="Loại mẫu"];
+    BP_NgayLayMau [label="Ngày lấy mẫu"];
+    BP_GioLayMau [label="Giờ lấy mẫu"];
+    BP_TinhTrangMau [label="Tình trạng mẫu"];
+    BP_PatientID_FK [label="Mã bệnh nhân (FK)"];
+
+    // === RELATIONSHIPS ===
+    node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=12, style="filled,bold"];
+    CoRecord [label="CÓ"];
+    CoResult [label="CÓ KẾT QUẢ"];
+    CoImaging [label="CÓ HÌNH ẢNH"];
+    ThucHien [label="THỰC HIỆN"];
+    ThuocDM [label="THUỘC"];
+    TaoTu [label="TẠO TỪ MẪU"];
+    LayTu [label="LẤY TỪ"];
+
+    // === CONNECTIONS ===
+
+    // Bệnh nhân Attributes Connection
+    BenhNhan -- BN_PatientID;
+    BenhNhan -- BN_HoTen;
+    BenhNhan -- BN_NgaySinh;
+    BenhNhan -- BN_GioiTinh;
+    BenhNhan -- BN_SoDienThoai;
+    BenhNhan -- BN_DiaChi;
+    BenhNhan -- BN_Email;
+
+    // Bệnh án Attributes Connection
+    BenhAn -- BA_RecordID;
+    BenhAn -- BA_NgayTao;
+    BenhAn -- BA_ChanDoan;
+    BenhAn -- BA_DieuTri;
+    BenhAn -- BA_GhiChu;
+    BenhAn -- BA_PatientID_FK;
+    BenhAn -- BA_AdmissionID_FK;
+
+    // Thiết bị y tế Attributes Connection
+    ThietBiYTe -- TB_DeviceID;
+    ThietBiYTe -- TB_TenThietBi;
+    ThietBiYTe -- TB_LoaiThietBi;
+    ThietBiYTe -- TB_HangSanXuat;
+    ThietBiYTe -- TB_NgayBaoTri;
+    ThietBiYTe -- TB_TrangThai;
+
+    // Danh mục xét nghiệm Attributes Connection
+    DanhMucXetNghiem -- DM_TestID;
+    DanhMucXetNghiem -- DM_TenXetNghiem;
+    DanhMucXetNghiem -- DM_LoaiXetNghiem;
+    DanhMucXetNghiem -- DM_MoTa;
+    DanhMucXetNghiem -- DM_DonViTinh;
+    DanhMucXetNghiem -- DM_GiaTien;
+
+    // Kết quả xét nghiệm Attributes Connection
+    KetQuaXetNghiem -- KQ_ResultID;
+    KetQuaXetNghiem -- KQ_NgayThucHien;
+    KetQuaXetNghiem -- KQ_KetQua;
+    KetQuaXetNghiem -- KQ_ChiSoDo;
+    KetQuaXetNghiem -- KQ_GiaTriThamChieu;
+    KetQuaXetNghiem -- KQ_KetLuan;
+    KetQuaXetNghiem -- KQ_RecordID_FK;
+    KetQuaXetNghiem -- KQ_TestID_FK;
+    KetQuaXetNghiem -- KQ_SampleID_FK;
+
+    // Chẩn đoán hình ảnh Attributes Connection
+    ChanDoanHinhAnh -- HA_ImagingID;
+    ChanDoanHinhAnh -- HA_LoaiChanDoan;
+    ChanDoanHinhAnh -- HA_NgayThucHien;
+    ChanDoanHinhAnh -- HA_KetQua;
+    ChanDoanHinhAnh -- HA_HinhAnh;
+    ChanDoanHinhAnh -- HA_KetLuan;
+    ChanDoanHinhAnh -- HA_RecordID_FK;
+    ChanDoanHinhAnh -- HA_DeviceID_FK;
+
+    // Mẫu bệnh phẩm Attributes Connection
+    MauBenhPham -- BP_SampleID;
+    MauBenhPham -- BP_LoaiMau;
+    MauBenhPham -- BP_NgayLayMau;
+    MauBenhPham -- BP_GioLayMau;
+    MauBenhPham -- BP_TinhTrangMau;
+    MauBenhPham -- BP_PatientID_FK;
+
+    // === Relationships Connections ===
+
+    // Bệnh nhân 1--N Bệnh án
+    BenhNhan -- CoRecord [taillabel="1"];
+    CoRecord -- BenhAn [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Bệnh án 1--N Kết quả xét nghiệm
+    BenhAn -- CoResult [taillabel="1"];
+    CoResult -- KetQuaXetNghiem [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Bệnh án 1--N Chẩn đoán hình ảnh
+    BenhAn -- CoImaging [taillabel="1"];
+    CoImaging -- ChanDoanHinhAnh [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Thiết bị y tế 1--N Chẩn đoán hình ảnh
+    ThietBiYTe -- ThucHien [taillabel="1"];
+    ThucHien -- ChanDoanHinhAnh [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Danh mục xét nghiệm 1--N Kết quả xét nghiệm
+    DanhMucXetNghiem -- ThuocDM [taillabel="1"];
+    ThuocDM -- KetQuaXetNghiem [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Kết quả xét nghiệm N--1 Mẫu bệnh phẩm
+    KetQuaXetNghiem -- TaoTu [taillabel="N"];
+    TaoTu -- MauBenhPham [headlabel="1"];
+
+    // Danh mục xét nghiệm 1--N Mẫu bệnh phẩm
+    DanhMucXetNghiem -- LayTu [taillabel="1"];
+    LayTu -- MauBenhPham [headlabel="N"];
+}

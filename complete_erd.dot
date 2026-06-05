@@ -1,0 +1,722 @@
+graph ERD {
+    layout=fdp;
+    K=2.2;
+    overlap=false;
+    splines=true;
+    sep="+35";
+    esep="+25";
+
+    // Global settings
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=11, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.0];
+
+    // =======================================================
+    // === 1. SUBGRAPH CLUSTERS (PHÂN HỆ BỆNH VIỆN VỚI THUỘC TÍNH) ===
+    // =======================================================
+
+    // --- PHÂN HỆ 1: BỆNH NHÂN & TIẾP ĐÓN ---
+    subgraph cluster_Part1 {
+        label="Phân hệ Bệnh nhân & Tiếp đón";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#2B6CB0";
+        style="filled,dashed";
+        fillcolor="#F8FAFC";
+        color="#2B6CB0";
+        penwidth=2.0;
+
+        // Entities
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#EBF8FF", color="#2B6CB0", fontcolor="#1A365D", fontsize=13, style="filled,bold"];
+        BaoHiemYT [label="BẢO HIỂM Y TẾ"];
+        BenhNhan [label="BỆNH NHÂN"];
+        LichHen [label="LỊCH HẸN"];
+        HoSoNhapVien [label="HỒ SƠ NHẬP VIỆN"];
+        BenhAn [label="BỆNH ÁN"];
+
+        // Key Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        BH_InsuranceID [label=<<u>Mã bảo hiểm y tế</u>>];
+        BN_PatientID [label=<<u>Mã bệnh nhân</u>>];
+        LH_AppointmentID [label=<<u>Mã lịch hẹn</u>>];
+        HS_AdmissionID [label=<<u>Mã hồ sơ nhập viện</u>>];
+        BA_RecordID [label=<<u>Mã bệnh án</u>>];
+
+        // Normal Attributes (Blue Theme)
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#F0F9FF", color="#93C5FD", fontcolor="#1E3A8A", fontsize=9, style=filled];
+        BH_MaSoBHYT [label="Mã số Bảo hiểm y tế"];
+        BH_NhaCungCap [label="Nhà cung cấp"];
+        BH_NgayHieuLuc [label="Ngày hiệu lực"];
+        BH_NgayHetHan [label="Ngày hết hạn"];
+        BN_HoTen [label="Họ và tên"];
+        BN_NgaySinh [label="Ngày sinh"];
+        BN_GioiTinh [label="Giới tính"];
+        BN_SoDienThoai [label="Số điện thoại"];
+        BN_DiaChi [label="Địa chỉ"];
+        BN_Email [label="Email"];
+        LH_NgayHen [label="Ngày hẹn"];
+        LH_GioHen [label="Giờ hẹn"];
+        LH_TrangThai [label="Trạng thái"];
+        LH_LyDoKham [label="Lý do khám"];
+        LH_PatientID_FK [label="Mã bệnh nhân (FK)"];
+        HS_NgayNhapVien [label="Ngày nhập viện"];
+        HS_NgayRaVien [label="Ngày ra viện"];
+        HS_LyDoNhapVien [label="Lý do nhập viện"];
+        HS_KhoaDieuTri [label="Khoa điều trị"];
+        HS_TrangThai [label="Trạng thái"];
+        HS_PatientID_FK [label="Mã bệnh nhân (FK)"];
+        BA_NgayTao [label="Ngày tạo"];
+        BA_ChanDoan [label="Chẩn đoán"];
+        BA_DieuTri [label="Điều trị"];
+        BA_GhiChu [label="Ghi chú"];
+        BA_PatientID_FK [label="Mã bệnh nhân (FK)"];
+        BA_AdmissionID_FK [label="Mã hồ sơ nhập viện (FK)"];
+
+        // Relationships
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        CoInsurance [label="CÓ"];
+        DatAppointment [label="ĐẶT"];
+        NhapVien [label="NHẬP VIỆN"];
+        CoRecord [label="CÓ"];
+        TaoTu [label="TẠO TỪ"];
+
+        // Attribute Connections
+        BaoHiemYT -- BH_InsuranceID;
+        BaoHiemYT -- BH_MaSoBHYT;
+        BaoHiemYT -- BH_NhaCungCap;
+        BaoHiemYT -- BH_NgayHieuLuc;
+        BaoHiemYT -- BH_NgayHetHan;
+
+        BenhNhan -- BN_PatientID;
+        BenhNhan -- BN_HoTen;
+        BenhNhan -- BN_NgaySinh;
+        BenhNhan -- BN_GioiTinh;
+        BenhNhan -- BN_SoDienThoai;
+        BenhNhan -- BN_DiaChi;
+        BenhNhan -- BN_Email;
+
+        LichHen -- LH_AppointmentID;
+        LichHen -- LH_NgayHen;
+        LichHen -- LH_GioHen;
+        LichHen -- LH_TrangThai;
+        LichHen -- LH_LyDoKham;
+        LichHen -- LH_PatientID_FK;
+
+        HoSoNhapVien -- HS_AdmissionID;
+        HoSoNhapVien -- HS_NgayNhapVien;
+        HoSoNhapVien -- HS_NgayRaVien;
+        HoSoNhapVien -- HS_LyDoNhapVien;
+        HoSoNhapVien -- HS_KhoaDieuTri;
+        HoSoNhapVien -- HS_TrangThai;
+        HoSoNhapVien -- HS_PatientID_FK;
+
+        BenhAn -- BA_RecordID;
+        BenhAn -- BA_NgayTao;
+        BenhAn -- BA_ChanDoan;
+        BenhAn -- BA_DieuTri;
+        BenhAn -- BA_GhiChu;
+        BenhAn -- BA_PatientID_FK;
+        BenhAn -- BA_AdmissionID_FK;
+
+        // Relationship Connections
+        BaoHiemYT -- CoInsurance [taillabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        CoInsurance -- BenhNhan [headlabel="1"];
+        BenhNhan -- DatAppointment [taillabel="1"];
+        DatAppointment -- LichHen [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        BenhNhan -- NhapVien [taillabel="1"];
+        NhapVien -- HoSoNhapVien [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        BenhNhan -- CoRecord [taillabel="1"];
+        CoRecord -- BenhAn [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        BenhAn -- TaoTu [taillabel="N"];
+        TaoTu -- HoSoNhapVien [headlabel="1"];
+    }
+
+    // --- PHÂN HỆ 2: CHẨN ĐOÁN & ĐIỀU TRỊ ---
+    subgraph cluster_Part2 {
+        label="Phân hệ Chẩn đoán & Điều trị";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#319795";
+        style="filled,dashed";
+        fillcolor="#F5FDFD";
+        color="#319795";
+        penwidth=2.0;
+
+        // Entities
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#E6FFFA", color="#319795", fontcolor="#234E52", fontsize=13, style="filled,bold"];
+        ChanDoan [label="CHẨN ĐOÁN"];
+        DonThuoc [label="ĐƠN THUỐC"];
+        ChiTietDonThuoc [label="CHI TIẾT ĐƠN THUỐC"];
+        PhacDoDieuTri [label="PHÁC ĐỒ ĐIỀU TRỊ"];
+        DichVuYTe [label="DỊCH VỤ Y TẾ"];
+
+        // Key Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        CD_MaChanDoan [label=<<u>Mã chẩn đoán</u>>];
+        DT_MaDonThuoc [label=<<u>Mã đơn thuốc</u>>];
+        CT_MaChiTiet [label=<<u>Mã chi tiết</u>>];
+        PD_MaPhacDo [label=<<u>Mã phác đồ</u>>];
+        DV_MaDichVu [label=<<u>Mã dịch vụ</u>>];
+
+        // Normal Attributes (Teal/Green Theme)
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#F0FDF4", color="#86EFAC", fontcolor="#14532D", fontsize=9, style=filled];
+        CD_TenChanDoan [label="Tên chẩn đoán"];
+        CD_MoTa [label="Mô tả"];
+        CD_NgayChanDoan [label="Ngày chẩn đoán"];
+        DT_NgayKeDon [label="Ngày kê đơn"];
+        DT_GhiChu [label="Ghi chú"];
+        CT_SoLuong [label="Số lượng"];
+        CT_LieuDung [label="Liều dùng"];
+        CT_ThoiGianSuDung [label="Thời gian sử dụng"];
+        PD_TenPhacDo [label="Tên phác đồ"];
+        PD_MoTa [label="Mô tả"];
+        PD_ThoiGianDieuTri [label="Thời gian điều trị"];
+        DV_TenDichVu [label="Tên dịch vụ"];
+        DV_GiaDichVu [label="Giá dịch vụ"];
+        DV_MoTa [label="Mô tả"];
+        DV_LoaiDichVu [label="Loại dịch vụ"];
+
+        // Relationships
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        CoDonThuoc [label="CÓ\nĐƠN THUỐC"];
+        CoChiTiet [label="CÓ\nCHI TIẾT"];
+        CoPhacDo [label="CÓ\nPHÁC ĐỒ ĐIỀU TRỊ"];
+        SuDung [label="SỬ DỤNG"];
+
+        // Attribute Connections
+        ChanDoan -- CD_MaChanDoan;
+        ChanDoan -- CD_TenChanDoan;
+        ChanDoan -- CD_MoTa;
+        ChanDoan -- CD_NgayChanDoan;
+
+        DonThuoc -- DT_MaDonThuoc;
+        DonThuoc -- DT_NgayKeDon;
+        DonThuoc -- DT_GhiChu;
+
+        ChiTietDonThuoc -- CT_MaChiTiet;
+        ChiTietDonThuoc -- CT_SoLuong;
+        ChiTietDonThuoc -- CT_LieuDung;
+        ChiTietDonThuoc -- CT_ThoiGianSuDung;
+
+        PhacDoDieuTri -- PD_MaPhacDo;
+        PhacDoDieuTri -- PD_TenPhacDo;
+        PhacDoDieuTri -- PD_MoTa;
+        PhacDoDieuTri -- PD_ThoiGianDieuTri;
+
+        DichVuYTe -- DV_MaDichVu;
+        DichVuYTe -- DV_TenDichVu;
+        DichVuYTe -- DV_GiaDichVu;
+        DichVuYTe -- DV_MoTa;
+        DichVuYTe -- DV_LoaiDichVu;
+
+        // Relationship Connections
+        ChanDoan -- CoDonThuoc [taillabel="1"];
+        CoDonThuoc -- DonThuoc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        DonThuoc -- CoChiTiet [taillabel="1"];
+        CoChiTiet -- ChiTietDonThuoc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        ChanDoan -- CoPhacDo [taillabel="1"];
+        CoPhacDo -- PhacDoDieuTri [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        PhacDoDieuTri -- SuDung [taillabel="M"];
+        SuDung -- DichVuYTe [headlabel="N"];
+    }
+
+    // --- PHÂN HỆ 3: XÉT NGHIỆM & CĐHA ---
+    subgraph cluster_Part3 {
+        label="Phân hệ Xét nghiệm & Chẩn đoán hình ảnh";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#6B46C1";
+        style="filled,dashed";
+        fillcolor="#FAF5FF";
+        color="#6B46C1";
+        penwidth=2.0;
+
+        // Entities
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=13, style="filled,bold"];
+        ThietBiYTe [label="THIẾT BỊ Y TẾ"];
+        DanhMucXetNghiem [label="DANH MỤC XÉT NGHIỆM"];
+        KetQuaXetNghiem [label="KẾT QUẢ XÉT NGHIỆM"];
+        ChanDoanHinhAnh [label="CHẨN ĐOÁN HÌNH ẢNH"];
+        MauBenhPham [label="MẪU BỆNH PHẨM"];
+
+        // Key Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        TB_DeviceID [label=<<u>Mã thiết bị</u>>];
+        DM_TestID [label=<<u>Mã xét nghiệm</u>>];
+        KQ_ResultID [label=<<u>Mã kết quả xét nghiệm</u>>];
+        HA_ImagingID [label=<<u>Mã hình ảnh</u>>];
+        BP_SampleID [label=<<u>Mã mẫu bệnh phẩm</u>>];
+
+        // Normal Attributes (Purple Theme)
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#FDF4FF", color="#D8B4FE", fontcolor="#581C87", fontsize=9, style=filled];
+        TB_TenThietBi [label="Tên thiết bị"];
+        TB_LoaiThietBi [label="Loại thiết bị"];
+        TB_HangSanXuat [label="Hãng sản xuất"];
+        TB_NgayBaoTri [label="Ngày bảo trì"];
+        TB_TrangThai [label="Trạng thái"];
+        DM_TenXetNghiem [label="Tên xét nghiệm"];
+        DM_LoaiXetNghiem [label="Loại xét nghiệm"];
+        DM_MoTa [label="Mô tả"];
+        DM_DonViTinh [label="Đơn vị tính"];
+        DM_GiaTien [label="Giá tiền"];
+        KQ_NgayThucHien [label="Ngày thực hiện"];
+        KQ_KetQua [label="Kết quả"];
+        KQ_ChiSoDo [label="Chỉ số đo"];
+        KQ_GiaTriThamChieu [label="Giá trị tham chiếu"];
+        KQ_KetLuan [label="Kết luận"];
+        KQ_RecordID_FK [label="Mã bệnh án (FK)"];
+        KQ_TestID_FK [label="Mã xét nghiệm (FK)"];
+        KQ_SampleID_FK [label="Mã mẫu bệnh phẩm (FK)"];
+        HA_LoaiChanDoan [label="Loại chẩn đoán"];
+        HA_NgayThucHien [label="Ngày thực hiện"];
+        HA_KetQua [label="Kết quả"];
+        HA_HinhAnh [label="Hình ảnh"];
+        HA_KetLuan [label="Kết luận"];
+        HA_RecordID_FK [label="Mã bệnh án (FK)"];
+        HA_DeviceID_FK [label="Mã thiết bị (FK)"];
+        BP_LoaiMau [label="Loại mẫu"];
+        BP_NgayLayMau [label="Ngày lấy mẫu"];
+        BP_GioLayMau [label="Giờ lấy mẫu"];
+        BP_TinhTrangMau [label="Tình trạng mẫu"];
+        BP_PatientID_FK [label="Mã bệnh nhân (FK)"];
+
+        // Relationships
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        CoResult [label="CÓ KẾT QUẢ"];
+        CoImaging [label="CÓ HÌNH ẢNH"];
+        ThucHien [label="THỰC HIỆN"];
+        ThuocDM [label="THUỘC"];
+        TaoTuMau [label="TẠO TỪ MẪU"];
+
+        // Attribute Connections
+        ThietBiYTe -- TB_DeviceID;
+        ThietBiYTe -- TB_TenThietBi;
+        ThietBiYTe -- TB_LoaiThietBi;
+        ThietBiYTe -- TB_HangSanXuat;
+        ThietBiYTe -- TB_NgayBaoTri;
+        ThietBiYTe -- TB_TrangThai;
+
+        DanhMucXetNghiem -- DM_TestID;
+        DanhMucXetNghiem -- DM_TenXetNghiem;
+        DanhMucXetNghiem -- DM_LoaiXetNghiem;
+        DanhMucXetNghiem -- DM_MoTa;
+        DanhMucXetNghiem -- DM_DonViTinh;
+        DanhMucXetNghiem -- DM_GiaTien;
+
+        KetQuaXetNghiem -- KQ_ResultID;
+        KetQuaXetNghiem -- KQ_NgayThucHien;
+        KetQuaXetNghiem -- KQ_KetQua;
+        KetQuaXetNghiem -- KQ_ChiSoDo;
+        KetQuaXetNghiem -- KQ_GiaTriThamChieu;
+        KetQuaXetNghiem -- KQ_KetLuan;
+        KetQuaXetNghiem -- KQ_RecordID_FK;
+        KetQuaXetNghiem -- KQ_TestID_FK;
+        KetQuaXetNghiem -- KQ_SampleID_FK;
+
+        ChanDoanHinhAnh -- HA_ImagingID;
+        ChanDoanHinhAnh -- HA_LoaiChanDoan;
+        ChanDoanHinhAnh -- HA_NgayThucHien;
+        ChanDoanHinhAnh -- HA_KetQua;
+        ChanDoanHinhAnh -- HA_HinhAnh;
+        ChanDoanHinhAnh -- HA_KetLuan;
+        ChanDoanHinhAnh -- HA_RecordID_FK;
+        ChanDoanHinhAnh -- HA_DeviceID_FK;
+
+        MauBenhPham -- BP_SampleID;
+        MauBenhPham -- BP_LoaiMau;
+        MauBenhPham -- BP_NgayLayMau;
+        MauBenhPham -- BP_GioLayMau;
+        MauBenhPham -- BP_TinhTrangMau;
+        MauBenhPham -- BP_PatientID_FK;
+
+        // Internal Connections
+        ThietBiYTe -- ThucHien [taillabel="1"];
+        ThucHien -- ChanDoanHinhAnh [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        DanhMucXetNghiem -- ThuocDM [taillabel="1"];
+        ThuocDM -- KetQuaXetNghiem [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        KetQuaXetNghiem -- TaoTuMau [taillabel="N"];
+        TaoTuMau -- MauBenhPham [headlabel="1"];
+    }
+
+    // --- PHÂN HỆ 4: NHÂN SỰ & KHOA PHÒNG ---
+    subgraph cluster_Part4 {
+        label="Phân hệ Nhân sự & Khoa phòng";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#DD6B20";
+        style="filled,dashed";
+        fillcolor="#FFFAF0";
+        color="#DD6B20";
+        penwidth=2.0;
+
+        // Entities
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FFFAF0", color="#DD6B20", fontcolor="#7B341E", fontsize=13, style="filled,bold"];
+        Khoa [label="KHOA"];
+        PhongBenh [label="PHÒNG BỆNH"];
+        NhanVien [label="NHÂN VIÊN"];
+        BacSi [label="BÁC SĨ"];
+        DieuDuong [label="ĐIỀU DƯỠNG"];
+        LichTruc [label="LỊCH TRỰC"];
+
+        // Key Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        K_MaKhoa [label=<<u>Mã khoa</u>>];
+        PB_MaPhong [label=<<u>Mã phòng</u>>];
+        NV_MaNV [label=<<u>Mã nhân viên</u>>];
+        BS_MaBS [label=<<u>Mã bác sĩ</u>>];
+        DD_MaDD [label=<<u>Mã điều dưỡng</u>>];
+        LT_MaLT [label=<<u>Mã lịch trực</u>>];
+
+        // Normal Attributes (Amber/Orange Theme)
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#FFFBEB", color="#FDE047", fontcolor="#78350F", fontsize=9, style=filled];
+        K_TenKhoa [label="Tên khoa"];
+        K_SoDien [label="Số điện thoại khoa"];
+        K_ViTri [label="Vị trí"];
+        PB_SoPhong [label="Số phòng"];
+        PB_LoaiPhong [label="Loại phòng"];
+        PB_SucChua [label="Sức chứa"];
+        PB_TrangThai [label="Trạng thái"];
+        NV_Ten [label="Tên nhân viên"];
+        NV_NgaySinh [label="Ngày sinh"];
+        NV_GioiTinh [label="Giới tính"];
+        NV_SDT [label="Số điện thoại"];
+        NV_CCCD [label="Căn cước công dân"];
+        NV_VaiTro [label="Vai trò"];
+        BS_ChuyenKhoa [label="Chuyên khoa"];
+        BS_CapBac [label="Cấp bậc"];
+        BS_HocVi [label="Học vị"];
+        BS_CCHN [label="Chứng chỉ hành nghề"];
+        BS_NamKN [label="Năm kinh nghiệm"];
+        DD_CapBac [label="Cấp bậc"];
+        DD_CCHN [label="Chứng chỉ hành nghề"];
+        LT_Ngay [label="Ngày trực"];
+        LT_Ca [label="Ca làm việc"];
+        LT_TrangThai [label="Trạng thái"];
+        LT_GhiChu [label="Ghi chú"];
+        LT_TGBD [label="Thời gian bắt đầu"];
+        LT_TGKT [label="Thời gian kết thúc"];
+
+        // Relationships
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        BaoGom [label="BAO GỒM"];
+        ThuocKhoa [label="THUỘC KHOA"];
+        TruongKhoa [label="TRƯỞNG KHOA"];
+        PhanCong [label="PHÂN CÔNG"];
+        QuanLyLich [label="QUẢN LÝ LỊCH"];
+        ISA1 [label="IS-A"];
+        ISA2 [label="IS-A"];
+
+        // Attribute Connections
+        Khoa -- K_MaKhoa;
+        Khoa -- K_TenKhoa;
+        Khoa -- K_SoDien;
+        Khoa -- K_ViTri;
+
+        PhongBenh -- PB_MaPhong;
+        PhongBenh -- PB_SoPhong;
+        PhongBenh -- PB_LoaiPhong;
+        PhongBenh -- PB_SucChua;
+        PhongBenh -- PB_TrangThai;
+
+        NhanVien -- NV_MaNV;
+        NhanVien -- NV_Ten;
+        NhanVien -- NV_NgaySinh;
+        NhanVien -- NV_GioiTinh;
+        NhanVien -- NV_SDT;
+        NhanVien -- NV_CCCD;
+        NhanVien -- NV_VaiTro;
+
+        BacSi -- BS_MaBS;
+        BacSi -- BS_ChuyenKhoa;
+        BacSi -- BS_CapBac;
+        BacSi -- BS_HocVi;
+        BacSi -- BS_CCHN;
+        BacSi -- BS_NamKN;
+
+        DieuDuong -- DD_MaDD;
+        DieuDuong -- DD_CapBac;
+        DieuDuong -- DD_CCHN;
+
+        LichTruc -- LT_MaLT;
+        LichTruc -- LT_Ngay;
+        LichTruc -- LT_Ca;
+        LichTruc -- LT_TrangThai;
+        LichTruc -- LT_GhiChu;
+        LichTruc -- LT_TGBD;
+        LichTruc -- LT_TGKT;
+
+        // Relationship Connections
+        Khoa -- BaoGom [taillabel="1"];
+        BaoGom -- PhongBenh [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        Khoa -- ThuocKhoa [taillabel="1"];
+        ThuocKhoa -- NhanVien [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        Khoa -- TruongKhoa [taillabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        TruongKhoa -- BacSi [headlabel="1"];
+        NhanVien -- ISA1 [taillabel="1"];
+        ISA1 -- BacSi [headlabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        NhanVien -- ISA2 [taillabel="1"];
+        ISA2 -- DieuDuong [headlabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        NhanVien -- PhanCong [taillabel="1"];
+        PhanCong -- LichTruc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        Khoa -- QuanLyLich [taillabel="1"];
+        QuanLyLich -- LichTruc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+    }
+
+    // --- PHÂN HỆ 5: DƯỢC & VẬT TƯ Y TẾ ---
+    subgraph cluster_Part5 {
+        label="Phân hệ Dược & Vật tư y tế";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#E53E3E";
+        style="filled,dashed";
+        fillcolor="#FFF5F5";
+        color="#E53E3E";
+        penwidth=2.0;
+
+        // Entities
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FFF5F5", color="#E53E3E", fontcolor="#742A2A", fontsize=13, style="filled,bold"];
+        NhaCungCap [label="NHÀ CUNG CẤP"];
+        DonNhapHang [label="ĐƠN NHẬP HÀNG"];
+        PhieuXuatKho [label="PHIẾU XUẤT KHO\n(Chi tiết nhập)", peripheries=2];
+        Thuoc [label="THUỐC"];
+        VatTuYTe [label="VẬT TƯ Y TẾ"];
+
+        // Key Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        NCC_MaNCC [label=<<u>Mã nhà cung cấp</u>>];
+        DNH_MaDon [label=<<u>Mã đơn nhập</u>>];
+        TH_MaThuoc [label=<<u>Mã thuốc</u>>];
+        VT_MaVatTu [label=<<u>Mã vật tư</u>>];
+
+        // Normal Attributes (Rose Theme)
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#FFF1F2", color="#FDA4AF", fontcolor="#9F1239", fontsize=9, style=filled];
+        NCC_TenNCC [label="Tên nhà cung cấp"];
+        NCC_SDT [label="Số điện thoại"];
+        NCC_DiaChi [label="Địa chỉ"];
+        NCC_MST [label="Mã số thuế"];
+        DNH_NgayLap [label="Ngày lập"];
+        DNH_NgayNhap [label="Ngày nhập"];
+        DNH_TrangThai [label="Trạng thái"];
+        DNH_NguoiLap [label="Người lập"];
+        PXK_HSD [label="Hạn sử dụng"];
+        PXK_SL [label="Số lượng"];
+        PXK_DonGia [label="Đơn giá"];
+        PXK_ThanhTien [label="Thành tiền"];
+        TH_TenThuongMai [label="Tên thương mại"];
+        TH_HoatChat [label="Hoạt chất"];
+        TH_KhoiLuong [label="Khối lượng"];
+        TH_NhaSanXuat [label="Nhà sản xuất"];
+        TH_DangBaoBi [label="Dạng bao bì"];
+        TH_DangBaoChe [label="Dạng bào chế"];
+        TH_HanSuDung [label="Hạn sử dụng"];
+        VT_TenVatTu [label="Tên vật tư"];
+        VT_DonViTinh [label="Đơn vị tính"];
+        VT_ChatLieu [label="Chất liệu"];
+        VT_CongDung [label="Công dụng"];
+
+        // Weak Entity Discriminator (Partial Key - Dashed Oval with Underline)
+        PXK_SoLo [label=<<font color="#9F1239"><u>Số lô</u></font>>, style="filled,dashed", penwidth=1.5, color="#FDA4AF", fillcolor="#FFF1F2", fontsize=9];
+
+        // Relationships
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        CungCap [label="CUNG CẤP"];
+        GomThuoc [label="GỒM THUỐC"];
+        GomVatTu [label="GỒM VẬT TƯ"];
+        ChiTietNhap [label="CHI TIẾT NHẬP", peripheries=2];
+
+        // Attribute Connections
+        NhaCungCap -- NCC_MaNCC;
+        NhaCungCap -- NCC_TenNCC;
+        NhaCungCap -- NCC_SDT;
+        NhaCungCap -- NCC_DiaChi;
+        NhaCungCap -- NCC_MST;
+
+        DonNhapHang -- DNH_MaDon;
+        DonNhapHang -- DNH_NgayLap;
+        DonNhapHang -- DNH_NgayNhap;
+        DonNhapHang -- DNH_TrangThai;
+        DonNhapHang -- DNH_NguoiLap;
+
+        PhieuXuatKho -- PXK_SoLo;
+        PhieuXuatKho -- PXK_HSD;
+        PhieuXuatKho -- PXK_SL;
+        PhieuXuatKho -- PXK_DonGia;
+        PhieuXuatKho -- PXK_ThanhTien;
+
+        Thuoc -- TH_MaThuoc;
+        Thuoc -- TH_TenThuongMai;
+        Thuoc -- TH_HoatChat;
+        Thuoc -- TH_KhoiLuong;
+        Thuoc -- TH_NhaSanXuat;
+        Thuoc -- TH_DangBaoBi;
+        Thuoc -- TH_DangBaoChe;
+        Thuoc -- TH_HanSuDung;
+
+        VatTuYTe -- VT_MaVatTu;
+        VatTuYTe -- VT_TenVatTu;
+        VatTuYTe -- VT_DonViTinh;
+        VatTuYTe -- VT_ChatLieu;
+        VatTuYTe -- VT_CongDung;
+
+        // Relationship Connections
+        NhaCungCap -- CungCap [taillabel="1"];
+        CungCap -- DonNhapHang [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        DonNhapHang -- ChiTietNhap [taillabel="1"];
+        ChiTietNhap -- PhieuXuatKho [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        Thuoc -- GomThuoc [taillabel="1"];
+        GomThuoc -- PhieuXuatKho [headlabel="N"];
+        VatTuYTe -- GomVatTu [taillabel="1"];
+        GomVatTu -- PhieuXuatKho [headlabel="N"];
+    }
+
+    // --- PHÂN HỆ 6: TÀI CHÍNH & VIỆN PHÍ ---
+    subgraph cluster_Part6 {
+        label="Phân hệ Tài chính & Viện phí";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#4C51BF";
+        style="filled,dashed";
+        fillcolor="#F8FAFF";
+        color="#4C51BF";
+        penwidth=2.0;
+
+        // Entities
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#EBF4FF", color="#4C51BF", fontcolor="#2C3E50", fontsize=13, style="filled,bold"];
+        HoaDon [label="HÓA ĐƠN"];
+        ThanhToan [label="THANH TOÁN"];
+        BoiThuongBHYT [label="BỒI THƯỜNG BHYT"];
+        GiaoDich [label="GIAO DỊCH"];
+
+        // Key Attributes
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        HD_MaHD [label=<<u>Mã hóa đơn</u>>];
+        TT_MaTT [label=<<u>Mã thanh toán</u>>];
+        BT_MaQuyetToan [label=<<u>Mã quyết toán</u>>];
+        GD_MaGD [label=<<u>Mã giao dịch</u>>];
+
+        // Normal Attributes (Indigo Theme)
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#EEF2FF", color="#A5B4FC", fontcolor="#312E81", fontsize=9, style=filled];
+        HD_MaBN [label="Mã bệnh nhân"];
+        HD_MaTN [label="Mã tiếp nhận"];
+        HD_TongChiPhi [label="Tổng chi phí"];
+        HD_TienBHYT [label="Tiền Bảo hiểm y tế"];
+        HD_TienBN [label="Tiền bệnh nhân"];
+        TT_Loai [label="Loại"];
+        TT_SoTien [label="Số tiền"];
+        TT_PhuongThuc [label="Phương thức"];
+        TT_MaNV [label="Mã nhân viên"];
+        BT_SoTheBHYT [label="Số thẻ Bảo hiểm y tế"];
+        BT_MaBenh [label="Mã bệnh"];
+        BT_TiLe [label="Tỷ lệ"];
+        BT_TrangThai [label="Trạng thái"];
+        GD_MaThamChieu [label="Mã tham chiếu"];
+        GD_NguonTien [label="Nguồn tiền"];
+        GD_SoTienGD [label="Số tiền giao dịch"];
+        GD_ThoiGian [label="Thời gian"];
+
+        // Relationships
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        CoThanhToan [label="CÓ THANH TOÁN"];
+        ApDungBHYT [label="ÁP DỤNG BHYT"];
+        PhatSinhGD_TT [label="PHÁT SINH GD"];
+        PhatSinhGD_BT [label="PHÁT SINH GD"];
+        ChiTietDichVu [label="CHI TIẾT DỊCH VỤ"];
+
+        // Attribute Connections
+        HoaDon -- HD_MaHD;
+        HoaDon -- HD_MaBN;
+        HoaDon -- HD_MaTN;
+        HoaDon -- HD_TongChiPhi;
+        HoaDon -- HD_TienBHYT;
+        HoaDon -- HD_TienBN;
+
+        ThanhToan -- TT_MaTT;
+        ThanhToan -- TT_Loai;
+        ThanhToan -- TT_SoTien;
+        ThanhToan -- TT_PhuongThuc;
+        ThanhToan -- TT_MaNV;
+
+        BoiThuongBHYT -- BT_MaQuyetToan;
+        BoiThuongBHYT -- BT_SoTheBHYT;
+        BoiThuongBHYT -- BT_MaBenh;
+        BoiThuongBHYT -- BT_TiLe;
+        BoiThuongBHYT -- BT_TrangThai;
+
+        GiaoDich -- GD_MaGD;
+        GiaoDich -- GD_MaThamChieu;
+        GiaoDich -- GD_NguonTien;
+        GiaoDich -- GD_SoTienGD;
+        GiaoDich -- GD_ThoiGian;
+
+        // Relationship Connections
+        HoaDon -- CoThanhToan [taillabel="1"];
+        CoThanhToan -- ThanhToan [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        HoaDon -- ApDungBHYT [taillabel="1"];
+        ApDungBHYT -- BoiThuongBHYT [headlabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        ThanhToan -- PhatSinhGD_TT [taillabel="1"];
+        PhatSinhGD_TT -- GiaoDich [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        BoiThuongBHYT -- PhatSinhGD_BT [taillabel="1"];
+        PhatSinhGD_BT -- GiaoDich [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+    }
+
+
+    // ==========================================
+    // === 2. INTER-MODULE CONNECTIONS (LIÊN PHÂN HỆ) ===
+    // ==========================================
+
+    node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+    DieuTriTai [label="ĐIỀU TRỊ TẠI"];
+    NamTai [label="NẰM TẠI"];
+    ThucHienCD [label="THỰC HIỆN"];
+    KeDon [label="KÊ ĐƠN"];
+    PrescribedIn [label="GỒM THUỐC"];
+    CoChanDoan [label="CÓ CHẨN ĐOÁN"];
+    ThanhToanHD [label="THANH TOÁN"];
+    PhatSinhHD [label="PHÁT SINH"];
+    ThuTien [label="THU TIỀN"];
+    LayTu [label="LẤY TỪ"];
+
+    // Connections bridging the modules
+    Khoa -- DieuTriTai [taillabel="1"];
+    DieuTriTai -- HoSoNhapVien [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    PhongBenh -- NamTai [taillabel="1"];
+    NamTai -- HoSoNhapVien [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    BacSi -- ThucHienCD [taillabel="1"];
+    ThucHienCD -- ChanDoan [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    BacSi -- KeDon [taillabel="1"];
+    KeDon -- DonThuoc [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    Thuoc -- PrescribedIn [taillabel="1"];
+    PrescribedIn -- ChiTietDonThuoc [headlabel="N"];
+
+    BenhAn -- CoChanDoan [taillabel="1"];
+    CoChanDoan -- ChanDoan [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    BenhNhan -- ThanhToanHD [taillabel="1"];
+    ThanhToanHD -- HoaDon [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    HoSoNhapVien -- PhatSinhHD [taillabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+    PhatSinhHD -- HoaDon [headlabel="1"];
+
+    NhanVien -- ThuTien [taillabel="1"];
+    ThuTien -- ThanhToan [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    // Cross-cluster connections for Part 3
+    BenhAn -- CoResult [taillabel="1"];
+    CoResult -- KetQuaXetNghiem [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    BenhAn -- CoImaging [taillabel="1"];
+    CoImaging -- ChanDoanHinhAnh [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+
+    DanhMucXetNghiem -- LayTu [taillabel="1"];
+    LayTu -- MauBenhPham [headlabel="N"];
+
+    BenhNhan -- LayTu [taillabel="1"];
+
+    // Cross-cluster connections for Part 6
+    DichVuYTe -- ChiTietDichVu [taillabel="M"];
+    ChiTietDichVu -- HoaDon [headlabel="N"];
+}
