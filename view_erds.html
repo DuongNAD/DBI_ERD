@@ -417,9 +417,18 @@
                 📦 Phần 2: Chẩn đoán & Phác đồ
             </button>
             <button class="tab-btn" onclick="switchTab(2)">
-                💳 Phần 3: Xét nghiệm & CĐHA
+                🔬 Phần 3: Xét nghiệm & CĐHA
             </button>
             <button class="tab-btn" onclick="switchTab(3)">
+                👥 Phần 4: Nhân sự & Khoa phòng
+            </button>
+            <button class="tab-btn" onclick="switchTab(4)">
+                💊 Phần 5: Dược & Vật tư
+            </button>
+            <button class="tab-btn" onclick="switchTab(5)">
+                💳 Phần 6: Tài chính & Viện phí
+            </button>
+            <button class="tab-btn" onclick="switchTab(6)">
                 🗺️ Toàn cảnh: ERD Hoàn chỉnh
             </button>
         </div>
@@ -443,7 +452,12 @@
             <!-- Viewport displaying the image -->
             <div class="viewport" id="viewport">
                 <img id="diagram-img" src="BenhNhan_TiepDon_Academic.svg" alt="Sơ đồ ERD">
-                
+                <div id="diagram-error" style="display:none; text-align:center; color:#94a3b8; padding:2rem;">
+                    <p style="font-size:2rem; margin-bottom:0.5rem;">⚠️</p>
+                    <p>Không thể tải sơ đồ <strong id="diagram-error-name"></strong>.</p>
+                    <p style="font-size:0.85rem; margin-top:0.25rem;">Kiểm tra lại tên file hoặc định dạng (SVG/PNG) đã được sinh ra chưa.</p>
+                </div>
+
                 <!-- Viewport Control Buttons -->
                 <div class="viewport-controls">
                     <button class="control-btn" title="Phóng to" onclick="zoom(0.15)">＋</button>
@@ -542,6 +556,44 @@
 
                 <!-- Tab 4 Info -->
                 <div id="details-3" class="tab-content">
+                    <h3>Nhân sự & Khoa phòng</h3>
+                    <p>Cơ cấu tổ chức nhân sự bệnh viện theo khoa/phòng và lịch trực làm việc.</p>
+                    <ul>
+                        <li><strong>KHOA:</strong> Đơn vị chuyên môn quản lý phòng bệnh và nhân sự trực thuộc.</li>
+                        <li><strong>PHÒNG BỆNH:</strong> Phòng vật lý thuộc một Khoa, có sức chứa và trạng thái sử dụng.</li>
+                        <li><strong>NHÂN VIÊN:</strong> Thực thể cha (IS-A) cho Bác sĩ và Điều dưỡng, thuộc một Khoa.</li>
+                        <li><strong>BÁC SĨ / ĐIỀU DƯỠNG:</strong> Chuyên môn hóa (IS-A) của Nhân viên với thuộc tính nghiệp vụ riêng.</li>
+                        <li><strong>LỊCH TRỰC:</strong> Phân công ca trực của Nhân viên, do Khoa quản lý.</li>
+                    </ul>
+                </div>
+
+                <!-- Tab 5 Info -->
+                <div id="details-4" class="tab-content">
+                    <h3>Dược & Vật tư y tế</h3>
+                    <p>Quản lý nhập/xuất kho thuốc và vật tư y tế từ nhà cung cấp.</p>
+                    <ul>
+                        <li><strong>NHÀ CUNG CẤP:</strong> Đối tác cung ứng Thuốc và Vật tư y tế cho bệnh viện.</li>
+                        <li><strong>ĐƠN NHẬP HÀNG:</strong> Đơn đặt hàng từ Nhà cung cấp.</li>
+                        <li><strong>PHIẾU XUẤT KHO:</strong> Thực thể yếu ghi nhận chi tiết nhập/xuất theo từng Đơn nhập hàng.</li>
+                        <li><strong>THUỐC:</strong> Danh mục dược phẩm quản lý theo lô, hạn dùng.</li>
+                        <li><strong>VẬT TƯ Y TẾ:</strong> Danh mục vật tư tiêu hao phục vụ khám chữa bệnh.</li>
+                    </ul>
+                </div>
+
+                <!-- Tab 6 Info -->
+                <div id="details-5" class="tab-content">
+                    <h3>Tài chính & Viện phí</h3>
+                    <p>Quy trình lập hóa đơn, thanh toán viện phí và xử lý bồi thường bảo hiểm y tế.</p>
+                    <ul>
+                        <li><strong>HÓA ĐƠN:</strong> Tổng hợp chi phí điều trị của một đợt khám/nhập viện.</li>
+                        <li><strong>THANH TOÁN:</strong> Các lượt thanh toán ứng với một Hóa đơn (có thể trả nhiều lần).</li>
+                        <li><strong>BỒI THƯỜNG BHYT:</strong> Phần chi trả từ bảo hiểm y tế cho Hóa đơn.</li>
+                        <li><strong>GIAO DỊCH:</strong> Chi tiết giao dịch tài chính ghi nhận cho từng lượt Thanh toán.</li>
+                    </ul>
+                </div>
+
+                <!-- Tab 7 Info -->
+                <div id="details-6" class="tab-content">
                     <h3>Sơ đồ ERD hoàn chỉnh</h3>
                     <p>Mô hình hợp nhất toàn diện 6 phân hệ (Nhân sự, Dược, Viện phí, Bệnh nhân, Điều trị, Xét nghiệm) với 30 thực thể:</p>
                     <ul>
@@ -571,6 +623,9 @@
             'BenhNhan_TiepDon_Academic',
             'ChanDoan_PhacDo_Academic',
             'XetNghiem_CDHA_Academic',
+            'NhanSu_KhoaPhong_Academic',
+            'Duoc_VatTu_Academic',
+            'VienPhi_TaiChinh_Academic',
             'complete_erd'
         ];
 
@@ -578,12 +633,30 @@
             'Phần 1: Quản lý Bệnh nhân & Tiếp đón',
             'Phần 2: Chẩn đoán & Phác đồ điều trị',
             'Phần 3: Xét nghiệm & Chẩn đoán hình ảnh',
+            'Phần 4: Nhân sự & Khoa phòng',
+            'Phần 5: Dược & Vật tư y tế',
+            'Phần 6: Tài chính & Viện phí',
             'Toàn cảnh: Sơ đồ ERD bệnh viện hoàn chỉnh'
         ];
 
         const imgEl = document.getElementById('diagram-img');
         const titleEl = document.getElementById('current-title');
         const viewportEl = document.getElementById('viewport');
+        const errorEl = document.getElementById('diagram-error');
+        const errorNameEl = document.getElementById('diagram-error-name');
+
+        // Exception handling: if a diagram file is missing/fails to load, show a
+        // friendly message instead of leaving a silently broken image.
+        imgEl.onerror = function () {
+            imgEl.style.display = 'none';
+            errorNameEl.textContent = imgEl.getAttribute('src') || '';
+            errorEl.style.display = 'block';
+        };
+
+        imgEl.onload = function () {
+            errorEl.style.display = 'none';
+            imgEl.style.display = '';
+        };
 
         function switchTab(index) {
             currentTab = index;

@@ -157,10 +157,13 @@ def parse_sql_to_erd(sql_text):
     """
     tables = {}
     relationships = []
-    
+
     # Extract each CREATE TABLE block
     table_blocks = re.findall(r"CREATE\s+TABLE\s+(\w+)\s*\((.*?)\);", sql_text, re.DOTALL | re.IGNORECASE)
-    
+
+    if not table_blocks:
+        raise ValueError("No 'CREATE TABLE ... ;' statements found in SQL_SCHEMA. Check the SQL syntax.")
+
     for table_name, body in table_blocks:
         table_name = table_name.upper()
         entity_id = to_pascal_case(table_name)
@@ -344,41 +347,64 @@ def generate_dot_file(tables, relationships, output_filepath):
     dot_lines.append("}")
     
     # Write to file
-    with open(output_filepath, "w", encoding="utf-8") as f:
-        f.write("\n".join(dot_lines))
+    try:
+        with open(output_filepath, "w", encoding="utf-8") as f:
+            f.write("\n".join(dot_lines))
+    except OSError as e:
+        raise OSError(f"Could not write DOT file '{output_filepath}': {e}") from e
     print(f"Generated DOT file: {output_filepath}")
 
 def compile_dot_to_images(dot_filepath, base_output_name):
-    """Compile DOT file to SVG and PNG using the system's Graphviz 'dot' tool."""
+    """Compile DOT file to SVG and PNG using the system's Graphviz 'dot' tool.
+
+    Returns True on success, False if compilation failed (error already logged).
+    """
+    if not os.path.isfile(dot_filepath):
+        print(f"Error: DOT file '{dot_filepath}' does not exist.")
+        return False
+
     svg_output = f"{base_output_name}.svg"
     png_output = f"{base_output_name}.png"
-    
+
     try:
         # Generate SVG
         print(f"Compiling to SVG: {svg_output}...")
         subprocess.run(["dot", "-Tsvg", dot_filepath, "-o", svg_output], check=True)
-        
+
         # Generate PNG
         print(f"Compiling to PNG: {png_output}...")
         subprocess.run(["dot", "-Tpng", dot_filepath, "-o", png_output], check=True)
-        
+
         print("Success! ERD generated successfully.")
+        return True
     except FileNotFoundError:
         print("Error: The 'dot' command-line tool (Graphviz) was not found on your system PATH.")
         print("Please ensure Graphviz is installed and added to your system environment variables.")
+        return False
     except subprocess.CalledProcessError as e:
         print(f"Error executing Graphviz dot: {e}")
+        return False
+    except OSError as e:
+        print(f"Unexpected OS error while running Graphviz dot: {e}")
+        return False
 
 if __name__ == "__main__":
+    import sys
+
     dot_file = "NhanSu_KhoaPhong_Academic.dot"
     base_name = "NhanSu_KhoaPhong_Academic"
-    
-    # Step 1: Parse the SQL DDL
-    print("Parsing SQL schema...")
-    tables, relationships = parse_sql_to_erd(SQL_SCHEMA)
-    
-    # Step 2: Generate the Graphviz DOT code
-    generate_dot_file(tables, relationships, dot_file)
-    
+
+    try:
+        # Step 1: Parse the SQL DDL
+        print("Parsing SQL schema...")
+        tables, relationships = parse_sql_to_erd(SQL_SCHEMA)
+
+        # Step 2: Generate the Graphviz DOT code
+        generate_dot_file(tables, relationships, dot_file)
+    except (ValueError, OSError) as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
     # Step 3: Compile DOT to SVG & PNG
-    compile_dot_to_images(dot_file, base_name)
+    if not compile_dot_to_images(dot_file, base_name):
+        sys.exit(1)
