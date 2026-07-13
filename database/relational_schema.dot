@@ -134,6 +134,17 @@ digraph RelationalSchema {
         <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309"><B>PK</B></FONT></TD><TD ALIGN="LEFT" PORT="PD_MaPhacDo"><FONT POINT-SIZE="10"><U><B>PD_MaPhacDo</B></U></FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50)</FONT></TD></TR>
         <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309"><B>PK</B></FONT></TD><TD ALIGN="LEFT" PORT="DV_MaDichVu"><FONT POINT-SIZE="10"><U><B>DV_MaDichVu</B></U></FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50)</FONT></TD></TR>
     </TABLE>>];
+    THUC_HIEN_DICH_VU [shape=plaintext, label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" COLOR="#94A3B8">
+        <TR><TD BGCOLOR="#319795" COLSPAN="3"><FONT COLOR="white" POINT-SIZE="12"><B>THUC_HIEN_DICH_VU</B></FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309"><B>PK</B></FONT></TD><TD ALIGN="LEFT" PORT="THDV_MaThucHien"><FONT POINT-SIZE="10"><U><B>THDV_MaThucHien</B></U></FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50)</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309"><B>FK</B></FONT></TD><TD ALIGN="LEFT" PORT="BS_MaBS"><FONT POINT-SIZE="10"><I>BS_MaBS</I></FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50)</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309"><B>FK</B></FONT></TD><TD ALIGN="LEFT" PORT="BN_MaBN"><FONT POINT-SIZE="10"><I>BN_MaBN</I></FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50)</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309"><B>FK</B></FONT></TD><TD ALIGN="LEFT" PORT="DV_MaDichVu"><FONT POINT-SIZE="10"><I>DV_MaDichVu</I></FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50)</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309">&nbsp;</FONT></TD><TD ALIGN="LEFT" PORT="THDV_NgayThucHien"><FONT POINT-SIZE="10">THDV_NgayThucHien</FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">DATE</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309">&nbsp;</FONT></TD><TD ALIGN="LEFT" PORT="THDV_GhiChu"><FONT POINT-SIZE="10">THDV_GhiChu</FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">TEXT (null)</FONT></TD></TR>
+        <TR><TD COLSPAN="3" ALIGN="LEFT"><FONT POINT-SIZE="7" COLOR="#9F1239"><I>CHECK: uq_thuchiendichvu (UNIQUE)</I></FONT></TD></TR>
+    </TABLE>>];
     }
 
     subgraph cluster_Phần_3_Xét_nghiệm_CĐHA {
@@ -251,6 +262,7 @@ digraph RelationalSchema {
         <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309">&nbsp;</FONT></TD><TD ALIGN="LEFT" PORT="BS_HocVi"><FONT POINT-SIZE="10">BS_HocVi</FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50) (null)</FONT></TD></TR>
         <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309">&nbsp;</FONT></TD><TD ALIGN="LEFT" PORT="BS_CCHN"><FONT POINT-SIZE="10">BS_CCHN</FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50) (null)</FONT></TD></TR>
         <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309">&nbsp;</FONT></TD><TD ALIGN="LEFT" PORT="BS_NamKN"><FONT POINT-SIZE="10">BS_NamKN</FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">INT (null)</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#B45309"><B>FK</B></FONT></TD><TD ALIGN="LEFT" PORT="BS_MaBS_ThamVan"><FONT POINT-SIZE="10"><I>BS_MaBS_ThamVan</I></FONT></TD><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#666666">VARCHAR(50) (null)</FONT></TD></TR>
     </TABLE>>];
     DIEU_DUONG [shape=plaintext, label=<
     <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" COLOR="#94A3B8">
@@ -426,6 +438,7 @@ digraph RelationalSchema {
     PHONG_BENH:K_MaKhoa:e -> KHOA:K_MaKhoa:w [taillabel="N", headlabel="1"];
     NHAN_VIEN:K_MaKhoa:e -> KHOA:K_MaKhoa:w [taillabel="N", headlabel="1"];
     BAC_SI:BS_MaBS:e -> NHAN_VIEN:NV_MaNV:w [taillabel="1", headlabel="1"];
+    BAC_SI:BS_MaBS_ThamVan:e -> BAC_SI:BS_MaBS:w [taillabel="N", headlabel="1"];
     DIEU_DUONG:DD_MaDD:e -> NHAN_VIEN:NV_MaNV:w [taillabel="1", headlabel="1"];
     LICH_TRUC:NV_MaNV:e -> NHAN_VIEN:NV_MaNV:w [taillabel="N", headlabel="1"];
     LICH_TRUC:K_MaKhoa:e -> KHOA:K_MaKhoa:w [taillabel="N", headlabel="1"];
@@ -442,4 +455,7 @@ digraph RelationalSchema {
     GIAO_DICH:BT_MaQuyetToan:e -> BOI_THUONG_BHYT:BT_MaQuyetToan:w [taillabel="N", headlabel="1"];
     HOADON_CHITIET_DICHVU:HD_MaHD:e -> HOA_DON:HD_MaHD:w [taillabel="N", headlabel="1"];
     HOADON_CHITIET_DICHVU:DV_MaDichVu:e -> DICH_VU_YTE:DV_MaDichVu:w [taillabel="N", headlabel="1"];
+    THUC_HIEN_DICH_VU:BS_MaBS:e -> BAC_SI:BS_MaBS:w [taillabel="N", headlabel="1"];
+    THUC_HIEN_DICH_VU:BN_MaBN:e -> BENH_NHAN:BN_MaBN:w [taillabel="N", headlabel="1"];
+    THUC_HIEN_DICH_VU:DV_MaDichVu:e -> DICH_VU_YTE:DV_MaDichVu:w [taillabel="N", headlabel="1"];
 }

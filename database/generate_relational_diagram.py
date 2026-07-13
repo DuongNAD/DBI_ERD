@@ -26,7 +26,7 @@ CLUSTERS = [
      ["BENH_NHAN", "BAO_HIEM_YT", "LICH_HEN", "HO_SO_NHAP_VIEN", "BENH_AN"]),
     ("Phần 2: Chẩn đoán & Điều trị", "#319795", "#F5FDFD",
      ["CHAN_DOAN", "DON_THUOC", "CHI_TIET_DON_THUOC", "PHAC_DO_DIEU_TRI",
-      "DICH_VU_YTE", "PHACDO_SUDUNG_DICHVU"]),
+      "DICH_VU_YTE", "PHACDO_SUDUNG_DICHVU", "THUC_HIEN_DICH_VU"]),
     ("Phần 3: Xét nghiệm & CĐHA", "#6B46C1", "#FAF5FF",
      ["THIET_BI_YTE", "DANH_MUC_XET_NGHIEM", "KET_QUA_XET_NGHIEM",
       "CHAN_DOAN_HINH_ANH", "MAU_BENH_PHAM"]),
@@ -118,6 +118,10 @@ def parse_schema(sql_text):
                 check_line = re.match(r"^CONSTRAINT\s+(\w+)\s+CHECK", item, re.IGNORECASE)
                 if check_line:
                     checks.append(check_line.group(1))
+                    continue
+                unique_line = re.match(r"^CONSTRAINT\s+(\w+)\s+UNIQUE", item, re.IGNORECASE)
+                if unique_line:
+                    checks.append(f"{unique_line.group(1)} (UNIQUE)")
                     continue
                 col = parse_column(item)
                 if col:

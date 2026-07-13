@@ -222,13 +222,16 @@ CREATE TABLE NHAN_VIEN (
 );
 
 -- IS-A: BAC_SI la chuyen mon hoa cua NHAN_VIEN (PK cung la FK).
+-- Quan he DE QUY (recursive): THAM_VAN (BAC_SI -- BAC_SI), 1 -- N, partial ca hai phia
+-- (mot bac si co the tham van 0..1 bac si khac; mot bac si co the duoc 0..N dong nghiep tham van).
 CREATE TABLE BAC_SI (
-    BS_MaBS         VARCHAR(50)  PRIMARY KEY REFERENCES NHAN_VIEN(NV_MaNV),
-    BS_ChuyenKhoa   VARCHAR(255),
-    BS_CapBac       VARCHAR(50),
-    BS_HocVi        VARCHAR(50),
-    BS_CCHN         VARCHAR(50),
-    BS_NamKN        INT
+    BS_MaBS             VARCHAR(50)  PRIMARY KEY REFERENCES NHAN_VIEN(NV_MaNV),
+    BS_ChuyenKhoa       VARCHAR(255),
+    BS_CapBac           VARCHAR(50),
+    BS_HocVi            VARCHAR(50),
+    BS_CCHN             VARCHAR(50),
+    BS_NamKN            INT,
+    BS_MaBS_ThamVan     VARCHAR(50)  REFERENCES BAC_SI(BS_MaBS)
 );
 
 -- IS-A: DIEU_DUONG la chuyen mon hoa cua NHAN_VIEN (PK cung la FK).
@@ -406,6 +409,30 @@ ALTER TABLE CHI_TIET_DON_THUOC
 ALTER TABLE KHOA
     ADD COLUMN BS_MaBS_TruongKhoa VARCHAR(50) UNIQUE REFERENCES BAC_SI(BS_MaBS);
 
+-- Bo sung them rang buoc CHECK cho cac cot so lieu quan trong (dam bao gia tri hop le).
+ALTER TABLE DICH_VU_YTE
+    ADD CONSTRAINT chk_dichvu_gia CHECK (DV_GiaDichVu >= 0);
+
+ALTER TABLE HOA_DON
+    ADD CONSTRAINT chk_hoadon_tongchiphi CHECK (HD_TongChiPhi >= 0);
+
+ALTER TABLE CHI_TIET_DON_THUOC
+    ADD CONSTRAINT chk_chitietdonthuoc_soluong CHECK (CT_SoLuong > 0);
+
+-- Quan he TAM NGUYEN (ternary): THUC_HIEN_DICH_VU lien ket dong thoi BAC_SI - BENH_NHAN -
+-- DICH_VU_YTE, ghi nhan "bac si nao thuc hien dich vu nao cho benh nhan nao". Khong the tach
+-- thanh 3 quan he nhi nguyen doc lap ma khong mat thong tin (vd: neu tach BAC_SI-BENH_NHAN va
+-- BENH_NHAN-DICH_VU_YTE rieng, se khong biet chinh xac bac si nao da thuc hien dich vu cu the do).
+CREATE TABLE THUC_HIEN_DICH_VU (
+    THDV_MaThucHien     VARCHAR(50)   PRIMARY KEY,
+    BS_MaBS             VARCHAR(50)   NOT NULL REFERENCES BAC_SI(BS_MaBS),
+    BN_MaBN             VARCHAR(50)   NOT NULL REFERENCES BENH_NHAN(BN_MaBN),
+    DV_MaDichVu         VARCHAR(50)   NOT NULL REFERENCES DICH_VU_YTE(DV_MaDichVu),
+    THDV_NgayThucHien   DATE          NOT NULL,
+    THDV_GhiChu         TEXT,
+    CONSTRAINT uq_thuchiendichvu UNIQUE (BS_MaBS, BN_MaBN, DV_MaDichVu, THDV_NgayThucHien)
+);
+
 
 -- ============================================================================
 -- INDEX GOI Y CHO CAC KHOA NGOAI THUONG DUOC TRUY VAN
@@ -421,3 +448,7 @@ CREATE INDEX idx_nhanvien_khoa             ON NHAN_VIEN(K_MaKhoa);
 CREATE INDEX idx_lichtruc_nhanvien         ON LICH_TRUC(NV_MaNV);
 CREATE INDEX idx_hoadon_benhnhan           ON HOA_DON(BN_MaBN);
 CREATE INDEX idx_thanhtoan_hoadon          ON THANH_TOAN(HD_MaHD);
+CREATE INDEX idx_bacsi_thamvan             ON BAC_SI(BS_MaBS_ThamVan);
+CREATE INDEX idx_thuchiendv_bacsi          ON THUC_HIEN_DICH_VU(BS_MaBS);
+CREATE INDEX idx_thuchiendv_benhnhan       ON THUC_HIEN_DICH_VU(BN_MaBN);
+CREATE INDEX idx_thuchiendv_dichvu         ON THUC_HIEN_DICH_VU(DV_MaDichVu);

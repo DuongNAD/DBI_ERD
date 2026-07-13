@@ -27,7 +27,7 @@ database/
 
 - **ERD chuẩn Chen** (`part1..6`, `complete_erd`): mô hình khái niệm — thực thể, thuộc tính (hình
   oval riêng), quan hệ (hình thoi). Phù hợp để trình bày/phân tích nghiệp vụ.
-- **Sơ đồ quan hệ** (`relational_schema.svg`): mô hình vật lý — đúng 32 bảng thật sự có trong
+- **Sơ đồ quan hệ** (`relational_schema.svg`): mô hình vật lý — đúng 33 bảng thật sự có trong
   `schema.sql`, mỗi bảng hiển thị tên cột, kiểu dữ liệu, đánh dấu `PK`/`FK`, và mũi tên nối khóa
   ngoại → khóa chính kèm cardinality (`1`/`N`). Sinh tự động bằng
   [`generate_relational_diagram.py`](./generate_relational_diagram.py), nên **luôn khớp với code
@@ -58,11 +58,23 @@ Bệnh nhân & Bệnh án là điểm liên thông trung tâm nối 6 phân hệ
 - Dialect mục tiêu: **PostgreSQL**. Phần lớn cú pháp tương thích MySQL 8+; nếu dùng MySQL cần đổi
   `TEXT`→giữ nguyên (MySQL hỗ trợ), `TIMESTAMP`→giữ nguyên, nhưng bỏ cú pháp
   `ALTER TABLE ... ADD COLUMN ... UNIQUE` (MySQL yêu cầu tách UNIQUE thành `ADD CONSTRAINT` riêng).
-- Tất cả bảng đã được kiểm tra cú pháp cấu trúc bằng SQLite trước khi bàn giao (32/32 câu
-  `CREATE TABLE` chạy thành công); các câu `ALTER TABLE ... UNIQUE` chỉ thất bại trên SQLite do giới
-  hạn riêng của SQLite, không phải lỗi cú pháp SQL chuẩn.
+- Tất cả bảng đã được kiểm tra cú pháp cấu trúc bằng SQLite trước khi bàn giao (33/33 câu
+  `CREATE TABLE` chạy thành công); các câu `ALTER TABLE ... UNIQUE` và
+  `ALTER TABLE ... ADD CONSTRAINT ... CHECK` chỉ thất bại trên SQLite do giới hạn riêng của SQLite
+  (không hỗ trợ 2 cú pháp này qua ALTER TABLE), không phải lỗi cú pháp SQL chuẩn — cả hai đều hợp lệ
+  trên PostgreSQL.
 
 ## Các quyết định thiết kế đáng chú ý
+
+### 0. Quan hệ đệ quy và tam nguyên
+Mô hình gốc (`complete_erd.dot`) chỉ có quan hệ nhị nguyên (1:1/1:N/M:N). Để minh họa đầy đủ các
+loại quan hệ trong phân tích ERD, đã bổ sung:
+- **Đệ quy (recursive)**: `BAC_SI.BS_MaBS_ThamVan` tự tham chiếu tới `BAC_SI(BS_MaBS)` — một bác sĩ
+  có thể tham vấn (0..1) một bác sĩ khác; một bác sĩ có thể được (0..N) đồng nghiệp khác tham vấn.
+- **Tam nguyên (ternary)**: bảng `THUC_HIEN_DICH_VU` nối đồng thời `BAC_SI`, `BENH_NHAN`,
+  `DICH_VU_YTE` — ghi nhận "bác sĩ nào thực hiện dịch vụ nào cho bệnh nhân nào". Không thể tách
+  thành 2 quan hệ nhị nguyên độc lập mà không mất thông tin (ví dụ tách `BAC_SI`–`BENH_NHAN` và
+  `BENH_NHAN`–`DICH_VU_YTE` riêng sẽ không còn biết chính xác bác sĩ nào thực hiện dịch vụ nào).
 
 ### 1. Thực thể yếu (weak entity): `PHIEU_XUAT_KHO`
 Trong sơ đồ gốc, "PHIẾU XUẤT KHO (Chi tiết nhập)" là thực thể yếu phụ thuộc vào `DON_NHAP_HANG`,
