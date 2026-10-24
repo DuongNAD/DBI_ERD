@@ -1,0 +1,99 @@
+graph ERD {
+    layout=fdp;
+    K=2.2;
+    overlap=false;
+    splines=true;
+    sep="+35";
+    esep="+25";
+
+    // Thiết lập chung
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=11, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.0];
+
+    subgraph cluster_Part2 {
+        label="Phân hệ Chẩn đoán & Điều trị";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#319795";
+        style="filled,dashed";
+        fillcolor="#F5FDFD";
+        color="#319795";
+        penwidth=2.0;
+
+        // Thực thể
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#E6FFFA", color="#319795", fontcolor="#234E52", fontsize=13, style="filled,bold"];
+        ChanDoan [label="CHẨN ĐOÁN"];
+        DonThuoc [label="ĐƠN THUỐC"];
+        ChiTietDonThuoc [label="CHI TIẾT ĐƠN THUỐC"];
+        PhacDoDieuTri [label="PHÁC ĐỒ ĐIỀU TRỊ"];
+        DichVuYTe [label="DỊCH VỤ Y TẾ"];
+
+        // Thuộc tính khóa
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        CD_MaChanDoan [label=<<u>Mã chẩn đoán</u>>];
+        DT_MaDonThuoc [label=<<u>Mã đơn thuốc</u>>];
+        CT_MaChiTiet [label=<<u>Mã chi tiết</u>>];
+        PD_MaPhacDo [label=<<u>Mã phác đồ</u>>];
+        DV_MaDichVu [label=<<u>Mã dịch vụ</u>>];
+
+        // Thuộc tính thường
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#F0FDF4", color="#86EFAC", fontcolor="#14532D", fontsize=9, style=filled];
+        CD_TenChanDoan [label="Tên chẩn đoán"];
+        CD_MoTa [label="Mô tả"];
+        CD_NgayChanDoan [label="Ngày chẩn đoán"];
+        DT_NgayKeDon [label="Ngày kê đơn"];
+        DT_GhiChu [label="Ghi chú"];
+        ĐƠN [label="ĐƠN"];
+        CT_SoLuong [label="Số lượng"];
+        CT_LieuDung [label="Liều dùng"];
+        CT_ThoiGianSuDung [label="Thời gian sử dụng"];
+        CHI [label="CHI"];
+        PD_TenPhacDo [label="Tên phác đồ"];
+        PD_MoTa [label="Mô tả"];
+        PD_ThoiGianDieuTri [label="Thời gian điều trị"];
+        DV_TenDichVu [label="Tên dịch vụ"];
+        DV_MoTa [label="Mô tả"];
+        DV_LoaiDichVu [label="Loại dịch vụ"];
+
+        // Mối quan hệ
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        Rel_DON_THUOC_CHAN_DOAN [label="CÓ"];
+        Rel_CHI_TIET_DON_THUOC_DON_THUOC [label="CÓ"];
+        Rel_PHAC_DO_DIEU_TRI_CHAN_DOAN [label="CÓ"];
+        SuDung [label="SỬ DỤNG"];
+
+        // Kết nối Thuộc tính
+        ChanDoan -- CD_MaChanDoan;
+        ChanDoan -- CD_TenChanDoan;
+        ChanDoan -- CD_MoTa;
+        ChanDoan -- CD_NgayChanDoan;
+        DonThuoc -- DT_MaDonThuoc;
+        DonThuoc -- DT_NgayKeDon;
+        DonThuoc -- DT_GhiChu;
+        DonThuoc -- ĐƠN;
+        ChiTietDonThuoc -- CT_MaChiTiet;
+        ChiTietDonThuoc -- CT_SoLuong;
+        ChiTietDonThuoc -- CT_LieuDung;
+        ChiTietDonThuoc -- CT_ThoiGianSuDung;
+        ChiTietDonThuoc -- CHI;
+        PhacDoDieuTri -- PD_MaPhacDo;
+        PhacDoDieuTri -- PD_TenPhacDo;
+        PhacDoDieuTri -- PD_MoTa;
+        PhacDoDieuTri -- PD_ThoiGianDieuTri;
+        DichVuYTe -- DV_MaDichVu;
+        DichVuYTe -- DV_TenDichVu;
+        DichVuYTe -- DV_MoTa;
+        DichVuYTe -- DV_LoaiDichVu;
+
+        // Kết nối Mối quan hệ
+        ChanDoan -- Rel_DON_THUOC_CHAN_DOAN [taillabel="1"];
+        Rel_DON_THUOC_CHAN_DOAN -- DonThuoc [headlabel="N"];
+        DonThuoc -- Rel_CHI_TIET_DON_THUOC_DON_THUOC [taillabel="1"];
+        Rel_CHI_TIET_DON_THUOC_DON_THUOC -- ChiTietDonThuoc [headlabel="N"];
+        ChanDoan -- Rel_PHAC_DO_DIEU_TRI_CHAN_DOAN [taillabel="1"];
+        Rel_PHAC_DO_DIEU_TRI_CHAN_DOAN -- PhacDoDieuTri [headlabel="N"];
+        DichVuYTe -- SuDung [taillabel="N"];
+        SuDung -- PhacDoDieuTri [headlabel="M"];
+    }
+}

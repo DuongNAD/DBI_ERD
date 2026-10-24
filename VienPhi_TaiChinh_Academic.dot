@@ -1,0 +1,86 @@
+graph ERD {
+    layout=fdp;
+    K=2.2;
+    overlap=false;
+    splines=true;
+    sep="+35";
+    esep="+25";
+
+    // Thiết lập chung
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=11, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.0];
+
+    subgraph cluster_Part6 {
+        label="Phân hệ Tài chính & Viện phí";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#4C51BF";
+        style="filled,dashed";
+        fillcolor="#F8FAFF";
+        color="#4C51BF";
+        penwidth=2.0;
+
+        // Thực thể
+        node [shape=box, peripheries=1, penwidth=2.0, fillcolor="#EBF4FF", color="#4C51BF", fontcolor="#2C3E50", fontsize=13, style="filled,bold"];
+        HoaDon [label="HÓA ĐƠN"];
+        ThanhToan [label="THANH TOÁN"];
+        BoiThuongBhyt [label="BỒI THƯỜNG BHYT"];
+        GiaoDich [label="GIAO DỊCH"];
+
+        // Thuộc tính khóa
+        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold"];
+        HD_MaHD [label=<<u>Mã hóa đơn</u>>];
+        TT_MaTT [label=<<u>Mã thanh toán</u>>];
+        BT_MaQuyetToan [label=<<u>Mã quyết toán</u>>];
+        GD_MaGD [label=<<u>Mã giao dịch</u>>];
+
+        // Thuộc tính thường
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#EEF2FF", color="#A5B4FC", fontcolor="#312E81", fontsize=9, style=filled];
+        HD_MaBN [label="Mã bệnh nhân"];
+        HD_MaTN [label="Mã tiếp nhận"];
+        TT_Loai [label="Loại"];
+        TT_PhuongThuc [label="Phương thức"];
+        TT_MaNV [label="Mã nhân viên"];
+        BT_SoTheBHYT [label="Số thẻ Bảo hiểm y tế"];
+        BT_MaBenh [label="Mã bệnh"];
+        BT_TrangThai [label="Trạng thái"];
+        GD_MaThamChieu [label="Mã tham chiếu"];
+        GD_NguonTien [label="Nguồn tiền"];
+        GD_ThoiGian [label="Thời gian"];
+
+        // Mối quan hệ
+        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold"];
+        CoThanhToan [label="CÓ THANH TOÁN"];
+        ApDungBHYT [label="ÁP DỤNG BHYT"];
+        PhatSinhGD_TT [label="PHÁT SINH GD"];
+        PhatSinhGD_BT [label="PHÁT SINH GD"];
+
+        // Kết nối Thuộc tính
+        HoaDon -- HD_MaHD;
+        HoaDon -- HD_MaBN;
+        HoaDon -- HD_MaTN;
+        ThanhToan -- TT_MaTT;
+        ThanhToan -- TT_Loai;
+        ThanhToan -- TT_PhuongThuc;
+        ThanhToan -- TT_MaNV;
+        BoiThuongBhyt -- BT_MaQuyetToan;
+        BoiThuongBhyt -- BT_SoTheBHYT;
+        BoiThuongBhyt -- BT_MaBenh;
+        BoiThuongBhyt -- BT_TrangThai;
+        GiaoDich -- GD_MaGD;
+        GiaoDich -- GD_MaThamChieu;
+        GiaoDich -- GD_NguonTien;
+        GiaoDich -- GD_ThoiGian;
+
+        // Kết nối Mối quan hệ
+        HoaDon -- CoThanhToan [taillabel="1"];
+        CoThanhToan -- ThanhToan [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        HoaDon -- ApDungBHYT [taillabel="1"];
+        ApDungBHYT -- BoiThuongBhyt [headlabel="1", color="#4A5568:invis:#4A5568", penwidth=3];
+        ThanhToan -- PhatSinhGD_TT [taillabel="1"];
+        PhatSinhGD_TT -- GiaoDich [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        BoiThuongBhyt -- PhatSinhGD_BT [taillabel="1"];
+        PhatSinhGD_BT -- GiaoDich [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+    }
+}

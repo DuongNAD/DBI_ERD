@@ -1,0 +1,106 @@
+graph ERD {
+    layout=fdp;
+    K=2.2;
+    overlap=false;
+    splines=true;
+    sep="+35";
+    esep="+25";
+
+    // Thiết lập chung
+    bgcolor="#FFFFFF";
+    node [fontname="Arial", fontsize=11, style=filled];
+    edge [fontname="Arial Bold", fontsize=11, color="#4A5568", fontcolor="#1A202C", penwidth=1.5, labeldistance=3.0];
+
+    subgraph cluster_Part5 {
+        label="Phân hệ Dược & Vật tư y tế";
+        fontname="Arial Bold";
+        fontsize=16;
+        fontcolor="#E53E3E";
+        style="filled,dashed";
+        fillcolor="#FFF5F5";
+        color="#E53E3E";
+        penwidth=2.0;
+
+        // Thực thể
+        NhaCungCap [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FFF5F5", color="#E53E3E", fontcolor="#742A2A", fontsize=13, style="filled,bold", label="NHÀ CUNG CẤP"];
+        DonNhapHang [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FFF5F5", color="#E53E3E", fontcolor="#742A2A", fontsize=13, style="filled,bold", label="ĐƠN NHẬP HÀNG"];
+        Thuoc [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FFF5F5", color="#E53E3E", fontcolor="#742A2A", fontsize=13, style="filled,bold", label="THUỐC"];
+        VatTuYTe [shape=box, peripheries=1, penwidth=2.0, fillcolor="#FFF5F5", color="#E53E3E", fontcolor="#742A2A", fontsize=13, style="filled,bold", label="VẬT TƯ Y TẾ"];
+        PhieuXuatKho [shape=box, peripheries=2, penwidth=2.0, fillcolor="#FFF5F5", color="#E53E3E", fontcolor="#742A2A", fontsize=13, style="filled,bold", label="PHIẾU XUẤT KHO\n(Chi tiết nhập)"];
+
+        // Thuộc tính khóa
+        NCC_MaNCC [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold", label=<<u>Mã nhà cung cấp</u>>];
+        DNH_MaDon [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold", label=<<u>Mã đơn nhập</u>>];
+        TH_MaThuoc [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold", label=<<u>Mã thuốc</u>>];
+        VT_MaVatTu [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FEF3C7", color="#D97706", fontcolor="#78350F", fontsize=10, style="filled,bold", label=<<u>Mã vật tư</u>>];
+        PXK_SoLo [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor="#FFF1F2", color="#FDA4AF", fontcolor="#9F1239", fontsize=9, style="filled,dashed", label=<<font color="#9F1239"><u>Số lô</u></font>>];
+
+        // Thuộc tính thường
+        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor="#FFF1F2", color="#FDA4AF", fontcolor="#9F1239", fontsize=9, style=filled];
+        NCC_TenNCC [label="Tên nhà cung cấp"];
+        NCC_SDT [label="Số điện thoại"];
+        NCC_DiaChi [label="Địa chỉ"];
+        NCC_MST [label="Mã số thuế"];
+        DNH_NgayLap [label="Ngày lập"];
+        DNH_NgayNhap [label="Ngày nhập"];
+        DNH_TrangThai [label="Trạng thái"];
+        DNH_NguoiLap [label="Người lập"];
+        TH_TenThuongMai [label="Tên thương mại"];
+        TH_HoatChat [label="Hoạt chất"];
+        TH_KhoiLuong [label="Khối lượng"];
+        TH_NhaSanXuat [label="Nhà sản xuất"];
+        TH_DangBaoBi [label="Dạng bao bì"];
+        TH_DangBaoChe [label="Dạng bào chế"];
+        TH_HanSuDung [label="Hạn sử dụng"];
+        VT_TenVatTu [label="Tên vật tư"];
+        VT_DonViTinh [label="Đơn vị tính"];
+        VT_ChatLieu [label="Chất liệu"];
+        VT_CongDung [label="Công dụng"];
+        PXK_HSD [label="Hạn sử dụng"];
+        PXK_SL [label="Số lượng"];
+
+        // Mối quan hệ
+        CungCap [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold", label="CUNG CẤP"];
+        ChiTietNhap [shape=diamond, peripheries=2, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold", label="CHI TIẾT NHẬP"];
+        GomThuoc [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold", label="GỒM THUỐC"];
+        GomVatTu [shape=diamond, peripheries=1, penwidth=1.5, fillcolor="#FAF5FF", color="#6B46C1", fontcolor="#4C1D95", fontsize=11, style="filled,bold", label="GỒM VẬT TƯ"];
+
+        // Kết nối Thuộc tính
+        NhaCungCap -- NCC_MaNCC;
+        NhaCungCap -- NCC_TenNCC;
+        NhaCungCap -- NCC_SDT;
+        NhaCungCap -- NCC_DiaChi;
+        NhaCungCap -- NCC_MST;
+        DonNhapHang -- DNH_MaDon;
+        DonNhapHang -- DNH_NgayLap;
+        DonNhapHang -- DNH_NgayNhap;
+        DonNhapHang -- DNH_TrangThai;
+        DonNhapHang -- DNH_NguoiLap;
+        Thuoc -- TH_MaThuoc;
+        Thuoc -- TH_TenThuongMai;
+        Thuoc -- TH_HoatChat;
+        Thuoc -- TH_KhoiLuong;
+        Thuoc -- TH_NhaSanXuat;
+        Thuoc -- TH_DangBaoBi;
+        Thuoc -- TH_DangBaoChe;
+        Thuoc -- TH_HanSuDung;
+        VatTuYTe -- VT_MaVatTu;
+        VatTuYTe -- VT_TenVatTu;
+        VatTuYTe -- VT_DonViTinh;
+        VatTuYTe -- VT_ChatLieu;
+        VatTuYTe -- VT_CongDung;
+        PhieuXuatKho -- PXK_SoLo;
+        PhieuXuatKho -- PXK_HSD;
+        PhieuXuatKho -- PXK_SL;
+
+        // Kết nối Mối quan hệ
+        NhaCungCap -- CungCap [taillabel="1"];
+        CungCap -- DonNhapHang [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        DonNhapHang -- ChiTietNhap [taillabel="1"];
+        ChiTietNhap -- PhieuXuatKho [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        Thuoc -- GomThuoc [taillabel="1"];
+        GomThuoc -- PhieuXuatKho [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+        VatTuYTe -- GomVatTu [taillabel="1"];
+        GomVatTu -- PhieuXuatKho [headlabel="N", color="#4A5568:invis:#4A5568", penwidth=3];
+    }
+}

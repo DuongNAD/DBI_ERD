@@ -2,8 +2,7 @@ import re
 import subprocess
 import os
 
-# 1. SQL DDL Schema representing the Database Structure
-# The Python script will parse this SQL syntax to generate the Entity-Relationship Diagram!
+# 1. Sơ đồ SQL DDL đại diện cho cấu trúc cơ sở dữ liệu
 SQL_SCHEMA = """
 CREATE TABLE KHOA (
     K_MaKhoa VARCHAR(50) PRIMARY KEY,
@@ -61,9 +60,9 @@ CREATE TABLE LICH_TRUC (
 );
 """
 
-# 2. Vietnamese translation dictionary for Entity and Attribute labels
+# 2. Từ điển dịch tiếng Việt cho nhãn Thực thể và Thuộc tính
 TRANSLATIONS = {
-    # Tables (Entities)
+    # Thực thể (Bảng)
     "KHOA": "KHOA",
     "PHONG_BENH": "PHÒNG BỆNH",
     "NHAN_VIEN": "NHÂN VIÊN",
@@ -71,7 +70,7 @@ TRANSLATIONS = {
     "DIEU_DUONG": "ĐIỀU DƯỠNG",
     "LICH_TRUC": "LỊCH TRỰC",
     
-    # Columns (Attributes)
+    # Thuộc tính (Cột)
     "K_MaKhoa": "Mã khoa",
     "K_TenKhoa": "Tên khoa",
     "K_SoDien": "Số điện thoại khoa",
@@ -111,10 +110,7 @@ TRANSLATIONS = {
     "LT_TGKT": "Thời gian kết thúc"
 }
 
-# 3. Specific Relationship Metadata (Cardinalities and Double-Line Styles)
-# Format: (source_table, target_table, relationship_label) -> (source_card, target_card, total_participation_side)
-# - source_table: table containing the FOREIGN KEY
-# - target_table: referenced table
+# 3. Siêu dữ liệu quan hệ chi tiết (Bản số và kiểu hiển thị nét đôi)
 RELATIONSHIP_METADATA = {
     ("PHONG_BENH", "KHOA", "BAO GỒM"): ("N", "1", "source"),
     ("NHAN_VIEN", "KHOA", "THUỘC KHOA"): ("N", "1", "source"),
@@ -126,11 +122,11 @@ RELATIONSHIP_METADATA = {
 }
 
 def to_pascal_case(s):
-    """Convert snake_case to PascalCase (e.g. PHONG_BENH -> PhongBenh)."""
+    """Chuyển đổi dạng snake_case thành PascalCase (ví dụ: PHONG_BENH -> PhongBenh)."""
     return "".join(word.capitalize() for word in s.split("_"))
 
 def get_rel_id(label, table_name, ref_table):
-    """Get the specific relationship node ID to match the original dot structure."""
+    """Lấy ID nút quan hệ cụ thể để khớp với cấu trúc DOT gốc."""
     mapping = {
         "BAO GỒM": "BaoGom",
         "THUỘC KHOA": "ThuocKhoa",
@@ -149,12 +145,7 @@ def get_rel_id(label, table_name, ref_table):
     return f"Rel_{table_name}_{ref_table}"
 
 def parse_sql_to_erd(sql_text):
-    """
-    Parse SQL CREATE TABLE statements to extract:
-    - Entities (tables)
-    - Attributes (columns) with PK indicators
-    - Relationships (FK REFERENCES) with labels from comments
-    """
+    """Phân tích các câu lệnh SQL CREATE TABLE để trích xuất Thực thể, Thuộc tính và Quan hệ."""
     tables = {}
     relationships = []
 
@@ -174,27 +165,21 @@ def parse_sql_to_erd(sql_text):
             "attributes": []
         }
         
-        # Parse individual lines in the table definition
         lines = body.split("\n")
         for line in lines:
             line = line.strip()
             if not line:
                 continue
             
-            # Isolate comment if present
             comment = None
             if "--" in line:
                 line, comment_part = line.split("--", 1)
                 comment = comment_part.strip()
                 line = line.strip()
                 
-            # Strip trailing comma
             if line.endswith(","):
                 line = line[:-1].strip()
                 
-            # Match columns, PKs, FKs
-            # Example: K_MaKhoa VARCHAR(50) PRIMARY KEY
-            # Example: K_MaKhoa VARCHAR(50) REFERENCES KHOA(K_MaKhoa)
             match = re.match(
                 r"^(\w+)\s+([\w()]+)(?:\s+(PRIMARY\s+KEY))?(?:\s+REFERENCES\s+(\w+)\((\w+)\))?$",
                 line,
@@ -206,7 +191,6 @@ def parse_sql_to_erd(sql_text):
                 is_pk = bool(match.group(3))
                 ref_table = match.group(4)
                 
-                # Check for relationships (FK Reference)
                 if ref_table:
                     ref_table = ref_table.upper()
                     rel_label = comment if comment else "CÓ"
@@ -221,15 +205,13 @@ def parse_sql_to_erd(sql_text):
                         "target_entity": to_pascal_case(ref_table)
                     })
                     
-                    # If this foreign key is also a Primary Key (e.g. BS_MaBS referencing NV_MaNV), keep it as attribute
-                    if is_pk:
+                    if is_pk or "_FK" in col_name:
                         tables[table_name]["attributes"].append({
                             "id": col_name,
                             "label": TRANSLATIONS.get(col_name, col_name),
-                            "is_pk": True
+                            "is_pk": is_pk
                         })
                 else:
-                    # Normal attribute column
                     tables[table_name]["attributes"].append({
                         "id": col_name,
                         "label": TRANSLATIONS.get(col_name, col_name),
@@ -239,10 +221,10 @@ def parse_sql_to_erd(sql_text):
     return tables, relationships
 
 def generate_dot_file(tables, relationships, output_filepath):
-    """Generate the Graphviz DOT syntax and write it to a file."""
+    """Sinh mã nguồn Graphviz DOT và lưu ra file."""
     dot_lines = []
     
-    # 1. Graph header & global styles
+    # 1. Cấu hình đồ thị & kiểu dáng chung
     dot_lines.append("graph ERD {")
     dot_lines.append("    layout=fdp;")
     dot_lines.append("    K=2.2;")
@@ -251,13 +233,13 @@ def generate_dot_file(tables, relationships, output_filepath):
     dot_lines.append("    sep=\"+35\";")
     dot_lines.append("    esep=\"+25\";")
     dot_lines.append("")
-    dot_lines.append("    // Global settings")
+    dot_lines.append("    // Thiết lập chung")
     dot_lines.append("    bgcolor=\"#FFFFFF\";")
     dot_lines.append("    node [fontname=\"Arial\", fontsize=11, style=filled];")
     dot_lines.append("    edge [fontname=\"Arial Bold\", fontsize=11, color=\"#4A5568\", fontcolor=\"#1A202C\", penwidth=1.5, labeldistance=3.0];")
     dot_lines.append("")
     
-    # 2. Phân hệ subgraph (Amber/Orange theme matching Part 4 of the ERD)
+    # 2. Cụm subgraph phân hệ (Orange/Amber Theme khớp với Phần 4 của ERD)
     dot_lines.append("    subgraph cluster_Part4 {")
     dot_lines.append("        label=\"Phân hệ Nhân sự & Khoa phòng\";")
     dot_lines.append("        fontname=\"Arial Bold\";")
@@ -269,15 +251,15 @@ def generate_dot_file(tables, relationships, output_filepath):
     dot_lines.append("        penwidth=2.0;")
     dot_lines.append("")
     
-    # 3. Entities (Tables)
-    dot_lines.append("        // Entities")
+    # 3. Thực thể (Bảng)
+    dot_lines.append("        // Thực thể")
     dot_lines.append("        node [shape=box, peripheries=1, penwidth=2.0, fillcolor=\"#FFFAF0\", color=\"#DD6B20\", fontcolor=\"#7B341E\", fontsize=13, style=\"filled,bold\"];")
     for table_name, table in tables.items():
         dot_lines.append(f'        {table["entity_id"]} [label="{table["label"]}"];')
     dot_lines.append("")
     
-    # 4. Key Attributes (Primary Keys)
-    dot_lines.append("        // Key Attributes")
+    # 4. Thuộc tính khóa (Khóa chính)
+    dot_lines.append("        // Thuộc tính khóa")
     dot_lines.append("        node [shape=ellipse, peripheries=1, penwidth=1.5, fillcolor=\"#FEF3C7\", color=\"#D97706\", fontcolor=\"#78350F\", fontsize=10, style=\"filled,bold\"];")
     for table_name, table in tables.items():
         for attr in table["attributes"]:
@@ -285,8 +267,8 @@ def generate_dot_file(tables, relationships, output_filepath):
                 dot_lines.append(f'        {attr["id"]} [label=<<u>{attr["label"]}</u>>];')
     dot_lines.append("")
     
-    # 5. Normal Attributes
-    dot_lines.append("        // Normal Attributes")
+    # 5. Thuộc tính thông thường
+    dot_lines.append("        // Thuộc tính thường")
     dot_lines.append("        node [shape=ellipse, peripheries=1, penwidth=1.0, fillcolor=\"#FFFBEB\", color=\"#FDE047\", fontcolor=\"#78350F\", fontsize=9, style=filled];")
     for table_name, table in tables.items():
         for attr in table["attributes"]:
@@ -294,11 +276,10 @@ def generate_dot_file(tables, relationships, output_filepath):
                 dot_lines.append(f'        {attr["id"]} [label="{attr["label"]}"];')
     dot_lines.append("")
     
-    # 6. Relationships (Diamonds)
-    dot_lines.append("        // Relationships")
+    # 6. Mối quan hệ (Hình thoi)
+    dot_lines.append("        // Mối quan hệ")
     dot_lines.append("        node [shape=diamond, peripheries=1, penwidth=1.5, fillcolor=\"#FAF5FF\", color=\"#6B46C1\", fontcolor=\"#4C1D95\", fontsize=11, style=\"filled,bold\"];")
     
-    # Collect unique relationships
     added_rel_ids = set()
     for rel in relationships:
         if rel["id"] not in added_rel_ids:
@@ -306,16 +287,16 @@ def generate_dot_file(tables, relationships, output_filepath):
             added_rel_ids.add(rel["id"])
     dot_lines.append("")
     
-    # 7. Attribute Connections
-    dot_lines.append("        // Attribute Connections")
+    # 7. Kết nối Thuộc tính với Thực thể
+    dot_lines.append("        // Kết nối Thuộc tính")
     for table_name, table in tables.items():
         ent_id = table["entity_id"]
         for attr in table["attributes"]:
             dot_lines.append(f'        {ent_id} -- {attr["id"]};')
     dot_lines.append("")
     
-    # 8. Relationship Connections
-    dot_lines.append("        // Relationship Connections")
+    # 8. Kết nối Thực thể với Mối quan hệ (Bản số)
+    dot_lines.append("        // Kết nối Mối quan hệ")
     for rel in relationships:
         source_table = rel["source_table"]
         target_table = rel["target_table"]
@@ -324,20 +305,19 @@ def generate_dot_file(tables, relationships, output_filepath):
         source_ent = rel["source_entity"]
         target_ent = rel["target_entity"]
         
-        # Determine cardinalities and total participation style
         meta = RELATIONSHIP_METADATA.get((source_table, target_table, rel_label))
         if meta:
             source_card, target_card, total_part = meta
         else:
             source_card, target_card, total_part = ("N", "1", None)
             
-        # Connect Target (Referenced Table / "1" Side) to Relationship
+        # Kết nối phía Bảng đích (1 bên nhánh "1")
         if total_part == "target":
             dot_lines.append(f'        {target_ent} -- {rel_id} [taillabel="{target_card}", color="#4A5568:invis:#4A5568", penwidth=3];')
         else:
             dot_lines.append(f'        {target_ent} -- {rel_id} [taillabel="{target_card}"];')
             
-        # Connect Relationship to Source (Referencing Table / "N" or "1" Side)
+        # Kết nối phía Bảng nguồn (Bên nhánh "N" hoặc "1")
         if total_part == "source":
             dot_lines.append(f'        {rel_id} -- {source_ent} [headlabel="{source_card}", color="#4A5568:invis:#4A5568", penwidth=3];')
         else:
@@ -367,8 +347,7 @@ def compile_dot_to_images(dot_filepath, base_output_name):
     png_output = f"{base_output_name}.png"
 
     try:
-        # Generate SVG
-        print(f"Compiling to SVG: {svg_output}...")
+        print(f"Dang bien dich sang SVG: {svg_output}...")
         subprocess.run(["dot", "-Tsvg", dot_filepath, "-o", svg_output], check=True)
 
         # Generate PNG
